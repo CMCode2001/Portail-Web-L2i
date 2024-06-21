@@ -8,6 +8,7 @@ import a from "../../../../Assets/img/Base-donnee-relationelle.jpg";
 import f from "../../../../Assets/img/ReseauTelecom-scaled.jpg";
 //import e from "../../../../Assets/img/securite_informatique-scaled-1-1.jpg";
 import g from "../../../../Assets/img/systemes-exploitation-information-informatique.jpg";
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
 export default function CoursPopulaire() {
   return (
@@ -15,8 +16,8 @@ export default function CoursPopulaire() {
   <body>
     <div className='container'>
       <div className='team_container'>
-
-        <div className='text'>Cours Populaires</div>
+      
+        <SeparatorBlock title="Cours Populaires"/>
 
       </div>
 
