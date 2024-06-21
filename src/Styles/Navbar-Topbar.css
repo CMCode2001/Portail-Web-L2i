@@ -16,7 +16,7 @@
   color: #ffffff;
   font-size: 17px;
   font-weight: 500;
-  height: auto;
+  /* height: auto; */
   width: 10rem;
   #jajeuf{
     text-decoration: none;
@@ -33,7 +33,10 @@
 }
 .nav-item,
 .mesBtn {
-  margin-right: 3rem;
+  /* margin-right: 3rem; */
+  padding: 4;
+  margin: 4;
+  margin-inline-start: 20px;
 }
 
 .navbar-nav .nav-item:last-child,

@@ -1,0 +1,16 @@
+/* Gallerie.css */
+
+.gallerie-container {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    gap: -35px; 
+  }
+  
+  
+  .gallerie-text {
+    text-align: center;
+    font-size: 34px; 
+    font-weight: 800;
+  }
+  

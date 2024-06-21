@@ -1,7 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-export default function FutureEtudiant() {
+//import '../../../../Styles/FutureEtudiant.css'; 
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
+
+const FutureEtudiant = () => {
   return (
-    <div>CMC 5e-section</div>
-  )
-}
+    <>
+       <SeparatorBlock title="Future Etudiant" />
+    </>
+  );
+};
+
+export default FutureEtudiant;

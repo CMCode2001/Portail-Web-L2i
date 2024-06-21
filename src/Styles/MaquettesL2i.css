@@ -1,0 +1,50 @@
+
+.maquettes-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* Ajouter un espacement entre les cartes */
+    justify-content: center; /* Centrer les cartes horizontalement */
+    flex-wrap: wrap; /* Permettre aux cartes de passer à la ligne suivante si nécessaire */
+    padding: 20px;
+}
+
+.blog-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 400px;
+}
+
+.blog-image {
+    width: 100%;
+    height: auto;
+}
+
+.card-content {
+    padding: 16px;
+}
+
+.blog-category {
+    color: #6c6c6c;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    font-size: 24px;
+    margin: 0 0 16px 0;
+}
+
+p {
+    font-size: 16px;
+    color: #383838;
+}
+
+
+.download-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

@@ -4,6 +4,10 @@ body{
   font-family: "Poppins";
 }
 
+.active {
+  font-weight: bold;
+}
+
 .bgCouleur1{
   background-color: #13798C;
 }

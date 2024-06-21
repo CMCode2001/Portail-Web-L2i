@@ -1,0 +1,25 @@
+/* SeparatorLeft.css */
+
+.mon-design-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    margin-right: 20px; /* Ajustez selon vos besoins */
+  }
+  
+  .rectangle-14 {
+    background: #6b2239;
+    border-radius: 5px;
+    width: 90.79px;
+    height: 6px;
+  }
+  
+  .rectangle-15 {
+    background: rgba(19, 121, 140, 0.93);
+    border-radius: 5px;
+    width: 157.55px;
+    height: 6px;
+    margin-top: 8px; /* Espacement entre les rectangles */
+  }
+  

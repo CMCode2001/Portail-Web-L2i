@@ -1,0 +1,17 @@
+/* MaquetteL2.css */
+
+.maquettel2-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .maquette-image {
+    max-width: 100%; /* Pour s'assurer que l'image ne dépasse pas la largeur du conteneur */
+    height: auto;
+    border-radius: 20px; /* Ajustez la valeur selon vos préférences */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* Ajoutez les ombres portées */
+    border: 2px solid #ddd; /* Optionnel : Ajoutez une bordure si vous le souhaitez */
+  }
+  
