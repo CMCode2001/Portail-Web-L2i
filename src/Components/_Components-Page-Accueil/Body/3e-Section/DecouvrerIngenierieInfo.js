@@ -1,8 +1,11 @@
 import React from 'react'
 import '../../../../Styles/DecouvrerIngInf.css';
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
 export default function DecouvrerIngenierieInfo() {
   return (
+    <>
+    <SeparatorBlock title="Découvrez l’ingénierie Informatique" />
     <div className='whole-block'>
       <div className='top-section'>
         <div className='left'>
@@ -31,7 +34,7 @@ export default function DecouvrerIngenierieInfo() {
           </div>
         </div>
         <div className='right bordure'>
-          <h4>Reseau, Système etTelecom</h4>
+          <h4>Reseau, Système et Telecom</h4>
           <p>
             L'administration réseau, système et 
             télécommunication implique la gestion 
@@ -64,5 +67,6 @@ export default function DecouvrerIngenierieInfo() {
         </p>
       </div>
     </div>
+    </>
   )
 }

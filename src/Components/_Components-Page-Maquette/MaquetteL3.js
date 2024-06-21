@@ -7,6 +7,7 @@ export default function MaquetteL3() {
   return (
     <>
     <HeaderBlock/>
+    <h1 style={{textAlign:'center', paddingTop:'10px'}}> Maquette Licence 3</h1>
     <div className="maquettel3-container">
       <img src={MaquetteL3Image} alt="Maquette Licence 3" className="maquette-image" />
     </div>

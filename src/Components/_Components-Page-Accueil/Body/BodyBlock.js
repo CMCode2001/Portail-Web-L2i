@@ -10,17 +10,17 @@ function BodyBlock () {
   return (
     <>
       <Carroussel/>
-      <br/> <p>------------------------</p>
+      <br/> 
       <Apropos/>
-      <br/> <p>------------------------</p>
+      <br/> 
       <DecouvrerIngenierieInfo/>
-      <br/> <p>------------------------</p>
+      <br/>
       <CoursPopulaire/>
-      <br/> <p>------------------------</p>
-      <FutureEtudiant/>
-      <br/> <p>------------------------</p>
+      <br/> 
+      {/* <FutureEtudiant/> */}
+      <br/> 
       <NosPartenaires/>
-      <br/> <p>------------------------</p>
+      <br/>
 
     </>
   )
