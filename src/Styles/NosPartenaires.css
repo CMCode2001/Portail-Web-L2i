@@ -1,0 +1,36 @@
+/* .container-partner {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.partner {
+    max-width: 150px;
+} */
+
+.carousel-container {
+    width: 80%;
+    margin: auto;
+  }
+  
+  .partner-slide {
+    transition: transform 0.5s;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .slick-center .partner-slide {
+    transform: scale(1.5);
+  }
+  
+  .partner-slide img {
+    width: 120px;
+    height: auto;
+    transition: transform 0.5s;
+  }
+  
+  .slick-center .partner-slide img {
+    width: 160px;
+  }
+  
