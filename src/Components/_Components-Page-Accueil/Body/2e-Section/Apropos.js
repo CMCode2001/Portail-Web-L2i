@@ -2,11 +2,12 @@ import React from 'react'
 import monSvg from '../../../../Assets/img/innovation-animate.svg';
 import '../../../../Styles/AproposSection2.css'
 import { Link } from 'react-router-dom';
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 export default function Apropos() {
   return (
     <>
-    
-    <div className="separator"></div>
+    <SeparatorBlock title="À PROPOS DE NOUS"/>
+    {/* <div className="separator"></div> */}
     
     <div className='monContenaire d-flex'>
       
@@ -15,7 +16,7 @@ export default function Apropos() {
       </div>
       <br/>
       <div class="monBienvenue">
-        <h5><b>À PROPOS DE NOUS</b></h5>
+        {/* <h5><b>À PROPOS DE NOUS</b> </h5> */}
         <p>
         Tempor erat elitr rebum chez clita. Diam dolor diam ipsum assis. Aliqu diam amet diam et eos. Clita était ipsum et lorem et assis.
         Tempor erat elitr rebum chez clita. Diam dolor diam ipsum assis. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
