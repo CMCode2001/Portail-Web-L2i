@@ -3,7 +3,6 @@ import Para from './1e-Section/Parallax';
 import Apropos from "./2e-Section/Apropos";
 import DecouvrerIngenierieInfo from "./3e-Section/DecouvrerIngenierieInfo";
 import CoursPopulaire from "./4e-Section/CoursPopulaire";
-import FutureEtudiant from "./5e-Section/FutureEtudiant";
 import NosPartenaires from "./6e-Section/NosPartenaires";
 
 function BodyBlock () {
@@ -12,15 +11,15 @@ function BodyBlock () {
       <Para/>
       <br/> <p>------------------------</p>
       <Apropos/>
-      <br/> <p>------------------------</p>
+      <br/> 
       <DecouvrerIngenierieInfo/>
-      <br/> <p>------------------------</p>
+      <br/>
       <CoursPopulaire/>
-      <br/> <p>------------------------</p>
-      <FutureEtudiant/>
-      <br/> <p>------------------------</p>
+      <br/> 
+      {/* <FutureEtudiant/> */}
+      <br/> 
       <NosPartenaires/>
-      <br/> <p>------------------------</p>
+      <br/>
 
     </>
   )

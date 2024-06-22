@@ -5,7 +5,7 @@ import '../Styles/Gallerie.css'
 
 export default function Gallerie() {
   return (
-    <div>
+    <div >
         <HeaderBlock/>
         <div className="gallerie-container">
             <img src={GallerieIMG} alt="SVG-Gallerie"  width={700} height={400}/>   

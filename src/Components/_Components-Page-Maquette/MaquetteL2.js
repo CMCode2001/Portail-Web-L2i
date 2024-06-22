@@ -7,6 +7,7 @@ export default function MaquetteL2() {
   return (
     <>
     <HeaderBlock/>
+    <h1 style={{textAlign:'center', paddingTop:'10px'}}> Maquette Licence 2</h1>
     <div className="maquettel2-container">
       <img src={MaquetteL2Image} alt="Maquette Licence 2" className="maquette-image" />
     </div>

@@ -14,7 +14,7 @@ export default function CoursPopulaire() {
   return (
     
   <body>
-    <div className='container'>
+    <div className='containerCours'>
       <div className='team_container'>
       
         <SeparatorBlock title="Cours Populaires"/>
@@ -40,7 +40,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
@@ -63,7 +63,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
@@ -87,7 +87,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
@@ -110,7 +110,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
@@ -134,7 +134,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
@@ -157,7 +157,7 @@ export default function CoursPopulaire() {
 
             </div>
             <div className='btn-div'>
-              <button className='btn'><i className='fa-fa-facebook'></i>Voir Plus..</button>
+              <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
             </div>
 
           </div>
