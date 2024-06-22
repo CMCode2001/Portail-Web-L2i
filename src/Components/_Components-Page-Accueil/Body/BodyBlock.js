@@ -9,7 +9,7 @@ function BodyBlock () {
   return (
     <>
       <Para/>
-      <br/> <p>------------------------</p>
+      <br/>
       <Apropos/>
       <br/> 
       <DecouvrerIngenierieInfo/>
