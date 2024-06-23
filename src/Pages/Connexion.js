@@ -88,7 +88,7 @@ export default function Connexion({ setEstAuthentifie }) {
     password: "",
   });
   const [isAuthenticated, setAuth] = useState(false);
-
+  const [open, setOpen] = useState(false);
   // Lorsque isAuthenticated change, appelez la fonction de rappel
   useEffect(() => {
     setEstAuthentifieCallback(isAuthenticated);
