@@ -1,0 +1,27 @@
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    background: var(--bgColor2);
+  }
+  
+  @media (max-width: 768px) {
+    .card {
+        display: block;
+        flex-direction: column;
+        width: 100%;
+        margin: 10px 0;
+
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .card {
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+        margin: 10px;
+    }
+  }
+  

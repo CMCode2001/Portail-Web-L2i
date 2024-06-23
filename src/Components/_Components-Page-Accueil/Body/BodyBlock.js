@@ -4,6 +4,7 @@ import Apropos from "./2e-Section/Apropos";
 import DecouvrerIngenierieInfo from "./3e-Section/DecouvrerIngenierieInfo";
 import CoursPopulaire from "./4e-Section/CoursPopulaire";
 import NosPartenaires from "./6e-Section/NosPartenaires";
+import FutureEtudiant from './5e-Section/FutureEtudiant';
 
 function BodyBlock () {
   return (
@@ -16,7 +17,7 @@ function BodyBlock () {
       <br/>
       <CoursPopulaire/>
       <br/> 
-      {/* <FutureEtudiant/> */}
+      <FutureEtudiant/>
       <br/> 
       <NosPartenaires/>
       <br/>
