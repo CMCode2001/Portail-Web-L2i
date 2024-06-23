@@ -108,7 +108,10 @@
   .navbar .navbar-nav {
     padding-bottom: -15px;
   }
-  
+  .dropdown-item {
+    text-decoration: none;
+    color: #000000 !important;
+  }
   .navbar .navbar-nav .nav-link {
     padding: 10px;
     color: var(--bs-white);
@@ -127,8 +130,9 @@
     content: "\f107";
     font-family: "font awesome 5 free";
     font-weight: 900;
-    vertical-align: middle;
+    vertical-align:baseline;
     margin-left: 8px;
+
   }
   
   @media (min-width: 992px) {

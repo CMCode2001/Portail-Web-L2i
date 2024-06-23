@@ -4,9 +4,11 @@ import HeaderBlock from '../Components/Header/HeaderBlock'
 
 export default function Maquette() {
   return (
-    <div>
-      <HeaderBlock/>
-        <MaquettesL2i/>
-    </div>
+    <>   
+    <HeaderBlock/>
+      <div id='MaquetteBody' style={{backgroundColor:'#eee'}}>
+          <MaquettesL2i/>
+      </div>
+    </>
   )
 }

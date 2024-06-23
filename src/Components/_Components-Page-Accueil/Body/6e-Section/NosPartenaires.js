@@ -4,6 +4,7 @@ import partners from '../../../partners';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
 
 export default function NosPartenaires() {
@@ -43,6 +44,8 @@ export default function NosPartenaires() {
   };
 
   return (
+    <>
+      <SeparatorBlock title="Nos Partenaires "/> <br/>
     <div className="carousel-container">
       <Slider {...settings}>
         {partners.map((file, index) => (
@@ -52,5 +55,7 @@ export default function NosPartenaires() {
         ))}
       </Slider>
     </div>
+
+    </>  
   )
 }
