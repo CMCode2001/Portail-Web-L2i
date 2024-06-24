@@ -81,12 +81,18 @@
     width: 150px;
     cursor: pointer;
     height: 38px;
-    font-size: 18px;
-    font-weight: 600px;
+    font-size: 19px;
+    font-weight: 700px;
     border-radius: 33px;
     outline: none;
     border: none;
+    transition: all .5s ease-in;
 }
+.btnVoirPlus:hover {
+    cursor: pointer;
+    background-color: #097377;
+}
+
 
 .programmation img{
     border-radius: 25px 33px 0 0;
