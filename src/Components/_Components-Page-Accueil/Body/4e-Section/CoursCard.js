@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default function CoursCard({image, tittle, description}){
+export default function CoursCard({image, title, description,image1}){
 
     return(
 
@@ -9,16 +9,15 @@ export default function CoursCard({image, tittle, description}){
             <div className='profile-content'>
 
                 <div className='profile-image'>
-                    <img src={image} alt={tittle} className='image'/>
+                    <img src={image} alt={title} className='image'/>
                 </div>
-
                 <div className='desc'>
-                    <h2>{tittle}</h2>
+                    <h2>{title}</h2>
                     <p>{description}</p>
                 </div>
 
                 <div className='btn-div'>
-                    <button className='btn'>Voir Plus</button>
+                    <button className='btnVoirPlus'>Voir Plus..</button>
                 </div>
 
             </div>
