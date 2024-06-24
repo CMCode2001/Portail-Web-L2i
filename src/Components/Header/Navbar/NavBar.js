@@ -156,13 +156,6 @@ const Navbar = () => {
                       Déconnexion
                     </NavLink>
                   </button>
-                  <div>
-                    {" "}
-                    testeur
-                    <b>{currentUser?.firstName}</b>
-                    <b>{currentUser.name}</b>
-                    <b>{currentUser.email}</b>
-                  </div>
                 </div>
               ) : (
                 <div>
@@ -178,6 +171,18 @@ const Navbar = () => {
                     </NavLink>
                   </button>
                 </div>
+              )}
+              {sessionStorage.getItem("isLoggedIn") ? (
+                <div>
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp; <b>{currentUser?.firstName}</b>
+                  <b>{currentUser.name}</b>
+                  <b>{currentUser.email}</b>
+                  {" Je suis un"}
+                  <b>{currentUser.role}</b>
+                </div>
+              ) : (
+                <div></div>
               )}
             </div>
           </div>
