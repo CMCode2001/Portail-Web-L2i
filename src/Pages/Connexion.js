@@ -1,11 +1,11 @@
-import { Stack, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import HeaderBlock from "../Components/Header/HeaderBlock";
-import "../Styles/Connexion.css";
 import { Email, Lock } from "@mui/icons-material";
+import { Stack, TextField } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import React, { useEffect, useState } from "react";
+import HeaderBlock from "../Components/Header/HeaderBlock";
+import "../Styles/Connexion.css";
 // import CreateCustumer from "./CreateCustumer.jsx";
 // import CreatePrestataire from "./CreatePrestataire.jsx";
 
@@ -30,26 +30,67 @@ export default function Connexion() {
     // Mettez à jour estAuthentifie dans le composant parent
     // setEstAuthentifie(newValue);
   };
-  const login = () => {
-    fetch(SERVER_URL + "login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    })
-      .then((res) => {
-        const jwtToken = res.headers.get("Authorization");
-        if (jwtToken != null) {
-          sessionStorage.setItem("jwt", jwtToken);
-          sessionStorage.setItem("isLoggedIn", true);
-          sessionStorage.setItem("user", user);
-          setAuth(true);
-        }
-        // else {
-        //   setOpen(true);
-        // }
-      })
-      .catch((err) => console.error(err));
+  // const login = () => {
+  //   fetch(SERVER_URL + "/login", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(user),
+  //   })
+  //     .then((res) => {
+  //       const jwtToken = res.headers.get("Authorization");
+  //       if (jwtToken != null) {
+  //         console.log(res.data);
+  //         // alert(res.data);
+  //         sessionStorage.setItem("jwt", jwtToken);
+  //         sessionStorage.setItem("isLoggedIn", true);
+  //         sessionStorage.setItem("userTest", JSON.stringify(user)); // Stocker l'utilisateur comme chaîne JSON
+  //         sessionStorage.setItem("userTest2", res.data); // Stocker l'utilisateur comme chaîne JSON
+  //         sessionStorage.setItem("user", res.data.user); // Stocker l'utilisateur comme chaîne JSON
+
+  //         setAuth(true);
+  //       }
+  //       // else {
+  //       //   setOpen(true);
+  //       // }
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
+
+  const login = async () => {
+    try {
+      const response = await fetch(SERVER_URL + "/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erreur lors de la connexion");
+      }
+
+      const jwtToken = response.headers.get("Authorization");
+      if (jwtToken) {
+        // Récupérer le corps de la réponse pour obtenir l'objet user
+        const userData = await response.json();
+
+        // Stocker le token JWT et les détails de l'utilisateur
+        sessionStorage.setItem("jwt", jwtToken);
+        sessionStorage.setItem("isLoggedIn", true);
+        sessionStorage.setItem("user", JSON.stringify(userData.user)); // Stocker l'objet utilisateur sous forme de chaîne JSON
+
+        // Mettre à jour l'état d'authentification
+        setAuth(true);
+      } else {
+        throw new Error("Token JWT non trouvé dans la réponse");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête de connexion :", error);
+      // Afficher un message d'erreur à l'utilisateur si nécessaire
+    }
   };
+
+  /* ********************* */
 
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
