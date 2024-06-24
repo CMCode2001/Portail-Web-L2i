@@ -27,15 +27,7 @@ function App() {
           <Route path="/maquette-L3" element={<MaquetteL3 />} />
           <Route path="/a-propos" element={<Apropos />} />
           <Route path="/gallerie" element={<Gallerie />} />
-          <Route
-            path="/connexion"
-            element={
-              <Connexion
-                estAuthentifie={estAuthentifie}
-                setEstAuthentifie={setEstAuthentifie}
-              />
-            }
-          />
+          <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
         </Routes>
       </BrowserRouter>

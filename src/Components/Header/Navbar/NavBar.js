@@ -47,7 +47,7 @@ const Navbar = () => {
   // Fonction pour gérer la déconnexion
   const handleLogout = () => {
     // Logique de déconnexion ici (ex: effacer les informations de l'utilisateur)
-    window.sessionStorage.clear;
+    window.sessionStorage.clear();
     window.location.href = "/";
   };
   return (
