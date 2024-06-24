@@ -19,6 +19,7 @@ function BodyBlock () {
       <br/> 
       <FutureEtudiant/>
       <br/> 
+      <br/> 
       <NosPartenaires/>
       <br/>
 

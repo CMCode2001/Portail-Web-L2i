@@ -8,6 +8,7 @@ const FutureEtudiant = () => {
   return (
     <>
        <SeparatorBlock title="Future Etudiant" />
+       <br/>
        <CardsContainer/>
     </>
   );

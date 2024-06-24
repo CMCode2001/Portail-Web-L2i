@@ -1,14 +1,12 @@
 import React from 'react'
 import HeaderBlock from '../Components/Header/HeaderBlock'
-import '../Styles/Connexion.css'
+import FooterBlock from '../Components/Footer/FooterBlock'
 
 export default function Connexion() {
   return (
-    <>
-    <HeaderBlock/>
-    
-    </>
+    <div>
+      <HeaderBlock/>
+      <FooterBlock/>
+    </div>
   )
 }
-
-
