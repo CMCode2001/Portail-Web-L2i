@@ -112,3 +112,19 @@
 .systeme-exploitation img{
     border-radius: 30px 30px 100px 0px; 
 }
+
+.course-title{
+    position: relative;
+    padding-left: 20px;
+}
+.course-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 70%;
+    width: 15px; /* Adjust the size of the circle */
+    height: 15px; /* Adjust the size of the circle */
+    background-color: white; /* Adjust the color of the circle */
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }

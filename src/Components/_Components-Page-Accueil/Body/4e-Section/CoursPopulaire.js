@@ -31,7 +31,7 @@ export default function CoursPopulaire() {
                 <img src={course.image} alt={course.title} className='image' />
               </div>
               <div className='desc'>
-                <h2>{course.title}</h2>
+                <h2 className='course-title'>{course.title}</h2>
                 <p>{course.description}</p>
               </div>
               <div className='btn-div'>
