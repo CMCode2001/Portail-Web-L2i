@@ -38,10 +38,10 @@
 // };
 
 // export default Navbar;
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "../../../Styles/Navbar-Topbar.css";
-import "../../../Styles/generalCSS.css";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import '../../../Styles/Navbar-Topbar.css';
+import '../../../Styles/generalCSS.css';
 
 const Navbar = () => {
   // Fonction pour gérer la déconnexion
@@ -156,13 +156,6 @@ const Navbar = () => {
                       Déconnexion
                     </NavLink>
                   </button>
-                  <div>
-                    {" "}
-                    testeur
-                    <b>{currentUser?.firstName}</b>
-                    <b>{currentUser.name}</b>
-                    <b>{currentUser.email}</b>
-                  </div>
                 </div>
               ) : (
                 <div>
@@ -178,6 +171,18 @@ const Navbar = () => {
                     </NavLink>
                   </button>
                 </div>
+              )}
+              {sessionStorage.getItem("isLoggedIn") ? (
+                <div>
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp; <b>{currentUser?.firstName}</b>
+                  <b>{currentUser.name}</b>
+                  <b>{currentUser.email}</b>
+                  {" Je suis un"}
+                  <b>{currentUser.role}</b>
+                </div>
+              ) : (
+                <div></div>
               )}
             </div>
           </div>
