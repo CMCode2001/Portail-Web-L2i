@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import ForumL2i from "../Components/_Components-Page-Forum/Forum";
-import HeaderBlock from "../Components/Header/HeaderBlock";
 import { Client } from "@stomp/stompjs";
+import React, { useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
+import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Forum.css";
 
 // export default function Forum() {
@@ -24,8 +23,8 @@ const Forum = () => {
   useEffect(() => {
     // URL du serveur WebSocket
     // const socketUrl = "http://localhost:8083/ws";
-    // const socketUrl = "http://localhost:8083/api/ws";
-    const socketUrl = "http://192.168.18.144:8083/api/ws";
+    const socketUrl = "http://localhost:8083/api/ws";
+    // const socketUrl = "http://192.168.18.144:8083/api/ws";
 
     client.current = new Client({
       webSocketFactory: () => new SockJS(socketUrl),
