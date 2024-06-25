@@ -44,8 +44,8 @@ const validateEmail = (_, value) => {
           <img 
             src={SvgLogin} 
             alt="Login"
-            width={600}
-            height={600}
+            width={800}
+            height={800}
           />
         </div>
         <Form
@@ -55,7 +55,7 @@ const validateEmail = (_, value) => {
           onFinishFailed={onFinishFailed}
         >
           <p className="form-title">Welcome to L2i</p>
-          <p> Ravie de revoir, connectez-vous à votre compte !</p>
+          <p> Ravie de vous revoir, <br/>Connectez-vous à votre compte !</p>
 
           {/* Je force le user à utiliser son mail professionnel */}
           <Form.Item

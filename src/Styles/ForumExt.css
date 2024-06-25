@@ -1,47 +1,13 @@
-.div-1,
-.div-1 * {
-  box-sizing: border-box;
+.containerForum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* ou toute autre couleur de fond souhaitée */
 }
-.div-1 {
-  position: relative;
-}
-.component-1 {
-  width: 599px;
-  height: 182px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-.rectangle-7 {
-  background: #13798c;
-  border-radius: 5px;
-  width: 426px;
-  height: 8px;
-  position: absolute;
-  left: 0px;
-  top: 196px;
-}
-.bienvenue-dans-l-2-i-forum {
-  color: #000000;
-  text-align: left;
-  font-family: "Poppins";
-  font-size: 36px;
-  font-weight: 800;
-  position: absolute;
-  right: 0%;
-  left: 11.27%;
-  width: 88.73%;
-  bottom: 0%;
-  top: 32.42%;
-  height: 67.58%;
-}
-.rectangle {
-  width: 16.55%;
-  height: 51.65%;
-  position: absolute;
-  right: 83.45%;
-  left: 0%;
-  bottom: 48.35%;
-  top: 0%;
-  object-fit: cover;
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Espacement de 40px entre les éléments */
+  margin-right: 12rem;
 }
