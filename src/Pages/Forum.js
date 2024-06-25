@@ -3,8 +3,7 @@ import React, { useRef, useState } from "react";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 //import { Client } from "@stomp/stompjs";
 //import SockJS from "sockjs-client";
-import ForumExt from "../Components/_Components-Page-Forum/ForumExt";
-import "../Styles/Forum.css";
+import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuestion";
 
 // export default function Forum() {
 //   return (
@@ -82,7 +81,9 @@ const Forum = () => {
   return (
     <div>
       <HeaderBlock />
-      <ForumExt />
+      {/* <HeaderForum/> */}
+      <br />
+      <PosezUneQuestion />
     </div>
   );
 };

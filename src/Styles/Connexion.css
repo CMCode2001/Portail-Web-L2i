@@ -1,3 +1,4 @@
+
 ::-webkit-scrollbar {
     width: 8px;
   }
@@ -19,7 +20,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
+    min-height: 70vh;
     width: 100%;
     background: #ffffff;
   }
@@ -39,7 +40,8 @@
     flex: 1 0 100%;
     max-width: 480px;
     width: 100%;
-    padding: 60px;
+    height: 22rem;
+    padding: 50px;
   }
   /* #login-form p {
     margin-bottom: 30px;
@@ -87,7 +89,7 @@
   .illustration-wrapper {
     display: flex;
     align-items: flex-end;
-    max-width: 800px;
+    width: 100;
     min-height: 100%;
     background-color: #ffffff;
   }

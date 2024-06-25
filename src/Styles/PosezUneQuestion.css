@@ -1,0 +1,23 @@
+#au-milieu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #monbtnProMax {
+    font-family: "Poppins";
+    border: 1px solid #6B2239;
+    border-radius: 20px;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 10px 8px;
+    color: var(--bgColor2);
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Ajout de la transition */
+  }
+  
+  #monbtnProMax:hover {
+    background-color: var(--bgColor2);
+    color: white;
+    transform: scale(1.1); /* Effet de zoom */
+  }
+  
