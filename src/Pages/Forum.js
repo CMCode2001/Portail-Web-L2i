@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-import { Client } from "@stomp/stompjs";
-import React, { useEffect, useRef, useState } from "react";
-import SockJS from "sockjs-client";
-import HeaderBlock from "../Components/Header/HeaderBlock";
-=======
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef, useState } from "react";
 //import ForumL2i from "../Components/_Components-Page-Forum/Forum";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 //import { Client } from "@stomp/stompjs";
 //import SockJS from "sockjs-client";
->>>>>>> 7cd91adba7d136fd75ff59b8834ac77f31771d1f
-import "../Styles/Forum.css";
 import ForumExt from "../Components/_Components-Page-Forum/ForumExt";
+import "../Styles/Forum.css";
 
 // export default function Forum() {
 //   return (
@@ -29,16 +22,11 @@ const Forum = () => {
   const [connected, setConnected] = useState(false);
   const client = useRef(null);
 
- // useEffect(() => {
-    // URL du serveur WebSocket
-    // const socketUrl = "http://localhost:8083/ws";
-<<<<<<< HEAD
-    const socketUrl = "http://localhost:8083/api/ws";
-    // const socketUrl = "http://192.168.18.144:8083/api/ws";
-=======
-    // const socketUrl = "http://localhost:8083/api/ws";
+  // useEffect(() => {
+  // URL du serveur WebSocket
+  // const socketUrl = "http://localhost:8083/ws";
+  // const socketUrl = "http://localhost:8083/api/ws";
   //   const socketUrl = "http://192.168.18.144:8083/api/ws";
->>>>>>> 7cd91adba7d136fd75ff59b8834ac77f31771d1f
 
   //   client.current = new Client({
   //     webSocketFactory: () => new SockJS(socketUrl),
@@ -94,7 +82,7 @@ const Forum = () => {
   return (
     <div>
       <HeaderBlock />
-      <ForumExt/>
+      <ForumExt />
     </div>
   );
 };
