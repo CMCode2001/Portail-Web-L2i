@@ -38,10 +38,10 @@
 // };
 
 // export default Navbar;
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "../../../Styles/Navbar-Topbar.css";
-import "../../../Styles/generalCSS.css";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import '../../../Styles/Navbar-Topbar.css';
+import '../../../Styles/generalCSS.css';
 
 const Navbar = () => {
   // Fonction pour gérer la déconnexion
