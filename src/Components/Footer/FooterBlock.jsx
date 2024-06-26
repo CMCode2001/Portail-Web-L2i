@@ -72,11 +72,12 @@ function FooterBlock() {
       </div>
       <div className="footer2">
         <div className="links">
-          <Link to="#">Accueil</Link>
-          <Link to="#">Cours</Link>
-          <Link to="#">Maquette</Link>
-          <Link to="#">Forum</Link>
-          <Link to="#">A propos</Link>
+          <Link to="/">Accueil</Link>
+          <Link to="/cours">Cours</Link>
+          <Link to="/maquette">Maquettes</Link>
+          <Link to="/forum">Forum</Link>
+          <Link to="/a-propos">A propos</Link>
+          <Link to="/gallerie">Gallerie</Link>
         </div>
         <div className="social-media">
           <Link to="#">
@@ -94,7 +95,7 @@ function FooterBlock() {
         </div>
         <div className="copyright">
           <i className="fa-solid fa-copyright"></i>
-          <h6>2024 - Licence En Ingenierie informatique</h6>
+          <h6>2024 - Licence Ingenierie informatique</h6>
         </div>
         <div className="decorative-circles">
           {Array.from({ length: 10 }).map((_, index) => (

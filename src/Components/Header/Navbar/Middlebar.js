@@ -7,7 +7,7 @@ const Middlebar = () => {
   return (
     <div className="middlebar-container">
       <Link to='/'>
-      <img src={logo} alt="Logo" className="middlebar-logo" width={140} height={150} />
+      <img src={logo} alt="Logo" className="middlebar-logo" width={120} height={140} />
       </Link>
       <div className="middlebar-text">
         <p className="text1">Licence Ingénierie</p>

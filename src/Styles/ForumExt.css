@@ -1,0 +1,13 @@
+.containerForum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* ou toute autre couleur de fond souhaitée */
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Espacement de 40px entre les éléments */
+  margin-right: 12rem;
+}

@@ -1,6 +1,7 @@
 @import url(./_variables.css);
 
 /* ----Quelques ajustements CSS */
+
 #IconeCostum{
   background-color: white !important;
   color: var(--bgColor2) !important;
@@ -33,7 +34,7 @@
 }
 .nav-item,
 .mesBtn {
-  /* margin-right: 3rem; */
+  margin-left: 6rem;
   padding: 4;
   margin: 4;
   margin-inline-start: 20px;

@@ -24,9 +24,16 @@ const Topbar = () => {
                             <i className="fab fa-facebook-f "></i>
                         </Link>
                         
-                        <Link to="/" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum' >
-                            <i className="fab fa-github "></i>
-                        </Link>
+                        <a 
+                            href="https://github.com/L2IUASZ/" 
+                            className="bg-light nav-fill btn btn-sm-square rounded-circle" 
+                            id="IconeCostum" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            >
+                            <i className="fab fa-github"></i>
+                            </a>
+
                         <Link to ="/" className="bg-light nav-fill btn btn-sm-square rounded-circle me-0" id='IconeCostum'>
                             <i className="fab fa-linkedin-in "></i>
                         </Link>

@@ -1,36 +1,79 @@
-/* .container-partner {
-    display: flex;
-    justify-content: space-around;
-    max-width: 1200px;
-    margin: auto;
+/* Container for the entire carousel */
+.carousel-container {
+  padding: 10px;
+  /* background-color: rgb(237, 237, 237); */
+  width: 75%;
+  margin: auto;
 }
 
-.partner {
-    max-width: 150px;
-} */
+/* Style for each slide in the carousel */
+.partner-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s;
+  padding: 10px;
+  text-align: center;
+}
 
-.carousel-container {
-    width: 80%;
-    margin: auto;
-  }
-  
-  .partner-slide {
-    transition: transform 0.5s;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .slick-center .partner-slide {
-    transform: scale(1.5);
-  }
-  
-  .partner-slide img {
-    width: 120px;
-    height: auto;
-    transition: transform 0.5s;
-  }
-  
-  .slick-center .partner-slide img {
-    width: 160px;
-  }
-  
+/* Style for the image in each slide */
+.partner-slide img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: contain;
+  margin: auto;
+  width: 120px;
+  height: auto;
+  transition: transform 0.5s;
+}
+
+/* Scale up the centered slide */
+.slick-center .partner-slide {
+  transform: scale(1.5);
+}
+
+/* Scale up the image in the centered slide */
+.slick-center .partner-slide img {
+  width: 160px;
+}
+
+/* Style for the previous arrow button */
+.slick-prev {
+  background-color: #6b2239 !important;
+  color: #ffffff !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Style for the next arrow button */
+.slick-next {
+  background-color: #6b2239 !important;
+  color: #ffffff !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Optional: Additional styling for hover state */
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: #842d46 !important;
+}
+
+/* Adjust the position if necessary */
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}

@@ -1,9 +1,9 @@
-import part1 from '../Assets/img/Partner1.jpg';
-import part2 from '../Assets/img/Partner2.jpg';
-import part4 from '../Assets/img/Partner4.jpg';
-import part5 from '../Assets/img/Partner5.jpg';
-import part6 from '../Assets/img/Partner6.png';
-import part7 from '../Assets/img/Partner7.jpg';
+import part1 from '../Assets/img/Partenaires/Partner1.png';
+import part2 from '../Assets/img/Partenaires/Partner2.png';
+import part3 from '../Assets/img/Partenaires/Partner3.png';
+import part4 from '../Assets/img/Partenaires/Partner4.png';
+import part5 from '../Assets/img/Partenaires/Partner5.png';
+import part6 from '../Assets/img/Partenaires/Partner6.png';
 
 const partners = [
     {
@@ -13,6 +13,11 @@ const partners = [
     {
         name:'partner2',
         path:part2
+        
+    },
+    {
+        name:'partner3',
+        path:part3
     },
     {
         name:'partner4',
@@ -25,10 +30,6 @@ const partners = [
     {
         name:'partner6',
         path:part6
-    },
-    {
-        name:'partner7',
-        path:part7
     }
 ];
 

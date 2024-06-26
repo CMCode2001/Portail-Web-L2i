@@ -1,5 +1,47 @@
 /* MaquetteL1.css */
+/* ----------- BUTTON BACK ---------- */
+/* MaquetteL1.css */
 
+/* .maquettel1-container {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.maquette-image {
+  width: 100%;
+  max-width: 600px; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+
+.back-button-container {
+  text-align: left;
+  margin-top: 20px;
+  margin-left: 2rem;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: var(--bgColor2);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+
+
+}
+
+.back-button:hover {
+  background-color: var(--bgColor1);
+}
+
+.back-button svg {
+  margin-right: 8px;
+}
+
+/* ---------------------------------- */
 .maquettel1-container {
     display: flex;
     justify-content: center;
@@ -8,7 +50,9 @@
   }
   
   .maquette-image {
-    max-width: 100%; /* Pour s'assurer que l'image ne dépasse pas la largeur du conteneur */
+    width: 80%; /* Pour s'assurer que l'image ne dépasse pas la largeur du conteneur */
+    max-width: 600px; 
+    
     height: auto;
     border-radius: 20px; /* Ajustez la valeur selon vos préférences */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* Ajoutez les ombres portées */
