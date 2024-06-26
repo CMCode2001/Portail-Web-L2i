@@ -25,7 +25,7 @@ const Forum = () => {
   // URL du serveur WebSocket
   // const socketUrl = "http://localhost:8083/ws";
   // const socketUrl = "http://localhost:8083/api/ws";
-  //   const socketUrl = "http://192.168.18.144:8083/api/ws";
+  // const socketUrl = "http://192.168.18.144:8083/api/ws";
 
   // client.current = new Client({
   // webSocketFactory: () => new SockJS(socketUrl),
