@@ -1,13 +1,12 @@
 import {React, useState} from 'react';
 import { Form, Input, Button } from 'antd';
-import '../Styles/Connexion.css';
-import SvgLogin from '../Assets/svg/sign-in-animate.svg'
-import HeaderBlock from '../Components/Header/HeaderBlock';
-import FooterBlock from '../Components/Footer/FooterBlock';
+import '../../../Styles/ConnexionProf.css';
+import SvgLogin from '../../../Assets/svg/sign-in-animate.svg'
 import { SendOutlined } from '@ant-design/icons';
 
 
-const Connexion = () => {
+
+const ConnexionProf = () => {
   const onFinish = values => {
     console.log('Success:', values);
   };
@@ -39,16 +38,17 @@ const validateEmail = (_, value) => {
 
   return (
     <>
-    <HeaderBlock/>
-    <div className="login-page">
+   
+    <div className="monloginPro">
       <div className="login-box">
-        <div className="illustration-wrapper">
-          <img 
+      <img 
             src={SvgLogin} 
             alt="Login"
-            width={800}
-            height={800}
+            width={120}
+            height={120}
           />
+        <div className="illustration-wrapper">
+          
         </div>
         <Form
           name="login-form"
@@ -56,7 +56,7 @@ const validateEmail = (_, value) => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <p className="form-title">Welcome to L2i</p>
+          <h1 style={{fontFamily:'Poppins', fontWeight:'700'}}>Welcome to L2i</h1>
           <p> Ravie de vous revoir, <br/>Connectez-vous à votre compte !</p>
 
           {/* Je force le user à utiliser son mail professionnel */}
@@ -84,15 +84,15 @@ const validateEmail = (_, value) => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" className="login-form-button">
-            Se Connecter <SendOutlined />
+              Se Connecter <SendOutlined />
             </Button>
           </Form.Item>
         </Form>
       </div>
     </div>
-    <FooterBlock/>
+   
     </>
   );
 };
 
-export default Connexion;
+export default ConnexionProf;

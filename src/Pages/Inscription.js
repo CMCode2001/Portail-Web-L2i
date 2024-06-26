@@ -4,6 +4,8 @@ import '../Styles/Inscription.css';
 import SvgRegister from '../Assets/svg/sign-up-animate.svg';
 import HeaderBlock from '../Components/Header/HeaderBlock';
 import FooterBlock from '../Components/Footer/FooterBlock';
+import { SendOutlined } from '@ant-design/icons';
+
 
 const Inscription = () => {
   const onFinish = values => {
@@ -107,7 +109,7 @@ const Inscription = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" className="login-form-button">
-              S'inscrire →
+              S'inscrire <SendOutlined />
             </Button>
           </Form.Item>
         </Form>

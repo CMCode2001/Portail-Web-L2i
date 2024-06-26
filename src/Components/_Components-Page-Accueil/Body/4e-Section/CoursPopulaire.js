@@ -34,9 +34,9 @@ export default function CoursPopulaire() {
                 <h2 className='course-title'>{course.title}</h2>
                 <p>{course.description}</p>
               </div>
-              <div className='btn-div'>
+              {/* <div className='btn-div'>
                 <button className='btnVoirPlus'><i className='fa-fa-facebook'></i>Voir Plus..</button>
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
