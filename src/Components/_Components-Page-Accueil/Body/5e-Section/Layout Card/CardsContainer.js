@@ -9,17 +9,17 @@ const CardsContainer = () => {
   const cardsData = [
     {
       title: 'Admission',
-      description: 'Lorem Ipsum has been the industry standard for placeholder text. It consists of nonsensical words, allowing designers to focus on layout and design. Originating from the work "de Finibus Bonorum et Malorum" by Cicero, it has evolved over time.',
+      description: `La Licence en Ingénierie Informatique est conçue pour former des professionnels compétents dans le domaine de l'informatique. Voici les conditions d'admission pour ce programme `,
       image: check1,
     },
     {
       title: 'Débouchés',
-      description: 'Lorem Ipsum has been the industry standard for placeholder text. It consists of nonsensical words, allowing designers to focus on layout and design. Originating from the work "de Finibus Bonorum et Malorum" by Cicero, it has evolved over time.',
+      description: `La Licence en Ingénierie Informatique offre une multitude de débouchés professionnels dans le domaine de l'informatique. Les diplômés peuvent se lancer dans diverses carrières.`,
       image: check2,
     },
     {
       title: 'Formation Payante',
-      description: 'Lorem Ipsum has been the industry standard for placeholder text. It consists of nonsensical words, allowing designers to focus on layout and design. Originating from the work "de Finibus Bonorum et Malorum" by Cicero, it has evolved over time.',
+      description: `La Licence en Ingénierie Informatique propose une formation de qualité à travers un programme payant. Les frais de scolarité couvrent divers aspects essentiels de l’éducation, incluant l’accès aux ressources pédagogiques avancées.`,
       image: check3,
     },
   ];

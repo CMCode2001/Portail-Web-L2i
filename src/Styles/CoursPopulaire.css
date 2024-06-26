@@ -32,7 +32,7 @@
     }
 }
 .profile-card{
-    background-color: var(--bgColor1);
+    background-color: #13798C;
     width: 341px;
     height: 473px;
     margin: 20px 10px 10px 10px;
@@ -75,6 +75,7 @@
     text-align: center;
     
 }
+
 .btnVoirPlus{
     background-color: #ffffff;
     color: #000000;
@@ -90,8 +91,7 @@
 }
 .btnVoirPlus:hover {
     cursor: pointer;
-    background-color: var(--bgColor2);
-    color: white;
+    background-color: #aaa3a3;
 }
 
 
@@ -118,6 +118,7 @@
     position: relative;
     padding-left: 20px;
 }
+
 .course-title::before {
     content: '';
     position: absolute;
