@@ -12,8 +12,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
-import { SERVER_URL } from "../../constantURL";
 import "../../Styles/ModalBulleMessagerie.css";
+import { SERVER_URL } from "../../constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
@@ -28,6 +28,8 @@ const ModalBulleMessagerie = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
   const [reponse, setReponse] = useState("");
+
+  const userJson = sessionStorage.getItem("user");
 
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
 
@@ -64,6 +66,7 @@ const ModalBulleMessagerie = () => {
       navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
     }
     setCurrentUser(user);
+    console.log("user user user user :" + user);
     const jwt = sessionStorage.getItem("jwt");
     setToken(jwt);
     fetchForum(jwt);
@@ -75,8 +78,10 @@ const ModalBulleMessagerie = () => {
         content: reponse,
         forum_id: selectedForum.id,
         author_id: currentUser.id,
+        // author_id: userJson.id,
         creatAt: new Date().toISOString(),
-        createdBy: currentUser.firstName + " " + currentUser.name,
+        // createdBy: currentUser.firstName + " " + currentUser.name,
+        createdBy: userJson.firstName + " " + userJson.name,
       };
 
       fetch(SERVER_URL + "/message", {
