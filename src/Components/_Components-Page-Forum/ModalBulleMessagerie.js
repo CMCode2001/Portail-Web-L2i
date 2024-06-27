@@ -12,8 +12,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
-import { SERVER_URL } from "../../constantURL";
 import "../../Styles/ModalBulleMessagerie.css";
+import { SERVER_URL } from "../../constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
