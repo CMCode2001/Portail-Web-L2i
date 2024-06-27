@@ -1,6 +1,7 @@
 @import url(./_variables.css);
 
 /* ----Quelques ajustements CSS */
+
 #IconeCostum{
   background-color: white !important;
   color: var(--bgColor2) !important;

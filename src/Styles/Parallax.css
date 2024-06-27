@@ -71,11 +71,14 @@
     font-family: var(--fontFamily);
     font-weight: 500;
     text-shadow: var(--textShadow);
-    color: var(--bgColorButton);
+    color: white;
+    background-color: #13798C;
+    border-radius: 30px;
+    padding: 12px 8px ;
 }
 
 .parallax-container .learn-more {
-    background-color: var(--bgColorButton);
+    background-color: var(--bgColor2);
     color: var(--textColor);
     border: none;
     padding: 15px 30px;
@@ -88,7 +91,7 @@
 }
 
 .parallax-container .learn-more:hover {
-    background-color: #044954;
+    background-color: var(--bgColor2);
     transform: scale(1.05);
 }
 

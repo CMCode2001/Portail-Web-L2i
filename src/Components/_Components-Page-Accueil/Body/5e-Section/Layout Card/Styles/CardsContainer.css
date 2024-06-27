@@ -15,6 +15,12 @@
 
     }
   }
+  @media (max-width: 1024px) {
+    .cards-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
   
   @media (min-width: 769px) and (max-width: 1024px) {
     .card {

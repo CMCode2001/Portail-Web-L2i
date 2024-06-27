@@ -22,7 +22,7 @@ const Para = () => {
                         loop={Infinity}
                         wrapper="p"
                     />
-                    <button className="learn-more">En savoir plus</button>
+                    {/* <button className="learn-more">En savoir plus</button> */}
                 </div>
             </div>
         </Parallax>
