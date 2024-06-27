@@ -13,7 +13,8 @@ const Connexion = () => {
   const [password, setPassword] = useState("");
 
   const [isAuthenticated, setAuth] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [erreur, setErreur] = useState(false);
+  const [erreurMsg, setErreurMsg] = useState(false);
   // Lorsque isAuthenticated change, appelez la fonction de rappel
   useEffect(() => {
     setEstAuthentifieCallback(isAuthenticated);
@@ -40,8 +41,10 @@ const Connexion = () => {
       });
 
       if (!response.ok) {
+        setErreur(true);
         const errorData = await response.json();
-        throw new Error(errorData.message || "Erreur lors de la connexion");
+        setErreurMsg("Erreur lors de la connexion");
+        throw new Error(erreurMsg);
       }
 
       const jwtToken = response.headers.get("Authorization");
@@ -111,6 +114,7 @@ const Connexion = () => {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
+              {erreur && <h2 className="erreur-login">{erreurMsg}</h2>}
               <p className="form-title">Welcome to L2i</p>
               <p>
                 {" "}

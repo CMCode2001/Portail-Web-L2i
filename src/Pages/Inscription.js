@@ -145,7 +145,7 @@ const Inscription = () => {
   return (
     <>
       <HeaderBlock />
-      <div className="login-page">
+      <div className="login-page-inscription">
         <div className="login-box">
           <div className="illustration-wrapper">
             <img src={SvgRegister} alt="Register" />

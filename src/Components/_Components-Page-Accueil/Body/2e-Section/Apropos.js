@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 export default function Apropos() {
   return (
-    <>
+    <div className='container'>
     <SeparatorBlock title="À PROPOS DE NOUS"/>
     {/* <div className="separator"></div> */}
     
@@ -46,6 +46,6 @@ export default function Apropos() {
       </div>
       
     </div>
-    </>
+    </div>
   )
 }
