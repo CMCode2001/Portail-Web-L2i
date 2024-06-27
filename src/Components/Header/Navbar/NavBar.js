@@ -40,10 +40,10 @@ const Navbar = () => {
 
   // Exemple d'utilisation
   const currentUser = getUserInfo();
-  if (currentUser) {
-    // Faire quelque chose avec les informations de l'utilisateur
-    console.log("L'utilisateur actuel est:", currentUser);
-  }
+  // if (currentUser) {
+  //   // Faire quelque chose avec les informations de l'utilisateur
+  //   console.log("L'utilisateur actuel est:", currentUser);
+  // }
 
   console.log("--------------------------------");
   return (

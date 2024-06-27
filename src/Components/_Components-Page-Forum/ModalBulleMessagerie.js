@@ -10,77 +10,85 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
-
-// import { SERVER_URL } from "../../SERVER_URL";
-import { SERVER_URL } from "../../constantURL";
 import "../../Styles/ModalBulleMessagerie.css";
+import { SERVER_URL } from "../../constantURL";
+import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
 
 const ModalBulleMessagerie = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [reponse, setReponse] = useState("");
-  const [forum_id, setForumID] = useState(0);
   const [isMessagesModalVisible, setIsMessagesModalVisible] = useState(false);
+  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false); // Ajout de l'état pour la modal de réponse
   const [form] = Form.useForm();
   const [listeForum, setListeForum] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
-  const token = sessionStorage.getItem("jwt");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [reponse, setReponse] = useState("");
+
+  const userJson = sessionStorage.getItem("user");
+
+  const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
+
   const showModal = () => {
     setIsModalVisible(true);
   };
+
   const handleReplyModalCancel = () => {
     // Fonction pour fermer la modal de réponse
     setIsReplyModalVisible(false);
   };
 
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
-    // Récupérer la chaîne JSON stockée dans sessionStorage
     const userJson = sessionStorage.getItem("user");
-
     if (userJson) {
       try {
-        // Convertir la chaîne JSON en un objet JavaScript
         const user = JSON.parse(userJson);
-        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
         return user;
       } catch (error) {
         console.error(
           "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
           error
         );
-        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
       }
     } else {
       console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
     }
+    return null;
   };
 
-  console.log("Test les infos de l'utilisateur");
-
-  // Exemple d'utilisation
+  useEffect(() => {
+    const user = getUserInfo();
+    if (!user) {
+      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
+    }
+    setCurrentUser(user);
+    console.log("user user user user :" + user);
+    const jwt = sessionStorage.getItem("jwt");
+    setToken(jwt);
+    fetchForum(jwt);
+  }, [navigate]);
 
   const handleAnswerseMessages = () => {
     form.validateFields().then((values) => {
       const newMessage = {
         content: reponse,
-        forum_id,
+        forum_id: selectedForum.id,
         author_id: currentUser.id,
-        creatAt: new Date().toISOString(), // Current time in ISO format
-        createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+        // author_id: userJson.id,
+        creatAt: new Date().toISOString(),
+        // createdBy: currentUser.firstName + " " + currentUser.name,
+        createdBy: userJson.firstName + " " + userJson.name,
       };
-      // const token = sessionStorage.getItem("jwt");
-      console.log(token);
-      // Update the server with the new forum entry
+
       fetch(SERVER_URL + "/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${token}`, // Ajout du token dans les headers
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newMessage),
       })
@@ -91,8 +99,6 @@ const ModalBulleMessagerie = () => {
           return response.json();
         })
         .then((data) => {
-          // Add the new message to the forum list
-          // Update messages for the selected forum
           const updatedForum = {
             ...selectedForum,
             messages: [...selectedForum.messages, data],
@@ -100,45 +106,27 @@ const ModalBulleMessagerie = () => {
           setSelectedForum(updatedForum);
           form.resetFields();
           setIsReplyModalVisible(false);
-          // Update messages for the selected forum
-          // const updatedForum = {
-          //   ...selectedForum,
-          //   messages: [...selectedForum.messages, data],
-          // };
-          // setSelectedForum(updatedForum);
-          // form.resetFields();
-          // setIsReplyModalVisible(false);
-          // setListeForum([data, ...listeForum]);
-          // form.resetFields();
-          // handleReplyModalCancel(false);
-          // isMessagesModalVisible(false);
-          // fetchForum();
-          // // selectedForum(null);
-          // isMessagesModalVisible(false);
-          // handleMessagesModalCancel(true);
         })
-        .catch((error) => console.error("Error adding forum:", error));
+        .catch((error) => console.error("Error adding message:", error));
     });
   };
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      const newMessage = {
+      const newForum = {
         probleme: values.probleme,
         description: values.description,
-        creatAt: new Date().toISOString(), // Current time in ISO format
-        createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+        creatAt: new Date().toISOString(),
+        createdBy: currentUser.firstName + " " + currentUser.name,
       };
-      // const token = sessionStorage.getItem("jwt");
-      console.log(token);
-      // Update the server with the new forum entry
+
       fetch(SERVER_URL + "/forum", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${token}`, // Ajout du token dans les headers
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newMessage),
+        body: JSON.stringify(newForum),
       })
         .then((response) => {
           if (!response.ok) {
@@ -147,7 +135,6 @@ const ModalBulleMessagerie = () => {
           return response.json();
         })
         .then((data) => {
-          // Add the new message to the forum list
           setListeForum([data, ...listeForum]);
           form.resetFields();
           setIsModalVisible(false);
@@ -156,28 +143,15 @@ const ModalBulleMessagerie = () => {
     });
   };
 
-  useEffect(() => {
-    fetchForum();
-    setCurrentUser(getUserInfo);
-  }, []);
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
-  // const [isMessagesModalVisible, setIsMessagesModalVisible] = useState(false);
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false); // Ajout de l'état pour la modal de réponse
   const showReplyModal = () => {
-    // Fonction pour afficher la modal de réponse
     setIsReplyModalVisible(true);
   };
-  // const handleReplyOk() => {
 
-  // }
-  const fetchForum = () => {
-    // fetch(SERVER_URL + "/forum")
+  const fetchForum = (jwt) => {
     fetch(`${SERVER_URL}/forum`, {
       method: "GET",
       headers: {
-        Authorization: `${token}`, // Ajout du token dans les headers
+        Authorization: `Bearer ${jwt}`,
       },
     })
       .then((response) => {
@@ -217,9 +191,6 @@ const ModalBulleMessagerie = () => {
   };
 
   const showMessages = (forum) => {
-    console.log("#########################");
-    console.log(forum_id);
-    console.log("#########################");
     setSelectedForum(forum);
     setIsMessagesModalVisible(true);
   };
@@ -234,7 +205,7 @@ const ModalBulleMessagerie = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={800} // Largeur du modal
+        width={800}
       >
         <Form form={form} layout="vertical">
           <Form.Item
@@ -267,7 +238,7 @@ const ModalBulleMessagerie = () => {
       {listeForum.map((forum, index) => (
         <Card
           key={index}
-          style={{ margin: "20px 0", width: "100%", height: "200px" }} // Taille fixe pour les cartes du chat bot
+          style={{ margin: "20px 0", width: "100%", height: "200px" }}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -277,13 +248,7 @@ const ModalBulleMessagerie = () => {
           <br />
           <Typography.Paragraph strong>{forum?.probleme}</Typography.Paragraph>
           <Typography.Paragraph>{forum?.description}</Typography.Paragraph>
-          <Button
-            id="btnRepondre"
-            onClick={() => {
-              showMessages(forum);
-              setForumID(forum.id);
-            }}
-          >
+          <Button id="btnRepondre" onClick={() => showMessages(forum)}>
             <img src={Chat} alt="Chat" width={15} height={15} />
             Répondre
           </Button>
@@ -292,10 +257,10 @@ const ModalBulleMessagerie = () => {
 
       <Modal
         title="Messages du forum"
-        open={isMessagesModalVisible}
+        visible={isMessagesModalVisible}
         onCancel={handleMessagesModalCancel}
         footer={null}
-        width={800} // Largeur du modal
+        width={800}
       >
         {selectedForum && (
           <List
@@ -303,10 +268,10 @@ const ModalBulleMessagerie = () => {
             renderItem={(message) => (
               <List.Item key={message.id}>
                 <List.Item.Meta
-                  title={message.authorName || "Anonyme"}
+                  title={message.createdBy || "Anonyme"}
                   description={formatDate(message.creatAt)}
                 />
-                <Typography.Paragraph>{message.message}</Typography.Paragraph>
+                <Typography.Paragraph>{message.content}</Typography.Paragraph>
               </List.Item>
             )}
           />
@@ -317,15 +282,13 @@ const ModalBulleMessagerie = () => {
         </Button>
       </Modal>
 
-      {/* Modal pour répondre */}
       <Modal
         title="Répondre au forum"
         visible={isReplyModalVisible}
         onCancel={handleReplyModalCancel}
         footer={null}
-        width={800} // Largeur du modal
+        width={800}
       >
-        {/* Contenu de la modal de réponse */}
         <Form form={form} layout="vertical">
           <Form.Item
             label="Réponse"
@@ -341,12 +304,11 @@ const ModalBulleMessagerie = () => {
             <TextArea rows={5} />
           </Form.Item>
           <Button type="primary" onClick={handleAnswerseMessages}>
-            {" "}
-            {/* Ajout du bouton de soumission de réponse */}
             Répondre
           </Button>
         </Form>
       </Modal>
+      <ChatIconComponent />
     </div>
   );
 };

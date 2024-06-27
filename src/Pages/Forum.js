@@ -15,11 +15,11 @@ import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuest
 // }
 
 const Forum = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [username, setUsername] = useState("");
-  const [connected, setConnected] = useState(false);
-  const client = useRef(null);
+  // const [messages, setMessages] = useState([]);
+  // const [message, setMessage] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [connected, setConnected] = useState(false);
+  // const client = useRef(null);
 
   // useEffect(() => {
   // URL du serveur WebSocket
