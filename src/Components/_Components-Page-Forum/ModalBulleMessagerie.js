@@ -12,7 +12,7 @@ import {
 import Chat from "../../Assets/img/chat.png";
 import "../../Styles/ModalBulleMessagerie.css";
 import { UserOutlined } from "@ant-design/icons";
-import { SERVER_URL } from "../../SERVER_URL";
+import { SERVER_URL } from "../../constantURL";
 
 const { TextArea } = Input;
 
