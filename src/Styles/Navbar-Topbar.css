@@ -1,5 +1,30 @@
 @import url(./_variables.css);
 
+/* ---------------------------- */
+.middlebar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.middlebar-logo {
+  margin: 0 10px;
+}
+
+.middlebar-text {
+  text-align: center;
+  flex-grow: 1; /* This makes the text section take up the remaining space */
+}
+
+.text1, .text2 {
+  margin: 0;
+}
+
+
+/* ---------------------------- */
+
 /* ----Quelques ajustements CSS */
 
 #IconeCostum{
@@ -48,17 +73,19 @@
 .middlebar-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   /* padding: 12px ; */
   padding-top: 5px;
-  margin-left: 10rem;
+  /* margin-left: 10rem; */
+  background-color: #ffffff;
 }
 
 .middlebar-logo {
-  margin-right: 10px;
+  margin: 0;
 }
 
 .middlebar-text .text1 {
-  font-size: 25px;
+  font-size: 3rem;
   font-weight: bold;
 }
 
