@@ -1,89 +1,46 @@
-import { UserOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 import {
-  Avatar,
+  Modal,
   Button,
-  Card,
   Form,
   Input,
-  List,
-  Modal,
   Typography,
+  Card,
+  Avatar,
+  List,
 } from "antd";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
-import { SERVER_URL } from "../../constantURL";
 import "../../Styles/ModalBulleMessagerie.css";
-import ChatIconComponent from "./ChatIconComponent";
+import { UserOutlined } from "@ant-design/icons";
+import { SERVER_URL } from "../../SERVER_URL";
 
 const { TextArea } = Input;
 
 const ModalBulleMessagerie = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isMessagesModalVisible, setIsMessagesModalVisible] = useState(false);
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false); // Ajout de l'état pour la modal de réponse
   const [form] = Form.useForm();
   const [listeForum, setListeForum] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [reponse, setReponse] = useState("");
-
-  const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleReplyModalCancel = () => {
-    // Fonction pour fermer la modal de réponse
-    setIsReplyModalVisible(false);
-  };
-
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    const user = getUserInfo();
-    if (!user) {
-      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
-    }
-    setCurrentUser(user);
-    const jwt = sessionStorage.getItem("jwt");
-    setToken(jwt);
-    fetchForum(jwt);
-  }, [navigate]);
-
-  const handleAnswerseMessages = () => {
+  const handleOk = () => {
     form.validateFields().then((values) => {
       const newMessage = {
-        content: reponse,
-        forum_id: selectedForum.id,
-        author_id: currentUser.id,
-        creatAt: new Date().toISOString(),
-        createdBy: currentUser.firstName + " " + currentUser.name,
+        probleme: values.probleme,
+        description: values.description,
+        creatAt: new Date().toISOString(), // Current time in ISO format
+        createdBy: "Current User", // Remplacez par l'utilisateur actuel si disponible
       };
 
-      fetch(SERVER_URL + "/message", {
+      // Update the server with the new forum entry
+      fetch(SERVER_URL + "/forum", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newMessage),
       })
@@ -94,42 +51,7 @@ const ModalBulleMessagerie = () => {
           return response.json();
         })
         .then((data) => {
-          const updatedForum = {
-            ...selectedForum,
-            messages: [...selectedForum.messages, data],
-          };
-          setSelectedForum(updatedForum);
-          form.resetFields();
-          setIsReplyModalVisible(false);
-        })
-        .catch((error) => console.error("Error adding message:", error));
-    });
-  };
-
-  const handleOk = () => {
-    form.validateFields().then((values) => {
-      const newForum = {
-        probleme: values.probleme,
-        description: values.description,
-        creatAt: new Date().toISOString(),
-        createdBy: currentUser.firstName + " " + currentUser.name,
-      };
-
-      fetch(SERVER_URL + "/forum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newForum),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
+          // Add the new message to the forum list
           setListeForum([data, ...listeForum]);
           form.resetFields();
           setIsModalVisible(false);
@@ -138,17 +60,12 @@ const ModalBulleMessagerie = () => {
     });
   };
 
-  const showReplyModal = () => {
-    setIsReplyModalVisible(true);
-  };
+  useEffect(() => {
+    fetchForum();
+  }, []);
 
-  const fetchForum = (jwt) => {
-    fetch(`${SERVER_URL}/forum`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    })
+  const fetchForum = () => {
+    fetch(SERVER_URL + "/forum")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -200,7 +117,7 @@ const ModalBulleMessagerie = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={800}
+        width={800} // Largeur du modal
       >
         <Form form={form} layout="vertical">
           <Form.Item
@@ -233,7 +150,7 @@ const ModalBulleMessagerie = () => {
       {listeForum.map((forum, index) => (
         <Card
           key={index}
-          style={{ margin: "20px 0", width: "100%", height: "200px" }}
+          style={{ margin: "20px 0", width: "100%", height: "200px" }} // Taille fixe pour les cartes du chat bot
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -255,7 +172,7 @@ const ModalBulleMessagerie = () => {
         visible={isMessagesModalVisible}
         onCancel={handleMessagesModalCancel}
         footer={null}
-        width={800}
+        width={800} // Largeur du modal
       >
         {selectedForum && (
           <List
@@ -271,39 +188,7 @@ const ModalBulleMessagerie = () => {
             )}
           />
         )}
-        <Button id="btnRepondre" onClick={showReplyModal}>
-          <img src={Chat} alt="Chat" width={15} height={15} />
-          Répondre
-        </Button>
       </Modal>
-
-      <Modal
-        title="Répondre au forum"
-        visible={isReplyModalVisible}
-        onCancel={handleReplyModalCancel}
-        footer={null}
-        width={800}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            label="Réponse"
-            name="response"
-            onChange={(e) => setReponse(e.target.value)}
-            rules={[
-              {
-                required: true,
-                message: "Veuillez entrer votre réponse",
-              },
-            ]}
-          >
-            <TextArea rows={5} />
-          </Form.Item>
-          <Button type="primary" onClick={handleAnswerseMessages}>
-            Répondre
-          </Button>
-        </Form>
-      </Modal>
-      <ChatIconComponent />
     </div>
   );
 };
