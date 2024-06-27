@@ -10,11 +10,11 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
-
-// import { SERVER_URL } from "../../SERVER_URL";
 import { SERVER_URL } from "../../constantURL";
 import "../../Styles/ModalBulleMessagerie.css";
+import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
 
@@ -29,6 +29,8 @@ const ModalBulleMessagerie = () => {
   const [token, setToken] = useState(null);
   const [reponse, setReponse] = useState("");
 
+  const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -38,37 +40,34 @@ const ModalBulleMessagerie = () => {
     setIsReplyModalVisible(false);
   };
 
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
-    // Récupérer la chaîne JSON stockée dans sessionStorage
     const userJson = sessionStorage.getItem("user");
-
     if (userJson) {
       try {
-        // Convertir la chaîne JSON en un objet JavaScript
         const user = JSON.parse(userJson);
-        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
         return user;
       } catch (error) {
         console.error(
           "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
           error
         );
-        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
       }
     } else {
       console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
     }
+    return null;
   };
 
   useEffect(() => {
     const user = getUserInfo();
+    if (!user) {
+      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
+    }
     setCurrentUser(user);
     const jwt = sessionStorage.getItem("jwt");
     setToken(jwt);
     fetchForum(jwt);
-  }, []);
+  }, [navigate]);
 
   const handleAnswerseMessages = () => {
     form.validateFields().then((values) => {
@@ -76,15 +75,15 @@ const ModalBulleMessagerie = () => {
         content: reponse,
         forum_id: selectedForum.id,
         author_id: currentUser.id,
-        creatAt: new Date().toISOString(), // Current time in ISO format
-        createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+        creatAt: new Date().toISOString(),
+        createdBy: currentUser.firstName + " " + currentUser.name,
       };
 
       fetch(SERVER_URL + "/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Ajout du token dans les headers
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newMessage),
       })
@@ -95,7 +94,6 @@ const ModalBulleMessagerie = () => {
           return response.json();
         })
         .then((data) => {
-          // Update messages for the selected forum
           const updatedForum = {
             ...selectedForum,
             messages: [...selectedForum.messages, data],
@@ -113,15 +111,15 @@ const ModalBulleMessagerie = () => {
       const newForum = {
         probleme: values.probleme,
         description: values.description,
-        creatAt: new Date().toISOString(), // Current time in ISO format
-        createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+        creatAt: new Date().toISOString(),
+        createdBy: currentUser.firstName + " " + currentUser.name,
       };
 
       fetch(SERVER_URL + "/forum", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Ajout du token dans les headers
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newForum),
       })
@@ -140,11 +138,15 @@ const ModalBulleMessagerie = () => {
     });
   };
 
+  const showReplyModal = () => {
+    setIsReplyModalVisible(true);
+  };
+
   const fetchForum = (jwt) => {
     fetch(`${SERVER_URL}/forum`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${jwt}`, // Ajout du token dans les headers
+        Authorization: `Bearer ${jwt}`,
       },
     })
       .then((response) => {
@@ -198,7 +200,7 @@ const ModalBulleMessagerie = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={800} // Largeur du modal
+        width={800}
       >
         <Form form={form} layout="vertical">
           <Form.Item
@@ -231,7 +233,7 @@ const ModalBulleMessagerie = () => {
       {listeForum.map((forum, index) => (
         <Card
           key={index}
-          style={{ margin: "20px 0", width: "100%", height: "200px" }} // Taille fixe pour les cartes du chat bot
+          style={{ margin: "20px 0", width: "100%", height: "200px" }}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -253,7 +255,7 @@ const ModalBulleMessagerie = () => {
         visible={isMessagesModalVisible}
         onCancel={handleMessagesModalCancel}
         footer={null}
-        width={800} // Largeur du modal
+        width={800}
       >
         {selectedForum && (
           <List
@@ -280,7 +282,7 @@ const ModalBulleMessagerie = () => {
         visible={isReplyModalVisible}
         onCancel={handleReplyModalCancel}
         footer={null}
-        width={800} // Largeur du modal
+        width={800}
       >
         <Form form={form} layout="vertical">
           <Form.Item
@@ -301,6 +303,7 @@ const ModalBulleMessagerie = () => {
           </Button>
         </Form>
       </Modal>
+      <ChatIconComponent />
     </div>
   );
 };
