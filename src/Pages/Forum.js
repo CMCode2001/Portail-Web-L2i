@@ -15,17 +15,17 @@ import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuest
 // }
 
 const Forum = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [username, setUsername] = useState("");
-  const [connected, setConnected] = useState(false);
-  const client = useRef(null);
+  // const [messages, setMessages] = useState([]);
+  // const [message, setMessage] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [connected, setConnected] = useState(false);
+  // const client = useRef(null);
 
   // useEffect(() => {
   // URL du serveur WebSocket
   // const socketUrl = "http://localhost:8083/ws";
   // const socketUrl = "http://localhost:8083/api/ws";
-  // const socketUrl = "http://192.168.18.144:8083/api/ws";
+  //   const socketUrl = "http://192.168.18.144:8083/api/ws";
 
   // client.current = new Client({
   // webSocketFactory: () => new SockJS(socketUrl),
