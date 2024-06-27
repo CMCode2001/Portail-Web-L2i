@@ -35,3 +35,39 @@
     font-size: 18px;
     text-align: justify;
 }
+
+@media (max-width: 1200px) {
+    .whole-block {
+        width: 63rem;
+        margin: 0;
+    }
+    .bordure {
+        padding: 1rem;
+    }
+    .bordure>p {
+        font-size: 14px;
+    }
+    .left-1 {
+        width: 28rem;
+    }
+    
+    .left-2 {
+        width: 28rem;
+    }
+    
+    .right {
+        width: 28rem;
+    }
+}
+
+@media (max-width: 990px) {
+    .top-section {
+        display: block;
+    }
+    .bottom-section {
+        width: 28rem;
+    }
+    .whole-block {
+        margin: auto;
+    }
+}
