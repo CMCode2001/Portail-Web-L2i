@@ -131,14 +131,14 @@ const Inscription = () => {
       setEmailStatus("error");
       return Promise.reject(new Error("Invalide"));
     }
-    if (!value.endsWith("@zig.univ.sn")) {
-      setEmailStatus("error");
-      return Promise.reject(
-        new Error(
-          "Veuillez entrer une adresse email professionnelle se terminant par @zig.univ.sn !"
-        )
-      );
-    }
+    // if (!value.endsWith("@zig.univ.sn")) {
+    //   setEmailStatus("error");
+    //   return Promise.reject(
+    //     new Error(
+    //       "Veuillez entrer une adresse email professionnelle se terminant par @zig.univ.sn !"
+    //     )
+    //   );
+    // }
     setEmailStatus("success");
     return Promise.resolve();
   };

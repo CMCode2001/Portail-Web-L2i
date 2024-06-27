@@ -65,60 +65,60 @@ const ModalBulleMessagerie = () => {
   // Exemple d'utilisation
 
   const handleAnswerseMessages = () => {
-    form.validateFields().then((values) => {
-      const newMessage = {
-        content: reponse,
-        forum_id,
-        author_id: currentUser.id,
-        creatAt: new Date().toISOString(), // Current time in ISO format
-        createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
-      };
-      // const token = sessionStorage.getItem("jwt");
-      console.log(token);
-      // Update the server with the new forum entry
-      fetch(SERVER_URL + "/message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`, // Ajout du token dans les headers
-        },
-        body: JSON.stringify(newMessage),
+    // form.validateFields().then((values) => {
+    const newMessage = {
+      content: reponse,
+      forum_id,
+      author_id: currentUser.id,
+      creatAt: new Date().toISOString(), // Current time in ISO format
+      createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+    };
+    // const token = sessionStorage.getItem("jwt");
+    console.log(token);
+    // Update the server with the new forum entry
+    fetch(SERVER_URL + "/message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`, // Ajout du token dans les headers
+      },
+      body: JSON.stringify(newMessage),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // Add the new message to the forum list
-          // Update messages for the selected forum
-          const updatedForum = {
-            ...selectedForum,
-            messages: [...selectedForum.messages, data],
-          };
-          setSelectedForum(updatedForum);
-          form.resetFields();
-          setIsReplyModalVisible(false);
-          // Update messages for the selected forum
-          // const updatedForum = {
-          //   ...selectedForum,
-          //   messages: [...selectedForum.messages, data],
-          // };
-          // setSelectedForum(updatedForum);
-          // form.resetFields();
-          // setIsReplyModalVisible(false);
-          // setListeForum([data, ...listeForum]);
-          // form.resetFields();
-          // handleReplyModalCancel(false);
-          // isMessagesModalVisible(false);
-          // fetchForum();
-          // // selectedForum(null);
-          // isMessagesModalVisible(false);
-          // handleMessagesModalCancel(true);
-        })
-        .catch((error) => console.error("Error adding forum:", error));
-    });
+      .then((data) => {
+        // Add the new message to the forum list
+        // Update messages for the selected forum
+        const updatedForum = {
+          ...selectedForum,
+          messages: [...selectedForum.messages, data],
+        };
+        setSelectedForum(updatedForum);
+        form.resetFields();
+        setIsReplyModalVisible(false);
+        // Update messages for the selected forum
+        // const updatedForum = {
+        //   ...selectedForum,
+        //   messages: [...selectedForum.messages, data],
+        // };
+        // setSelectedForum(updatedForum);
+        // form.resetFields();
+        // setIsReplyModalVisible(false);
+        // setListeForum([data, ...listeForum]);
+        // form.resetFields();
+        // handleReplyModalCancel(false);
+        // isMessagesModalVisible(false);
+        // fetchForum();
+        // // selectedForum(null);
+        // isMessagesModalVisible(false);
+        // handleMessagesModalCancel(true);
+      })
+      .catch((error) => console.error("Error adding forum:", error));
+    // });
   };
 
   const handleOk = () => {
@@ -141,6 +141,9 @@ const ModalBulleMessagerie = () => {
         body: JSON.stringify(newMessage),
       })
         .then((response) => {
+          console.log("##########################");
+          console.log(response);
+          console.log(response.data);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
@@ -298,18 +301,22 @@ const ModalBulleMessagerie = () => {
         width={800} // Largeur du modal
       >
         {selectedForum && (
-          <List
-            dataSource={selectedForum.messages}
-            renderItem={(message) => (
-              <List.Item key={message.id}>
-                <List.Item.Meta
-                  title={message.authorName || "Anonyme"}
-                  description={formatDate(message.creatAt)}
-                />
-                <Typography.Paragraph>{message.message}</Typography.Paragraph>
-              </List.Item>
-            )}
-          />
+          <div>
+            <h2>{selectedForum.probleme}</h2>
+            <p> {selectedForum.description}</p>
+            <List
+              dataSource={selectedForum.messages}
+              renderItem={(message) => (
+                <List.Item key={message.id}>
+                  <List.Item.Meta
+                    title={message.authorName || "Anonyme"}
+                    description={formatDate(message.creatAt)}
+                  />
+                  <Typography.Paragraph>{message.message}</Typography.Paragraph>
+                </List.Item>
+              )}
+            />
+          </div>
         )}
         <Button id="btnRepondre" onClick={showReplyModal}>
           <img src={Chat} alt="Chat" width={15} height={15} />
