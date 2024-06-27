@@ -33,8 +33,26 @@ const ModalBulleMessagerie = () => {
 
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
 
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+
+  // };
+
+  useEffect(() => {
+    const user = getUserInfo();
+      setCurrentUser(user);
+      console.log("user user user user :" + user);
+      const jwt = sessionStorage.getItem("jwt");
+      setToken(jwt);
+      fetchForum(jwt);
+  }, [navigate]);
+
   const showModal = () => {
-    setIsModalVisible(true);
+    if (!currentUser) {
+      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
+    } else {
+      setIsModalVisible(true);
+    }
   };
 
   const handleReplyModalCancel = () => {
@@ -60,17 +78,17 @@ const ModalBulleMessagerie = () => {
     return null;
   };
 
-  useEffect(() => {
-    const user = getUserInfo();
-    if (!user) {
-      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
-    }
-    setCurrentUser(user);
-    console.log("user user user user :" + user);
-    const jwt = sessionStorage.getItem("jwt");
-    setToken(jwt);
-    fetchForum(jwt);
-  }, [navigate]);
+  // useEffect(() => {
+  //   const user = getUserInfo();
+  //   // if (!user) {
+  //   //   navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
+  //   // }
+  //   setCurrentUser(user);
+  //   console.log("user user user user :" + user);
+  //   const jwt = sessionStorage.getItem("jwt");
+  //   setToken(jwt);
+  //   fetchForum(jwt);
+  // }, [navigate]);
 
   const handleAnswerseMessages = () => {
     form.validateFields().then((values) => {

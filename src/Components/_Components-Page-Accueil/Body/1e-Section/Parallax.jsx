@@ -12,10 +12,10 @@ const Para = () => {
         <Parallax bgImage={image} strength={500}>
             <div className="parallax-container">
                 <div className="parallax-content">
-                    <div className="logos">
+                    {/* <div className="logos">
                         <img src={uniLogo} alt="Logo de l'université" className="logo" />
                         <img src={filiereLogo} alt="Logo de la filière" className="logo" />
-                    </div>
+                    </div> */}
                     <h1>Votre filière informatique</h1>
                     <Typical
                         steps={['La meilleure filière d\'informatique du Sénégal', 2000, 'Rejoignez-nous pour une carrière brillante', 2000]}
