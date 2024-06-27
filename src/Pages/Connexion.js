@@ -102,7 +102,7 @@ const Connexion = () => {
     window.location.href = "/"; // Vous pouvez utiliser React Router pour la navigation
   } else
     return (
-      <>
+      <div className="connexion">
         <HeaderBlock />
         <div className="login-page">
           <div className="login-box">
@@ -162,7 +162,7 @@ const Connexion = () => {
           </div>
         </div>
         <FooterBlock />
-      </>
+      </div>
     );
 };
 

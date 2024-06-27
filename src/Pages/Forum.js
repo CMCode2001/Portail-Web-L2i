@@ -4,6 +4,7 @@ import HeaderBlock from "../Components/Header/HeaderBlock";
 //import { Client } from "@stomp/stompjs";
 //import SockJS from "sockjs-client";
 import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuestion";
+import HeaderForum from "../Components/_Components-Page-Forum/HeaderForum";
 
 // export default function Forum() {
 // return (
@@ -81,7 +82,7 @@ const Forum = () => {
   return (
     <div>
       <HeaderBlock />
-      {/* <HeaderForum/> */}
+      <HeaderForum/>
       <br />
       <PosezUneQuestion />
     </div>

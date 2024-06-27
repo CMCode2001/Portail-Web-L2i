@@ -2,7 +2,7 @@
   width: 8px;
 }
 
-.login-page {
+.connexion .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@
   width: 100%;
   background: #ffffff;
 }
-.login-box {
+.connexion .login-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@
   margin: 0 auto;
   border-radius: 12px;
 }
-#login-form {
+.connexion #login-form {
   flex: 1 0 100%;
   max-width: 480px;
   width: 100%;
@@ -74,7 +74,7 @@ body {
 /* #login-form p {
     margin-bottom: 30px;
   } */
-#login-form p.form-title {
+  .connexion #login-form p.form-title {
   color: #333333;
   font-family: "Poppins";
   font-size: 42px;
@@ -82,24 +82,24 @@ body {
   line-height: 1;
   margin-bottom: 0;
 }
-#login-form .ant-form-item-label > label.ant-form-item-required::before {
+.connexion #login-form .ant-form-item-label > label.ant-form-item-required::before {
   display: none;
 }
-.ant-form-item-control-input-content {
+.connexion .ant-form-item-control-input-content {
   text-align: left;
 }
-#login-form .ant-input-affix-wrapper {
+.connexion #login-form .ant-input-affix-wrapper {
   padding: 12px 15px;
 }
-#login-form_username {
-  height: 48px;
+.connexion #login-form_username {
+  height: 30px;
 }
-#login-form .ant-btn {
+.connexion #login-form .ant-btn {
   height: 42px;
   letter-spacing: 1px;
   border-radius: 6px;
 }
-.login-form-button {
+.connexion .login-form-button {
   width: 100%;
   background-color: var(--bgColor2) !important;
   color: white;
@@ -109,39 +109,39 @@ body {
   transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-.login-form-button:hover {
+.connexion .login-form-button:hover {
   color: white !important;
   background-color: var(--bgColor1) !important;
   transform: scale(1.05);
 }
-.illustration-wrapper {
+.connexion .illustration-wrapper {
   display: flex;
   align-items: flex-end;
   width: 100;
   min-height: 100%;
   background-color: #ffffff;
 }
-.illustration-wrapper img {
+.connexion .illustration-wrapper img {
   display: block;
   width: 100%;
 }
 @media screen and (max-width: 1023px) {
-  .login-box {
+  .connexion .login-box {
     flex-direction: column;
     box-shadow: none;
   }
-  .illustration-wrapper {
+  .connexion .illustration-wrapper {
     max-width: 100%;
     min-height: auto;
   }
-  #login-form {
+  .connexion  #login-form {
     max-width: 100%;
   }
 }
 
 /* LiveChat.css ou autre fichier CSS */
 
-.erreur-login {
+.connexion .erreur-login {
   color: #ff4d4f; /* Couleur rouge pour indiquer une erreur */
   background-color: #fff1f0; /* Fond légèrement rosé */
   border: 1px solid #ffccc7; /* Bordure assortie */

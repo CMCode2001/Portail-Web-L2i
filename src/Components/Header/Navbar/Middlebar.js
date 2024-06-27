@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Middlebar = () => {
   return (
-    <div className="middlebar-container">
+    <div className="middlebar-container container">
       <Link to='/'>
         <img src={logoL2i} alt="Logo" className="middlebar-logo" width={130}  />
       </Link>
@@ -14,7 +14,9 @@ const Middlebar = () => {
         <p className="text1">Licence Ingénierie Informatique : L2i</p>
         {/* <p className="text2">Informatique : L2i</p> */}
       </div>
-      <img src={logoUASZ} alt="Logo UASZ" className="middlebar-logo" width={130} height={130} />
+      <Link to='uasz.sn'>
+        <img src={logoUASZ} alt="Logo UASZ" className="middlebar-logo" width={130} height={130} />
+      </Link>
     </div>
   );
 };
