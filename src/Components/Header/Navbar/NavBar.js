@@ -3,6 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../../../Styles/Navbar-Topbar.css';
 import '../../../Styles/generalCSS.css';
+import { UserOutlined } from '@ant-design/icons';
 
 const Navbar = () => {
   // Fonction pour gérer la déconnexion
@@ -135,12 +136,11 @@ const Navbar = () => {
               )}
               {sessionStorage.getItem("isLoggedIn") ? (
                 <div>
-                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  &nbsp; <b>{currentUser?.firstName}</b>
+                  <UserOutlined />
+                  &nbsp; &nbsp; 
+                   <b>{currentUser?.firstName}</b>
                   <b>{currentUser.name}</b>
-                  <b>{currentUser.email}</b>
-                  {" Je suis un"}
-                  <b>{currentUser.role}</b>
+                  
                 </div>
               ) : (
                 <div></div>
