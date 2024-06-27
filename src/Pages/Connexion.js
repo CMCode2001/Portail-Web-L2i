@@ -98,6 +98,7 @@ const Connexion = () => {
     return Promise.resolve();
   };
   if (isAuthenticated) {
+    // window.location.reload();
     window.location.href = "/"; // Vous pouvez utiliser React Router pour la navigation
   } else
     return (

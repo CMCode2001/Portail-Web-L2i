@@ -1,9 +1,8 @@
-
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import '../../../Styles/Navbar-Topbar.css';
-import '../../../Styles/generalCSS.css';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from "@ant-design/icons";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "../../../Styles/Navbar-Topbar.css";
+import "../../../Styles/generalCSS.css";
 
 const Navbar = () => {
   // Fonction pour gérer la déconnexion
@@ -137,10 +136,9 @@ const Navbar = () => {
               {sessionStorage.getItem("isLoggedIn") ? (
                 <div>
                   <UserOutlined />
-                  &nbsp; &nbsp; 
-                   <b>{currentUser?.firstName}</b>
+                  &nbsp; &nbsp;
+                  <b>{currentUser?.firstName}</b>
                   <b>{currentUser.name}</b>
-                  
                 </div>
               ) : (
                 <div></div>

@@ -28,6 +28,7 @@ const ModalBulleMessagerie = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
   const [reponse, setReponse] = useState("");
+  const [forum_id, setForumID] = useState(0);
 
   const userJson = sessionStorage.getItem("user");
 
@@ -110,8 +111,8 @@ const ModalBulleMessagerie = () => {
         setIsReplyModalVisible(false);
         // Update messages for the selected forum
         // const updatedForum = {
-        //   ...selectedForum,
-        //   messages: [...selectedForum.messages, data],
+        // ...selectedForum,
+        // messages: [...selectedForum.messages, data],
         // };
         // setSelectedForum(updatedForum);
         // form.resetFields();
@@ -269,7 +270,13 @@ const ModalBulleMessagerie = () => {
           <br />
           <Typography.Paragraph strong>{forum?.probleme}</Typography.Paragraph>
           <Typography.Paragraph>{forum?.description}</Typography.Paragraph>
-          <Button id="btnRepondre" onClick={() => showMessages(forum)}>
+          <Button
+            id="btnRepondre"
+            onClick={() => {
+              showMessages(forum);
+              setForumID(forum.id);
+            }}
+          >
             <img src={Chat} alt="Chat" width={15} height={15} />
             Répondre
           </Button>
@@ -292,7 +299,16 @@ const ModalBulleMessagerie = () => {
               renderItem={(message) => (
                 <List.Item key={message.id}>
                   <List.Item.Meta
-                    title={message.authorName || "Anonyme"}
+                    title={
+                      (
+                        <div>
+                          {" "}
+                          <UserOutlined />
+                          &nbsp;
+                          {message.authorName}
+                        </div>
+                      ) || "Anonyme"
+                    }
                     description={formatDate(message.creatAt)}
                   />
                   <Typography.Paragraph>{message.message}</Typography.Paragraph>
@@ -328,8 +344,12 @@ const ModalBulleMessagerie = () => {
           >
             <TextArea rows={5} />
           </Form.Item>
-          <Button type="primary" onClick={handleAnswerseMessages}>
-            Répondre
+          <Button
+            type="primary"
+            id="btnRepondre"
+            onClick={handleAnswerseMessages}
+          >
+            Envoyer
           </Button>
         </Form>
       </Modal>
