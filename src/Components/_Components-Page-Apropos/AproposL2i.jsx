@@ -3,6 +3,7 @@ import '../../Styles/Propos.css'
 import About from './components/About'
 import Debouches from './components/Debouches'
 import Objectifs from './components/Objectifs'
+import Stats from './components/Stats'
 
 
 export default function AproposL2i() {
@@ -11,6 +12,7 @@ export default function AproposL2i() {
       <About/>
       <Objectifs/>
       <Debouches></Debouches>
+      <Stats/>
     </div>
   )
 }

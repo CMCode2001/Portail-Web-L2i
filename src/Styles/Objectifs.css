@@ -4,6 +4,25 @@
     border-radius: 5px;
 }
 
+.objectifs h2 {
+    color: var(--textColor);
+    font-size: 2rem;
+    margin-left: 30px;
+    position: relative;
+    display: inline-block;
+}
+
+.objectifs h2::after {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 10px; 
+    background: white;
+    margin-top: 5px;
+    border-radius: 20px;
+}
+
+
 .objectifs .mission{
     display: flex;
 }

@@ -5,6 +5,9 @@ import "../../../Styles/Objectifs.css";
 function Objectifs() {
   return (
     <div class="objectifs container">
+      <h2>
+        Nos Missions
+      </h2>
       <div className="mission">
         <div class="card" >
         <img src={icon} alt="icon" />
