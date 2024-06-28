@@ -134,11 +134,10 @@ const Navbar = () => {
                 </div>
               )}
               {sessionStorage.getItem("isLoggedIn") ? (
-                <div>
-                  <UserOutlined />
-                  &nbsp; &nbsp;
-                  <b>{currentUser?.firstName}</b>
-                  <b>{currentUser.name}</b>
+                
+                <div id="mondiv" >
+                 <div> <UserOutlined /></div>
+                 <div> <p>{currentUser?.firstName}  {currentUser.name}</p></div>
                 </div>
               ) : (
                 <div></div>

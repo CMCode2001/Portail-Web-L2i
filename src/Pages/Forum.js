@@ -5,6 +5,7 @@ import HeaderBlock from "../Components/Header/HeaderBlock";
 //import SockJS from "sockjs-client";
 import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuestion";
 import HeaderForum from "../Components/_Components-Page-Forum/HeaderForum";
+import FooterBlock from "../Components/Footer/FooterBlock";
 
 // export default function Forum() {
 // return (
@@ -85,6 +86,7 @@ const Forum = () => {
       <HeaderForum/>
       <br />
       <PosezUneQuestion />
+      <FooterBlock/>
     </div>
   );
 };
