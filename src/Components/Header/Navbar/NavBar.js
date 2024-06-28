@@ -139,6 +139,18 @@ const Navbar = () => {
                   &nbsp; &nbsp;
                   <b>{currentUser?.firstName}</b>
                   <b>{currentUser.name}</b>
+                  {currentUser.role == "professor" && (
+                    <button className="mesBtn">
+                      <NavLink
+                        to="/professeur"
+                        id="jajeuf"
+                        className="nav-link"
+                      >
+                        {/* Acceder */}
+                        Dashboard
+                      </NavLink>
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div></div>

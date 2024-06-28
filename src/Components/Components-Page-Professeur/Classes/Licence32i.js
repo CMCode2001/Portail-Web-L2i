@@ -5,7 +5,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Drawer, Form, Input, Row, Space, Table } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { SERVER_URL } from "../../../constantURL";
@@ -42,6 +42,7 @@ const Licence32i = () => {
   const [title, setTitre] = useState("");
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
+  const [etudant, setEtudiant] = useState([]);
   const [open, setOpen] = useState(false);
   const searchInput = useRef(null);
   const token = sessionStorage.getItem("jwt");
@@ -49,6 +50,34 @@ const Licence32i = () => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
+  };
+  useEffect(() => {
+    const user = getUserInfo();
+    //  setCurrentUser(user);
+    console.log("user user user user :" + user);
+
+    //  setToken(jwt);
+    fetchEtudiant();
+  }, []);
+
+  const fetchEtudiant = () => {
+    fetch(`${SERVER_URL}/student/niveau/3`, {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
+        setEtudiant(data);
+      })
+      .catch((error) => console.error("Error fetching forum:", error));
   };
 
   const handleReset = (clearFilters) => {
@@ -202,17 +231,17 @@ const Licence32i = () => {
   const columns = [
     {
       title: "Prénom",
-      dataIndex: "prenom",
-      key: "prenom",
+      dataIndex: "firstName",
+      key: "firstName",
       width: "30%",
-      ...getColumnSearchProps("prenom"),
+      ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
-      dataIndex: "nom",
-      key: "nom",
+      dataIndex: "name",
+      key: "name",
       width: "20%",
-      ...getColumnSearchProps("nom"),
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Email",
@@ -277,7 +306,7 @@ const Licence32i = () => {
       </div>
       <div className="tableSection">
         <h4 style={{ textAlign: "center" }}>Liste des etudiants</h4>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={etudant} />
       </div>
       <Drawer
         title="Ajouter un nouveau cours"
@@ -292,7 +321,7 @@ const Licence32i = () => {
             <Button onClick={onClose}>Fermer</Button>
             <Button
               onClick={() => {
-                // onClose();
+                onClose();
                 onSendingCourse();
               }}
               type="primary"
