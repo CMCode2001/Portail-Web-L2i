@@ -141,7 +141,7 @@ const LiveChat = () => {
             onKeyPress={handleKeyPress}
             className="message-input"
           />
-          <SendIcon className="send-icon" onClick={sendMessage} />
+          <SendIcon className="send-icon" id='btnPro' onClick={sendMessage} />
         </div>
       </div>
     </div>

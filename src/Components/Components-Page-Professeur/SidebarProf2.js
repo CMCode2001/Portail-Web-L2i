@@ -16,6 +16,12 @@ const SidebarProf2 = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+    // Fonction pour gérer la déconnexion
+    const handleLogout = () => {
+      // Logique de déconnexion ici (ex: effacer les informations de l'utilisateur)
+      window.sessionStorage.clear();
+      window.location.href = "/";
+    };
   // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
     // Récupérer la chaîne JSON stockée dans sessionStorage
@@ -101,7 +107,7 @@ const SidebarProf2 = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="6">
-              <Link to="#" style={{ textDecoration: "none" }}>
+              <Link to="#" style={{ textDecoration: "none" }} onClick={handleLogout}>
                 Deconnexion
               </Link>
             </Menu.Item>

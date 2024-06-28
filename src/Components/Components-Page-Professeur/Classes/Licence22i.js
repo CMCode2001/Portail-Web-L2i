@@ -61,7 +61,7 @@ const Licence22i = () => {
   }, []);
 
   const fetchEtudiant = () => {
-    fetch(`${SERVER_URL}/student/niveau/3`, {
+    fetch(`${SERVER_URL}/student/niveau/2`, {
       method: "GET",
       headers: {
         Authorization: `${token}`,
