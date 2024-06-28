@@ -5,7 +5,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Drawer, Form, Input, Row, Space, Table } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { SERVER_URL } from "../../../constantURL";
@@ -42,6 +42,7 @@ const Licence22i = () => {
   const [title, setTitre] = useState("");
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
+  const [etudant, setEtudiant] = useState([]);
   const [open, setOpen] = useState(false);
   const searchInput = useRef(null);
   const token = sessionStorage.getItem("jwt");
@@ -50,29 +51,33 @@ const Licence22i = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+  useEffect(() => {
+    const user = getUserInfo();
+    //  setCurrentUser(user);
+    console.log("user user user user :" + user);
 
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
-  const getUserInfo = () => {
-    // Récupérer la chaîne JSON stockée dans sessionStorage
-    const userJson = sessionStorage.getItem("user");
+    //  setToken(jwt);
+    fetchEtudiant();
+  }, []);
 
-    if (userJson) {
-      try {
-        // Convertir la chaîne JSON en un objet JavaScript
-        const user = JSON.parse(userJson);
-        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
-    }
+  const fetchEtudiant = () => {
+    fetch(`${SERVER_URL}/student/niveau/3`, {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
+        setEtudiant(data);
+      })
+      .catch((error) => console.error("Error fetching forum:", error));
   };
 
   const handleReset = (clearFilters) => {
@@ -87,11 +92,12 @@ const Licence22i = () => {
       createdBy: "Test",
       // Ajoutez d'autres champs de donnee si nécessaire
     };
+    // console.log(donnee);
 
     const formatDonnee = new FormData();
     formatDonnee.append("course", JSON.stringify(donnee)); // Si besoin de transmettre des données JSON supplémentaires
     formatDonnee.append("pdf", pdfContent); // pdfContent est votre fichier PDF
-    console.log(formatDonnee.get("pdf"));
+
     // Récupérez le jeton d'authentification de sessionStorage si nécessaire
     // const token = sessionStorage.getItem("jwt");
 
@@ -116,6 +122,30 @@ const Licence22i = () => {
       })
       .catch((error) => console.error("Error sending course:", error));
   };
+  // Fonction pour récupérer et utiliser les informations de l'utilisateur
+  const getUserInfo = () => {
+    // Récupérer la chaîne JSON stockée dans sessionStorage
+    const userJson = sessionStorage.getItem("user");
+
+    if (userJson) {
+      try {
+        // Convertir la chaîne JSON en un objet JavaScript
+        const user = JSON.parse(userJson);
+        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
+        return user;
+      } catch (error) {
+        console.error(
+          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+          error
+        );
+        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
+      }
+    } else {
+      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
+    }
+  };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -201,17 +231,17 @@ const Licence22i = () => {
   const columns = [
     {
       title: "Prénom",
-      dataIndex: "prenom",
-      key: "prenom",
+      dataIndex: "firstName",
+      key: "firstName",
       width: "30%",
-      ...getColumnSearchProps("prenom"),
+      ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
-      dataIndex: "nom",
-      key: "nom",
+      dataIndex: "name",
+      key: "name",
       width: "20%",
-      ...getColumnSearchProps("nom"),
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Email",
@@ -276,7 +306,7 @@ const Licence22i = () => {
       </div>
       <div className="tableSection">
         <h4 style={{ textAlign: "center" }}>Liste des etudiants</h4>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={etudant} />
       </div>
       <Drawer
         title="Ajouter un nouveau cours"
@@ -291,7 +321,7 @@ const Licence22i = () => {
             <Button onClick={onClose}>Fermer</Button>
             <Button
               onClick={() => {
-                // onClose();
+                onClose();
                 onSendingCourse();
               }}
               type="primary"
