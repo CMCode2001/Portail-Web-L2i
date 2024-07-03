@@ -1,0 +1,106 @@
+.about {
+    margin-top: 50px;
+    display: flex;
+    gap: 15px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.about .about-content {
+    width: 60%;
+}
+
+.about .about-content .about-title {
+    font-size: 2.2rem;
+    font-family: "Poppins-Bold", sans-serif;
+    font-weight: 800;
+    width: 43.75rem;
+    margin-bottom: 30px;
+}
+
+.about .about-content .about-title .title-span {
+    color: var(--bgColorFooter2);
+}
+
+.about .about-text {
+    font-size: 1.2rem;
+    text-align: justify;
+    line-height: 2.2rem;
+}
+
+.group-logo {
+    position: absolute;
+}
+
+.ellipse {
+    background: rgba(19, 121, 140, 0.93);
+    border-radius: 50%;
+    border-color: var(--bgColor1);
+    opacity: 0;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.ellipse-1 {
+    left: 886px;
+    top: -18px;
+}
+
+.ellipse-2 {
+    left: 876px;
+    top: -5px;
+}
+
+.ellipse-3 {
+    left: 866px;
+    top: 10px;
+}
+
+.ellipse-4 {
+    left: 856px;
+    top: 25px;
+}
+
+.about .logo {
+    width: 300px;
+    height: auto;
+    position: absolute;
+    left: 846px;
+    top: 40px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.ellipse.visible {
+    opacity: 0.2;
+    animation: ellipseFadeIn 0.5s forwards;
+}
+
+@keyframes ellipseFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+}
+
+.about .logo.visible {
+    opacity: 1;
+    animation: logoFadeIn 1s forwards;
+}
+
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,16 @@
+.objectifs{
+    background-color: var(--bgColorFooter2);
+    padding: 30px 10px;
+    border-radius: 5px;
+}
+
+.objectifs .mission{
+    display: flex;
+}
+.objectifs .mission .card{
+    background-color: #6B2239;
+}
+
+.objectifs .mission .card .card-body .card-title{
+    color: var(--textColor);
+}
