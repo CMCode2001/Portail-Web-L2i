@@ -1,5 +1,7 @@
 import {
   AppstoreOutlined,
+  GoldOutlined,
+  HomeOutlined,
   ReadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -78,35 +80,40 @@ const SidebarProf2 = () => {
         </Link>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-          <Menu.Item key="4" icon={<AppstoreOutlined />}>
-            <Link to="/professeur" style={{ textDecoration: "none" }}>
-              Mon Dashboard
+          <Menu.Item key="1" icon={<HomeOutlined />}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              Retour à l'accueil 
             </Link>
           </Menu.Item>
-          <SubMenu key="sub1" icon={<ReadOutlined />} title="Mes Classes">
-            <Menu.Item key="1">
+          <Menu.Item key="2" icon={ <ReadOutlined />}>
+            <Link to="/mes-cours" style={{ textDecoration: "none" }}>
+              Mes Cours 
+            </Link>
+          </Menu.Item>
+          <SubMenu key="sub1" icon={<GoldOutlined />} title="Mes Classes">
+            <Menu.Item key="3">
               <Link to="classes/L1-2i" style={{ textDecoration: "none" }}>
                 L1-2i
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key="4">
               <Link to="classes/L2-2i" style={{ textDecoration: "none" }}>
                 L2-2i
               </Link>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="5">
               <Link to="classes/L3-2i" style={{ textDecoration: "none" }}>
                 L3-2i
               </Link>
             </Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<UserOutlined />} title="Mon profile">
-            <Menu.Item key="5">
+            <Menu.Item key="6">
               <Link to="connexion" style={{ textDecoration: "none" }}>
-                Connexion
+                Modifier mes infos
               </Link>
             </Menu.Item>
-            <Menu.Item key="6">
+            <Menu.Item key="7">
               <Link to="#" style={{ textDecoration: "none" }} onClick={handleLogout}>
                 Deconnexion
               </Link>

@@ -16,6 +16,7 @@ import ConnexionProf from "./Components/Components-Page-Professeur/Profiles/Conn
 import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
 import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
+import MesCoursBlock from "./Components/Components-Page-Professeur/Courses/MesCoursBlock";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
             
+            {/* <Route path="mes-cours" element={<MesCoursBlock />} /> */}
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
