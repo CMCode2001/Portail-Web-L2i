@@ -8,7 +8,7 @@ const Topbar = () => {
         <div className="container-fluid bgCouleur1 py-2  d-md-flex">
             <div className="container">
                 <div className="d-flex justify-content-between topbar ">
-                    <div className="top-messagerie">
+                    <div className="top-messagerie d-none">
                         <h5> 
                             <Link to="mailto:l2iuasz@gmail.com" style={{color:'white', textDecoration:'none'}}>
                                 <i className="fas fa-envelope "/> &nbsp;
@@ -18,7 +18,7 @@ const Topbar = () => {
                         </h5>
 
                     </div>
-                    <div className="top-link d-none">
+                    <div className="top-link ">
                         <h5 style={{color:'white'}}><i>Suivez-nous sur !!</i></h5> &nbsp;&nbsp;
                         <Link to="/" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum'>
                             <i className="fab fa-facebook-f "></i>

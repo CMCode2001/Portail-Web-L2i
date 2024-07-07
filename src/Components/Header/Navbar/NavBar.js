@@ -111,7 +111,7 @@ const NavbarResponsive = () => {
                     trigger={['click']}
                   >
                     <div id="mondiv">
-                      <Button type="text">
+                      <Button type="text" >
                         <UserOutlined style={{color:'white', fontSize:32}} />
                         <p>                     
                           <b> {currentUser?.firstName} {currentUser?.name} ▼</b>
