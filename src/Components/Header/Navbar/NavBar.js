@@ -37,12 +37,12 @@ const NavbarResponsive = () => {
   const currentUser = getUserInfo();
 
   return (
-    <div className="container-fluid bgCouleur2" id="KayFi">
+    <div className="container-fluid bgCouleur2" id="KayFi" >
       <div className="container">
-        <nav className="navbar text-light navbar-expand-lg ">
+        <nav className="navbar text-light navbar-expand-lg py-9 ">
          
           <img src={logoL2i} alt="Logo" id="logo-mobile" className="d-block d-lg-none"  />
-          <text id="montitleL2i">Licence Ingénierie Informatique </text>
+          <text  className="d-block d-lg-none" id="montitleL2i">Licence Ingénierie Informatique </text>
 
           <button
             className="navbar-toggler"
