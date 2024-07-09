@@ -13,17 +13,17 @@ const Sidebar = ({ onFilter }) => {
     onFilter(level, selectedSubject, selectedSemester, selectedDate);
   };
 
-  const handleSubjectChange = (event) => {
-    const subject = event.target.value;
-    setSelectedSubject(subject);
-    onFilter(selectedLevel, subject, selectedSemester, selectedDate);
-  };
+  // const handleSubjectChange = (event) => {
+  //   const subject = event.target.value;
+  //   setSelectedSubject(subject);
+  //   onFilter(selectedLevel, subject, selectedSemester, selectedDate);
+  // };
 
-  const handleSemesterChange = (event) => {
-    const semester = event.target.value;
-    setSelectedSemester(semester);
-    onFilter(selectedLevel, selectedSubject, semester, selectedDate);
-  };
+  // const handleSemesterChange = (event) => {
+  //   const semester = event.target.value;
+  //   setSelectedSemester(semester);
+  //   onFilter(selectedLevel, selectedSubject, semester, selectedDate);
+  // };
 
   const handleDateChange = (event) => {
     const date = event.target.value;
@@ -57,7 +57,7 @@ const Sidebar = ({ onFilter }) => {
           Licence 3
         </label>
       </div>
-      <div className="filter-group">
+      {/* <div className="filter-group">
         <h3>Matière</h3>
         <label>
           <input type="radio" value="Algorithemique 1" checked={selectedSubject === 'Algorithemique 1'} onChange={handleSubjectChange} />
@@ -86,10 +86,11 @@ const Sidebar = ({ onFilter }) => {
           <input type="radio" value="S2" checked={selectedSemester === 'S2'} onChange={handleSemesterChange} />
           Semestre 2
         </label>
-      </div>
+      </div> */}
+      <hr/>
       <div className="filter-group">
-        <h3>Date de publication</h3>
-        <input type="date" value={selectedDate} onChange={handleDateChange} />
+        <h6>Date de publication</h6>
+        <input type="date"  id='btnPro3' value={selectedDate} onChange={handleDateChange} />
       </div>
     </div>
   );

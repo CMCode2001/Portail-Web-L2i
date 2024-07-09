@@ -3,19 +3,35 @@
     --bgColor2: #6B2239;
     --bgColorButton: #085867;
   }
-  
+  #monbuttonDow{
+    background-color: var(--bgColor2);
+    color: white;
+    border-radius: 30px;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  #btnPro3{
+    background-color: transparent;
+    border: 1px solid #6B2239;
+    border-radius: 8px;
+    padding: 5px 5px;
+    margin: 4px;
+    font-family: "Poppins";
+  }
   .cours-page {
     display: flex;
   }
   
   .sidebar {
     width: 15%;
-    padding: 1rem;
-    border-right: 5px solid #ccc;
+    padding: 1rem 2rem;
+    background-color: #fafafa;
   }
   
   .filter-group {
     margin-bottom: 1rem;
+
   }
   
   .filter-group h3 {
@@ -26,6 +42,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 0.5rem;
+    margin-right: 4.5rem;
+
   }
   
   .filter-group input[type="radio"] {
@@ -33,23 +51,30 @@
   }
   
   .reset-button {
-    background-color: var(--bgColorButton);
-    color: white;
-    border: none;
+    background-color: transparent;
+    color: var(--bgColor2);
+    border: 1px solid #6B2239;
+    border-radius: 30px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    border-radius: 5px;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     margin-bottom: 50px;
+    font-weight: bold;
+
   }
-  
+  .reset-button:hover{
+    background-color: #13798C;
+    color: white;
+    font-weight: bold;
+    border: none;
+  }
   .main-content {
     flex: 1;
     padding: 2rem 1rem;
   }
   
   .search-bar {
-    width: 100%;
+    width: 50%;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 25px;
@@ -140,7 +165,7 @@
     transition: 450ms;
   }
   
-  .ligne-separateur {
-    border-bottom: 10px solid #ccc;
+  /* .ligne-separateur {
+    border-bottom: 10px solid #ffffff;
   }
-  
+   */

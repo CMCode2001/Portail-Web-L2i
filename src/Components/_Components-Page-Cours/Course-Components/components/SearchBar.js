@@ -9,12 +9,13 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <div className="search-bar">
-      <FaSearch className="search-icon" />
+      
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Rechercher des cours"
         onChange={handleChange}
       />
+      <FaSearch className="search-icon" />
     </div>
   );
 };

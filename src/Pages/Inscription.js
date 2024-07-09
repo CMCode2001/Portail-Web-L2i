@@ -131,21 +131,21 @@ const Inscription = () => {
       setEmailStatus("error");
       return Promise.reject(new Error("Invalide"));
     }
-    if (!value.endsWith("@zig.univ.sn")) {
-      setEmailStatus("error");
-      return Promise.reject(
-        new Error(
-          "Veuillez entrer une adresse email professionnelle se terminant par @zig.univ.sn !"
-        )
-      );
-    }
+    // if (!value.endsWith("@zig.univ.sn")) {
+    //   setEmailStatus("error");
+    //   return Promise.reject(
+    //     new Error(
+    //       "Veuillez entrer une adresse email professionnelle se terminant par @zig.univ.sn !"
+    //     )
+    //   );
+    // }
     setEmailStatus("success");
     return Promise.resolve();
   };
   return (
     <>
       <HeaderBlock />
-      <div className="login-page">
+      <div className="login-page-inscription">
         <div className="login-box">
           <div className="illustration-wrapper">
             <img src={SvgRegister} alt="Register" />

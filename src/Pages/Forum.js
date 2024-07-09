@@ -4,6 +4,8 @@ import HeaderBlock from "../Components/Header/HeaderBlock";
 //import { Client } from "@stomp/stompjs";
 //import SockJS from "sockjs-client";
 import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuestion";
+import HeaderForum from "../Components/_Components-Page-Forum/HeaderForum";
+import FooterBlock from "../Components/Footer/FooterBlock";
 
 // export default function Forum() {
 // return (
@@ -15,11 +17,11 @@ import PosezUneQuestion from "../Components/_Components-Page-Forum/PosezUneQuest
 // }
 
 const Forum = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [username, setUsername] = useState("");
-  const [connected, setConnected] = useState(false);
-  const client = useRef(null);
+  // const [messages, setMessages] = useState([]);
+  // const [message, setMessage] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [connected, setConnected] = useState(false);
+  // const client = useRef(null);
 
   // useEffect(() => {
   // URL du serveur WebSocket
@@ -81,9 +83,10 @@ const Forum = () => {
   return (
     <div>
       <HeaderBlock />
-      {/* <HeaderForum/> */}
+      <HeaderForum/>
       <br />
       <PosezUneQuestion />
+      <FooterBlock/>
     </div>
   );
 };
