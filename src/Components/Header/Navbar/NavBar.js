@@ -1,24 +1,21 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from 'antd';
-import { UserOutlined, MenuOutlined, CloseOutlined } from '@ant-design/icons';
+import { UserOutlined, CloseOutlined } from '@ant-design/icons';
 import "../../../Styles/Navbar-Topbar.css";
 import "../../../Styles/_RESPONSIVES/Navbar-Topbar.css"
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from '../../../Assets/img/hamburger-menu.png'
 import logoL2i from '../../../Assets/img/Logo-L2i.png'; 
 
-
-const NavbarResponsive = () => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Fonction pour gérer la déconnexion
   const handleLogout = () => {
     window.sessionStorage.clear();
     window.location.href = "/";
   };
 
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
     const userJson = sessionStorage.getItem("user");
 
@@ -37,12 +34,11 @@ const NavbarResponsive = () => {
   const currentUser = getUserInfo();
 
   return (
-    <div className="container-fluid bgCouleur2" id="KayFi" >
+    <div className="  container-fluid bgCouleur2" id="KayFi">
       <div className="container">
-        <nav className="navbar text-light navbar-expand-lg py-9 ">
-         
-          <img src={logoL2i} alt="Logo" id="logo-mobile" className="d-block d-lg-none"  />
-          <text  className="d-block d-lg-none" id="montitleL2i">Licence Ingénierie Informatique </text>
+        <nav className=" container navbar text-light navbar-expand-lg py-9">
+          <img src={logoL2i} alt="Logo" id="logo-mobile" className="d-block d-lg-none" />
+          <text className="d-block d-lg-none" id="montitleL2i">Licence Ingénierie Informatique</text>
 
           <button
             className="navbar-toggler"
@@ -52,8 +48,7 @@ const NavbarResponsive = () => {
             {isMenuOpen ? (
               <CloseOutlined style={{ fontSize: '24px', color: 'white' }} />
             ) : (
-            <img src={MenuHamburger} alt="menu-mobile" id="menu-mobile" />
-            // <MenuOutlined style={{ fontSize: '30px', color: 'white', top :'12px' }} />
+              <img src={MenuHamburger} alt="menu-mobile" id="menu-mobile" />
             )}
           </button>
           <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarCollapse">
@@ -68,14 +63,14 @@ const NavbarResponsive = () => {
                   Cours
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
-                <NavLink to="/maquette" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" activeClassName="active">
+              <li className="nav-item dropdown ">
+                <NavLink to="/maquette" className="nav-link dropdown-toggle " data-bs-toggle="dropdown" activeClassName="active">
                   Maquettes
                 </NavLink>
-                <div className="dropdown-menu rounded">
-                  <a href="/maquette-L1" className="dropdown-item">Licence 1</a>
-                  <a href="/maquette-L2" className="dropdown-item">Licence 2</a>
-                  <a href="/maquette-L3" className="dropdown-item">Licence 3</a>
+                <div className="dropdown-menu rounded ">
+                  <NavLink to="/maquette-L1" className="dropdown-item">Licence 1</NavLink>
+                  <NavLink to="/maquette-L2" className="dropdown-item">Licence 2</NavLink>
+                  <NavLink to="/maquette-L3" className="dropdown-item">Licence 3</NavLink>
                 </div>
               </li>
               <li className="nav-item">
@@ -111,10 +106,10 @@ const NavbarResponsive = () => {
                     trigger={['click']}
                   >
                     <div id="mondiv">
-                      <Button type="text" >
-                        <UserOutlined style={{color:'white', fontSize:32}} />
-                        <p>                     
-                          <b> {currentUser?.firstName} {currentUser?.name} ▼</b>
+                      <Button type="text">
+                        <UserOutlined style={{ color: 'white', fontSize: 32 }} />
+                        <p>
+                          <b>{currentUser?.firstName} {currentUser?.name} ▼</b>
                         </p>
                       </Button>
                     </div>
@@ -142,4 +137,4 @@ const NavbarResponsive = () => {
   );
 };
 
-export default NavbarResponsive;
+export default Navbar;

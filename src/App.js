@@ -16,7 +16,7 @@ import ConnexionProf from "./Components/Components-Page-Professeur/Profiles/Conn
 import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
 import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
-import MesCoursBlock from "./Components/Components-Page-Professeur/Courses/MesCoursBlock";
+import PageAdmin from "./Pages/_Admin/PageAdmin";
 
 function App() {
   return (
@@ -45,6 +45,10 @@ function App() {
             <Route path="connexion" element={<ConnexionProf />} />
           </Route>
           {/* ------------ Professeur -------------- */}
+
+          {/* ---------------- ADMIN --------------- */}
+          <Route path="/admin" element={<PageAdmin/>}/>
+          {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>
     </div>

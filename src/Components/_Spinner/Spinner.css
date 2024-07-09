@@ -1,0 +1,53 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to top, var(--bgColor1) , var(--bgColor2) 60% );
+
+}
+
+.spinner-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.spinner-logo {
+  position: absolute;
+  width: 100px;
+  /* height: 60px; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinner-circle {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinner-circle-red {
+  width: 150px;
+  height: 150px;
+  border: 5px solid transparent;
+  border-top: 5px solid var(--bgColor2);
+  animation: spin 2s linear infinite;
+}
+
+.spinner-circle-blue {
+  width: 150px;
+  height: 150px;
+  border: 5px solid transparent;
+  border-top: 5px solid var(--bgColor1);
+  animation: spin 1.5s linear infinite;
+  animation-direction: reverse;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
