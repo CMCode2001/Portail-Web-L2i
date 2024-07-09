@@ -24,9 +24,9 @@ const LiveChat = () => {
         // Send join message
         if (currentUser) {
           const joinMessage = {
-            authorName: currentUser.name,
+            type: "JOIN",
             message: `${currentUser.name} a rejoint le chat.`,
-            type: "join",
+            authorName: currentUser.name,
           };
           client.current.publish({
             destination: "/app/chat.sendMessage",
@@ -45,9 +45,9 @@ const LiveChat = () => {
         // Send leave message
         if (currentUser) {
           const leaveMessage = {
-            authorName: currentUser.name,
+            type: "LEAVE",
             message: `${currentUser.name} a quitté le chat.`,
-            type: "leave",
+            authorName: currentUser.name,
           };
           client.current.publish({
             destination: "/app/chat.sendMessage",
@@ -98,9 +98,9 @@ const LiveChat = () => {
   const sendMessage = () => {
     if (message.trim()) {
       const chatMessage = {
-        authorName: currentUser?.name,
+        type: "CHAT",
         message: message,
-        type: "chat",
+        authorName: currentUser?.name,
       };
       client.current.publish({
         destination: "/app/chat.sendMessage",
@@ -125,8 +125,19 @@ const LiveChat = () => {
         ) : (
           <div className="message-list">
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.type}`}>
-                <strong>{msg.authorName}: </strong> {msg.message}
+              <div key={index} className={`message ${msg.type.toLowerCase()}`}>
+                <strong>{msg.authorName}: </strong>
+                <span
+                  style={
+                    msg.type === "JOIN"
+                      ? { color: "#4a90e2" }
+                      : msg.type === "LEAVE"
+                      ? { color: "#e94e77" }
+                      : {}
+                  }
+                >
+                  {msg.message}
+                </span>
               </div>
             ))}
             <div ref={messageEndRef} />
