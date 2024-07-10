@@ -1,0 +1,70 @@
+/* Partie Responsive */
+/* Exemple de styles pour le menu */
+@media (max-width: 800px) {
+#montitleL2i{
+    font-size: 12px;
+    font-weight: 700;
+
+}
+
+#logo-mobile{
+    margin: 0;
+    padding: 0;
+    width: 3rem;
+    padding-bottom: 0;
+
+}
+#menu-mobile{
+    width: 2rem;
+    /* margin-right: 5px; */
+    transform: scaleX(-1);
+    outline: none;
+    box-shadow: none;
+    
+}
+.navbar-toggler {
+    border: none;
+    background: none;
+  }
+  
+  .collapse.navbar-collapse {
+    display: none;
+  }
+  
+  .collapse.navbar-collapse.show {
+    display: block;
+  }
+  
+  /* -------------------------------------- */
+  /* Pour le bouton de connexion et d'inscription */
+#ngirYalla {
+    margin-right: 10px; /* Ajustez cette valeur selon vos besoins */
+    margin-left: 10px; /* Ajustez cette valeur selon vos besoins */
+    text-align: center; /* Centrer le texte */
+    width: 90%; /* Prendre toute la largeur disponible */
+  }
+  
+  /* Pour le dropdown des informations utilisateur */
+  #mondiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Prendre toute la largeur disponible */
+  }
+  
+  #mondiv p {
+    margin: 0;
+    padding-left: 5px; /* Ajustez cette valeur selon vos besoins */
+    font-size: 14px; /* Ajustez cette valeur selon vos besoins */
+  }
+  
+  /* Pour le bouton hamburger */
+  .navbar-toggler:focus, .navbar-toggler:active {
+    outline: none;
+    box-shadow: none;
+  }
+  .navbar-nav .nav-item {
+    margin-bottom: 10px; /* Ajustez cette valeur selon vos besoins */
+  }
+  
+}

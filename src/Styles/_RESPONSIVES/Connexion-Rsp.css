@@ -1,0 +1,14 @@
+@media (max-width: 800px) {
+   
+    .login-box{
+        width: 100%;
+        padding: 0 !important;
+    }
+    #SvgRsp{
+        width: 15rem !important;
+    }
+    .form-title{
+        font-size: 32px !important;
+        margin: 12px !important;
+    }
+}

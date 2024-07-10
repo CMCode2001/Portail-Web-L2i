@@ -8,6 +8,10 @@ import MaquetteL3 from '../../Assets/img/Maquette-L3.png';
 import Excel from '../../Assets/img/office365.png'
 import MaquetteComplete from '../../Assets/Files/Maquette Proposée Licence Informatique UASZ_pleniere.xlsx'
 import { Link } from 'react-router-dom';
+// import { DownloadOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+
+
 
 export default function MaquettesL2i() {
   return (
@@ -17,10 +21,15 @@ export default function MaquettesL2i() {
           <b>Maquettes L2i</b> 
       </h1> 
       <h4 style={{textAlign:'center'}}>
-        Télécharger la maquette complète au fichier excel &nbsp; 
+        Télécharger la maquette complète au fichier excel 
+        <br/>
+        
        <a href={MaquetteComplete} download="Maquette Proposée L2i-UASZ">
-           <img src={Excel} alt="Download" width={40} height={40} />
-         </a>
+        <Button type="dashed" id='downloadExcel' size="large">
+          Télécharger
+              <img src={Excel} alt="Download" width={30} height={30} />
+          </Button>
+        </a>
       </h4>
 
       <div className="maquettes-container">

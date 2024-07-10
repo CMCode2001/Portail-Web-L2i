@@ -4,12 +4,21 @@ import {
   SendOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Space, Table } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Table,
+} from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { SERVER_URL } from "../../../constantURL";
-
 const { TextArea } = Input;
 
 const data = [
@@ -37,6 +46,7 @@ const data = [
 ];
 
 const Licence32i = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [title, setTitre] = useState("");
@@ -71,6 +81,7 @@ const Licence32i = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         return response.json();
       })
       .then((data) => {
@@ -114,6 +125,7 @@ const Licence32i = () => {
           throw new Error(response.json);
           throw new Error("Network response was not ok");
         }
+        setIsModalVisible(true);
         return response.json();
       })
       .then((data) => {
@@ -288,6 +300,14 @@ const Licence32i = () => {
 
   return (
     <div id="samaDivContainer">
+      <Modal
+        title="Cours envoye avec success"
+        visible={isModalVisible}
+        // onOk={handleOk}
+        onCancel={() => setIsModalVisible(false)}
+        width={800}
+      ></Modal>
+
       <div className="headerSection">
         <h2 className="leftAlign">
           <TeamOutlined />

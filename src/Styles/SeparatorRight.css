@@ -1,25 +1,32 @@
-/* SeparatorRight.css */
-
 .mon-design-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-left: 20px; /* Ajustez selon vos besoins */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px; /* Ajustez selon vos besoins */
+}
+
+.rectangle-142 {
+  background: #6b2239;
+  border-radius: 5px;
+  width: 90.79px;
+  height: 6px;
+}
+
+.rectangle-152 {
+  background: rgba(19, 121, 140, 0.93);
+  border-radius: 5px;
+  width: 157.55px;
+  height: 6px;
+  margin-top: 8px; /* Espacement entre les rectangles */
+}
+
+@media (max-width: 768px) {
   .rectangle-142 {
-    background: #6b2239;
-    border-radius: 5px;
-    width: 90.79px;
-    height: 6px;
+    width: 24px;
   }
-  
-  .rectangle-152 {
-    background: rgba(19, 121, 140, 0.93);
-    border-radius: 5px;
-    width: 157.55px;
-    height: 6px;
-    margin-top: 8px; /* Espacement entre les rectangles */
+  .rectangle-152{
+    width: 44px;
+    margin-top: 4px;
   }
-  
+}

@@ -3,7 +3,7 @@ import { Parallax } from 'react-parallax';
 import Typical from 'react-typical';
 import filiereLogo from '../../../../Assets/img/Logo-L2i.png'; // Remplacez par le chemin réel de votre logo
 import uniLogo from '../../../../Assets/img/Partenaires/Partner5.png'; // Remplacez par le chemin réel de votre logo
-import image from '../../../../Assets/img/image.jpg';
+import image from '../../../../Assets/img/Graduation.png';
 import '../../../../Styles/Parallax.css';
 import Typewriter from 'typewriter-effect/dist/core';
 
