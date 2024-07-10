@@ -1,7 +1,9 @@
 @import url(./_variables.css);
 
 /* ---------------------------- */
-
+#KayFi{
+  margin: auto;
+}
 .middlebar-container {
   display: flex;
   justify-content: space-between;
@@ -149,6 +151,10 @@
 /*** Navbar Start ***/
 .navbar .navbar-nav {
   padding-bottom: -15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .dropdown-item {

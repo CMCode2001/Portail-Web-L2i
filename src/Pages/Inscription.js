@@ -4,6 +4,7 @@ import SvgRegister from "../Assets/svg/sign-up-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Inscription.css";
+import "../Styles/_RESPONSIVES/Inscription-Responsive.css"
 import { SERVER_URL } from "../constantURL";
 
 const Inscription = () => {
@@ -148,7 +149,7 @@ const Inscription = () => {
       <div className="login-page-inscription">
         <div className="login-box">
           <div className="illustration-wrapper">
-            <img src={SvgRegister} alt="Register" />
+            <img src={SvgRegister} alt="Register" id="SvgRsp"/>
           </div>
           <Form
             name="register-form"

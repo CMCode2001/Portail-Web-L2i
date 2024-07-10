@@ -1,15 +1,18 @@
 /* Partie Responsive */
 /* Exemple de styles pour le menu */
+@media (max-width: 800px) {
 #montitleL2i{
     font-size: 12px;
     font-weight: 700;
 
 }
+
 #logo-mobile{
     margin: 0;
     padding: 0;
     width: 3rem;
     padding-bottom: 0;
+
 }
 #menu-mobile{
     width: 2rem;
@@ -64,4 +67,4 @@
     margin-bottom: 10px; /* Ajustez cette valeur selon vos besoins */
   }
   
-  
+}

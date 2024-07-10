@@ -4,10 +4,11 @@ import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
+import "../Styles/_RESPONSIVES/Connexion.css";
+
 import { SERVER_URL } from "../constantURL";
 // import React, { useEffect, useState } from "react";
 // import HeaderBlock from "../Components/Header/HeaderBlock";
-import "../Styles/Connexion.css";
 const Connexion = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -104,10 +105,10 @@ const Connexion = () => {
     return (
       <div className="connexion">
         <HeaderBlock />
-        <div className="login-page">
+        <div className="login-page-connexion">
           <div className="login-box">
             <div className="illustration-wrapper">
-              <img src={SvgLogin} alt="Login" width={800} height={800} />
+              <img src={SvgLogin} alt="Login" id="SvgRsp" />
             </div>
             <Form
               name="login-form"
@@ -116,7 +117,7 @@ const Connexion = () => {
               onFinishFailed={onFinishFailed}
             >
               {erreur && <h2 className="erreur-login">{erreurMsg}</h2>}
-              <p className="form-title">Welcome to L2i</p>
+              <p className="form-title">Welcome to L2i !</p>
               <p>
                 {" "}
                 Ravie de vous revoir, <br />
