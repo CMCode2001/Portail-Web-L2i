@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Middlebar = () => {
   return (
-    <div className="middlebar-container container">
+    <div className="middlebar-container container d-none d-lg-none">
       <Link to='/'>
         <img src={logoL2i} alt="Logo" className="middlebar-logo" width={130}  />
       </Link>

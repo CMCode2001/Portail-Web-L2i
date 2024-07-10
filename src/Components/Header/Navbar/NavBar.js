@@ -71,9 +71,9 @@ const Navbar = () => {
                   Maquettes
                 </NavLink>
                 <div className="dropdown-menu rounded ">
-                  <NavLink to="/maquette-L1" className="dropdown-item">Licence 1</NavLink>
-                  <NavLink to="/maquette-L2" className="dropdown-item">Licence 2</NavLink>
-                  <NavLink to="/maquette-L3" className="dropdown-item">Licence 3</NavLink>
+                  <NavLink to="/maquette-L1" className="dropdown-item text-decoration-none">Licence 1</NavLink>
+                  <NavLink to="/maquette-L2" className="dropdown-item text-decoration-none">Licence 2</NavLink>
+                  <NavLink to="/maquette-L3" className="dropdown-item text-decoration-none">Licence 3</NavLink>
                 </div>
               </li>
               <li className="nav-item">

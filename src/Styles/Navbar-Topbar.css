@@ -4,6 +4,11 @@
 #KayFi{
   margin: auto;
 }
+#suivezLink{
+  margin-right: 1rem;
+  font-size: 17px;
+  font-weight: 500;
+}
 .middlebar-container {
   display: flex;
   justify-content: space-between;
