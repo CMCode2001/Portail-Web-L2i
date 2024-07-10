@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from 'antd';
 import { UserOutlined, CloseOutlined } from '@ant-design/icons';
 import "../../../Styles/Navbar-Topbar.css";
-import "../../../Styles/_RESPONSIVES/Navbar-Topbar.css"
+import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css"
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from '../../../Assets/img/hamburger-menu.png'
 import logoL2i from '../../../Assets/img/Logo-L2i.png'; 

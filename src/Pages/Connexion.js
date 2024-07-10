@@ -4,7 +4,7 @@ import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
-import "../Styles/_RESPONSIVES/Connexion.css";
+import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
 
 import { SERVER_URL } from "../constantURL";
 // import React, { useEffect, useState } from "react";

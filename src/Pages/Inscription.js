@@ -4,7 +4,7 @@ import SvgRegister from "../Assets/svg/sign-up-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Inscription.css";
-import "../Styles/_RESPONSIVES/Inscription-Responsive.css"
+import "../Styles/_RESPONSIVES/Inscription-Rsp.css"
 import { SERVER_URL } from "../constantURL";
 
 const Inscription = () => {
