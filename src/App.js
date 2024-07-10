@@ -37,7 +37,6 @@ function App() {
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
-            
             {/* <Route path="mes-cours" element={<MesCoursBlock />} /> */}
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
@@ -47,7 +46,8 @@ function App() {
           {/* ------------ Professeur -------------- */}
 
           {/* ---------------- ADMIN --------------- */}
-          <Route path="/admin" element={<PageAdmin/>}/>
+          {/* <Route path="/#01admin-4359" element={<PageAdmin />} /> */}
+          <Route path="/admin" element={<PageAdmin />} />
           {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>
