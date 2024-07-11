@@ -7,6 +7,25 @@
     flex-wrap: wrap; /* Permettre aux cartes de passer à la ligne suivante si nécessaire */
     padding: 20px;
 }
+/* Styles généraux du bouton */
+#downloadExcel {
+    padding: 8px 12px;
+    bottom: -1rem;
+    border: 1px solid #6B2239;
+    border-radius: 30px;
+    color: #6B2239;
+    font-weight: 600;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effet au survol du bouton */
+#downloadExcel:hover {
+    background-color: #6B2239;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 .blog-card {
     display: flex;
@@ -27,7 +46,7 @@
 }
 
 .blog-category {
-    color: #6c6c6c;
+    color: #ffffff;
     font-size: 14px;
     margin-bottom: 8px;
 }

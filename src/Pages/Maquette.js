@@ -7,7 +7,7 @@ export default function Maquette() {
   return (
     <>   
     <HeaderBlock/>
-      <div id='MaquetteBody' style={{backgroundColor:'#eee'}}>
+      <div id='MaquetteBody' style={{backgroundColor:'#fff'}}>
           <MaquettesL2i/>
           <FooterBlock/>
       </div>

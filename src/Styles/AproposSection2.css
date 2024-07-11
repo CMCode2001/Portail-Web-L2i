@@ -1,11 +1,4 @@
-.separator {
-    width: 100%;
-    max-width: 400px; 
-    height: 10px; 
-    background: linear-gradient(to right, #13798C 50%, #6B2239 50%);
-    border-radius: 8px; 
-    margin: 20px auto; 
-}
+
 #btnPro1{
     background-color: transparent;
     border: #6B2239 1px solid;
@@ -72,5 +65,19 @@
     
   }
   
-  
+  @media (max-width: 768px) {
+    .monContenaire{
+      flex-direction: column;
+    }
+    .responsiveSVG{
+      width: 20rem;
+      height: 20rem;
+      margin-left: -12%;
+    }
+    #btnPro1{
+      margin-left: 6rem;
+     
+    }
+  }
+
   
