@@ -1,35 +1,28 @@
-.about {
-    margin-top: 50px;
-    display: flex;
+.about{
+    flex-direction: column;
     gap: 15px;
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.about .about-content {
-    width: 60%;
 }
 
 .about .about-content .about-title {
-    font-size: 2.2rem;
+    font-size: 1.2rem;
     font-family: "Poppins-Bold", sans-serif;
     font-weight: 800;
     width: 43.75rem;
-    margin-bottom: 30px;
-}
+    padding: 5px 10px;
 
+}
 .about .about-content .about-title .title-span {
     color: var(--bgColorFooter2);
 }
 
 .about .about-text {
-    font-size: 1.2rem;
     text-align: justify;
-    line-height: 2.2rem;
+    padding: 5px 10px;
 }
-
 .group-logo {
-    position: absolute;
+    position: relative;
+    width: 100%;
+    height: auto;
 }
 
 .ellipse {
@@ -37,38 +30,39 @@
     border-radius: 50%;
     border-color: var(--bgColor1);
     opacity: 0;
-    width: 300px;
-    height: 300px;
+    width: 100px;
+    height: 100px;
     position: absolute;
     transition: opacity 0.5s ease-in-out;
 }
 
+
 .ellipse-1 {
-    left: 886px;
-    top: -18px;
+    left: 10%;
+    top: 20%;
 }
 
 .ellipse-2 {
-    left: 876px;
-    top: -5px;
+    left: 30%;
+    top: 10%;
 }
 
 .ellipse-3 {
-    left: 866px;
-    top: 10px;
+    left: 50%;
+    top: 20%;
 }
 
 .ellipse-4 {
-    left: 856px;
-    top: 25px;
+    left: 70%;
+    top: 10%;
 }
 
 .about .logo {
-    width: 300px;
-    height: auto;
+    width: 100px;
     position: absolute;
-    left: 846px;
-    top: 40px;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
@@ -102,5 +96,140 @@
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@media (min-width: 768px){
+    .about{
+        flex-direction: row;
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
+        align-items: center;
+    }
+    .about .about-content .about-title {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+    .about .about-text {
+        font-size: 1.2rem;
+        text-align: justify;
+        line-height: 2.2rem;
+    }
+
+    .group-logo {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    
+    .ellipse {
+        background: rgba(19, 121, 140, 0.93);
+        border-radius: 50%;
+        border-color: var(--bgColor1);
+        opacity: 0;
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        margin-top: -30px;
+        transition: opacity 0.5s ease-in-out;
+    }
+    .ellipse-1 {
+        left: 8%;
+        top: -18px;
+    }
+    
+    .ellipse-2 {
+        left: 6%;
+        top: -5px;
+    }
+    
+    .ellipse-3 {
+        left: 4%;
+        top: 10px;
+    }
+    
+    .ellipse-4 {
+        left: 2%;
+        top: 25px;
+        display: block;
+    }
+    
+    .about .logo {
+        width: 200px;
+        height: auto;
+        left: 0%;
+        top: 40px;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        margin-top: -25px;
+    }
+}
+
+
+@media (min-width: 991px){
+    .about{
+        flex-direction: row;
+        gap: 15px;
+        margin-top: 20px;
+        align-items: baseline;
+    }
+    .about .about-content .about-title {
+        font-size: 2.2rem;
+        width: 43.75rem;
+        margin-bottom: 30px;
+    }
+    .about .about-text {
+        font-size: 1.2rem;
+        text-align: justify;
+        line-height: 2.2rem;
+    }
+
+    .group-logo {
+        position: absolute;
+        margin-top: 50px;
+        
+    }
+    
+    .ellipse {
+        background: rgba(19, 121, 140, 0.93);
+        border-radius: 50%;
+        border-color: var(--bgColor1);
+        opacity: 0;
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .ellipse-1 {
+        left: 886px;
+        top: -18px;
+    }
+    
+    .ellipse-2 {
+        left: 876px;
+        top: -5px;
+    }
+    
+    .ellipse-3 {
+        left: 866px;
+        top: 10px;
+    }
+    
+    .ellipse-4 {
+        left: 856px;
+        top: 25px;
+        display: block;
+    }
+    
+    .about .logo {
+        width: 300px;
+        height: auto;
+        position: absolute;
+        left: 846px;
+        top: 40px;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
     }
 }
