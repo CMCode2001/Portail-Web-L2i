@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CrudTable from "./CrudTable.tsx"; // Assurez-vous que le chemin est correct
+import { SERVER_URL } from "../../../constantURL.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -25,7 +26,7 @@ const DashboardAdmin = () => {
   useEffect(() => {
     if (selectedCrud) {
       // Fetch data from the back-end based on the selectedCrud
-      fetch(`/api/${selectedCrud}`)
+      fetch(SERVER_URL + `/${selectedCrud}`)
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -55,20 +56,18 @@ const DashboardAdmin = () => {
               Go to Etudiants
             </Link>
           </Menu.Item>
-          <Menu.Item key="professeurs" icon={<HomeOutlined />}>
+          <Menu.Item key="professor" icon={<HomeOutlined />}>
             <Link to="/professeur" style={{ textDecoration: "none" }}>
               Go to Professors
             </Link>
           </Menu.Item>
           <SubMenu key="classe" icon={<AppstoreOutlined />} title="Classes">
-            <Menu.Item key="crud-l1">Crud-L1</Menu.Item>
-            <Menu.Item key="crud-l2">Crud-L2</Menu.Item>
-            <Menu.Item key="crud-l3">Crud-L3</Menu.Item>
+            <Menu.Item key="student/niveau/1">Crud-L1</Menu.Item>
+            <Menu.Item key="student/niveau/2">Crud-L2</Menu.Item>
+            <Menu.Item key="student/niveau/3">Crud-L3</Menu.Item>
           </SubMenu>
           <SubMenu key="professeur" icon={<UserOutlined />} title="Professeurs">
-            <Menu.Item key="crud-compte-professeurs">
-              Crud-Compte-Professeurs
-            </Menu.Item>
+            <Menu.Item key="professor">Crud-Compte-Professeurs</Menu.Item>
           </SubMenu>
           <SubMenu
             key="gallerie"
