@@ -62,7 +62,7 @@ function FooterBlock() {
         <div className="input-container">
           <input
             type="text"
-            placeholder="Entrez votre message..."
+            placeholder="Entrez votre mail..."
             className="rounded-input"
           />
           <button type="submit" className="send-button">

@@ -278,7 +278,7 @@ const ModalBulleMessagerie = () => {
       {listeForum.map((forum, index) => (
         <Card
           key={index}
-          style={{ margin: "20px 0", width: "100%", height: "200px" }}
+          style={{ margin: "20px 0", width: "50rem", height: "200px" }}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}

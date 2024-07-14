@@ -19,7 +19,7 @@ const Topbar = () => {
 
                     </div>
                     <div className="top-link d-none d-lg-block">
-                        <h6  style={{color:'white'}}><i>Suivez-nous sur !!</i></h6> 
+                        <text id='suivezLink'  style={{color:'white'}}><i>Suivez-nous sur !!</i></text> 
                         <Link to="/" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum'>
                             <i className="fab fa-facebook-f "></i>
                         </Link>

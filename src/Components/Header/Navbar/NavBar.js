@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from 'antd';
 import { UserOutlined, CloseOutlined } from '@ant-design/icons';
 import "../../../Styles/Navbar-Topbar.css";
-import "../../../Styles/_RESPONSIVES/Navbar-Topbar.css"
+import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css"
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from '../../../Assets/img/hamburger-menu.png'
 import logoL2i from '../../../Assets/img/Logo-L2i.png'; 
@@ -37,7 +37,10 @@ const Navbar = () => {
     <div className="  container-fluid bgCouleur2" id="KayFi">
       <div className="container">
         <nav className=" container navbar text-light navbar-expand-lg py-9">
-          <img src={logoL2i} alt="Logo" id="logo-mobile" className="d-block d-lg-none" />
+        <Link to ="/">
+         <img src={logoL2i} alt="Logo" id="logo-mobile" className="d-block d-lg-none" />
+
+        </Link>
           <text className="d-block d-lg-none" id="montitleL2i">Licence Ingénierie Informatique</text>
 
           <button
@@ -68,9 +71,9 @@ const Navbar = () => {
                   Maquettes
                 </NavLink>
                 <div className="dropdown-menu rounded ">
-                  <NavLink to="/maquette-L1" className="dropdown-item">Licence 1</NavLink>
-                  <NavLink to="/maquette-L2" className="dropdown-item">Licence 2</NavLink>
-                  <NavLink to="/maquette-L3" className="dropdown-item">Licence 3</NavLink>
+                  <NavLink to="/maquette-L1" className="dropdown-item text-decoration-none">Licence 1</NavLink>
+                  <NavLink to="/maquette-L2" className="dropdown-item text-decoration-none">Licence 2</NavLink>
+                  <NavLink to="/maquette-L3" className="dropdown-item text-decoration-none">Licence 3</NavLink>
                 </div>
               </li>
               <li className="nav-item">

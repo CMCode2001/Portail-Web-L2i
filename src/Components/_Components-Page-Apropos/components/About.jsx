@@ -19,8 +19,8 @@ const About = () => {
   }, []);
 
   return (
-    <div className="about container">
-      <div className="about-content">
+    <div className="about container mt-3 mb-5 d-flex position-relative">
+      <div className="about-content col-12 col-md-7">
         <h1 className="about-title">
           À propos de notre filière, la  <br /><span className="title-span"> Licence en Ingenierie Informatique</span>
         </h1>
@@ -33,7 +33,7 @@ const About = () => {
         l&#039;informatique.
       </p>
       </div>
-      <div className="group-logo">
+      <div className="group-logo col-12 col-md-5">
         {[...Array(4)].map((_, index) => (
           <div
             key={index}
