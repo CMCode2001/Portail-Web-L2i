@@ -37,6 +37,49 @@ const DashboardAdmin = () => {
     setSelectedCrud(key);
   };
 
+  const handleDelete = (id) => {
+    const token = sessionStorage.getItem("jwt");
+
+    if (window.confirm("Voulez-vous vraiment supprimer cet élément?")) {
+      fetch(SERVER_URL + `/${selectedCrud.split("/")[0]}/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            setData(data.filter((item) => item.id !== id));
+          } else {
+            console.error("Failed to delete item");
+          }
+        })
+        .catch((error) => console.error("Error deleting item:", error));
+    }
+  };
+
+  const handleEdit = (id, newData) => {
+    // const token = localStorage.getItem("authToken");
+    const token = sessionStorage.getItem("jwt");
+
+    fetch(SERVER_URL + `/${selectedCrud.split("/")[0]}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setData(data.map((item) => (item.id === id ? newData : item)));
+        } else {
+          console.error("Failed to edit item");
+        }
+      })
+      .catch((error) => console.error("Error editing item:", error));
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -62,29 +105,29 @@ const DashboardAdmin = () => {
             </Link>
           </Menu.Item>
           <SubMenu key="classe" icon={<AppstoreOutlined />} title="Classes">
-            <Menu.Item key="student/niveau/1">Crud-L1</Menu.Item>
-            <Menu.Item key="student/niveau/2">Crud-L2</Menu.Item>
-            <Menu.Item key="student/niveau/3">Crud-L3</Menu.Item>
+            <Menu.Item key="student/niveau/1">Licence1-2I</Menu.Item>
+            <Menu.Item key="student/niveau/2">Licence2-2I</Menu.Item>
+            <Menu.Item key="student/niveau/3">Licence3-2I</Menu.Item>
           </SubMenu>
           <SubMenu key="professeur" icon={<UserOutlined />} title="Professeurs">
-            <Menu.Item key="professor">Crud-Compte-Professeurs</Menu.Item>
+            <Menu.Item key="professor">Professeurs</Menu.Item>
           </SubMenu>
           <SubMenu
             key="gallerie"
             icon={<VideoCameraOutlined />}
             title="Galleries"
           >
-            <Menu.Item key="crud-gallerie">Crud-Gallerie</Menu.Item>
+            <Menu.Item key="crud-gallerie">Gallerie</Menu.Item>
           </SubMenu>
           <SubMenu key="module" icon={<VideoCameraOutlined />} title="Modules">
-            <Menu.Item key="crud-module1">Crud-Module</Menu.Item>
+            <Menu.Item key="crud-module1">Modules</Menu.Item>
           </SubMenu>
           <SubMenu
             key="partenaires"
             icon={<GoldOutlined />}
             title="Partenaires"
           >
-            <Menu.Item key="crud-partenaires">Crud-Partenaires</Menu.Item>
+            <Menu.Item key="crud-partenaires">Nos Partenaires</Menu.Item>
           </SubMenu>
           <SubMenu
             key="authentification"
@@ -117,7 +160,11 @@ const DashboardAdmin = () => {
             }}
           >
             {selectedCrud ? (
-              <CrudTable data={data} />
+              <CrudTable
+                data={data}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
             ) : (
               "DashboardAdmin Content"
             )}
