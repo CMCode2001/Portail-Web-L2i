@@ -154,16 +154,16 @@
 
 @media (max-width: 480px) {
     .parallax-container h1 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .parallax-container p {
-        font-size: 1rem;
+        font-size: .9rem;
         flex-wrap: wrap;
     }
 
     .parallax-container .learn-more {
-        font-size: 0.9rem;
+        font-size: 0.87rem;
         padding: 8px 16px;
     }
 

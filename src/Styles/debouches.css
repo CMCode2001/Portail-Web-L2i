@@ -2,19 +2,17 @@
     display: flex;
     gap:30px
 }
-.debouches .debouche-content{
-    width: 55%;
-}
 .debouche-content h2{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 500;
 }
 .debouche-content p{
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 .debouches .question-svg{
     width: 500px;
+    display: none;
 }
 .debouche-list li{
     list-style-type: none;
@@ -31,4 +29,42 @@
 .debouche i{
     font-size: 1.2rem;
     color: var(--bgColor1);
+}
+
+@media screen and (min-width: 991px) {
+    .debouches{
+        display: flex;
+        gap:30px
+    }
+    .debouches .debouche-content{
+        width: 55%;
+    }
+    .debouche-content h2{
+        font-size: 2rem;
+        font-weight: 500;
+    }
+    .debouche-content p{
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    .debouches .question-svg{
+        width: 500px;
+        display: block;
+    }
+    .debouche-list li{
+        list-style-type: none;
+        display:  flex;
+        align-items: center;
+        font-weight: normal;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .debouche p{
+        font-weight: normal;
+        margin: 0;
+    }
+    .debouche i{
+        font-size: 1.2rem;
+        color: var(--bgColor1);
+    }
 }
