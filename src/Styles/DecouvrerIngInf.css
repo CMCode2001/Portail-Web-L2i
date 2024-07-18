@@ -63,11 +63,39 @@
 @media (max-width: 990px) {
     .top-section {
         display: block;
+        width: 32rem;
+        margin: auto;
     }
     .bottom-section {
         width: 28rem;
+        margin: auto;
     }
     .whole-block {
         margin: auto;
+    }
+}
+
+@media (max-width: 770px) {
+    .bordure>h4 {
+        font-size: large;
+    }
+    
+    .bordure>p {
+        font-size: 14px;
+    }
+
+    .bordure {
+        width: 23rem;
+    }
+
+    .top-section {
+        width: 29rem;
+    }
+
+    .top-section {
+        margin: 0;
+    }
+    .bottom-section {
+        margin: 2rem;
     }
 }
