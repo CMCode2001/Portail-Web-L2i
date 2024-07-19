@@ -2,21 +2,18 @@
     background-color: var(--bgColorFooter2);
     width: 100%;
     padding: 30px 10px;
+    margin-bottom:10px ;
 }
 .stats .chiffres{
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    gap: 15px;
 }
 .chiffres .chiffre{
     display: flex;
     align-items: center;
     gap: 10px;
 }
-/* .chiffre .icon {
-    background-color: white;
-    padding: 25px;
-    border-radius: 50%;
-} */
 .chiffre i{
     font-size: 70px;
     color: #05424d;
@@ -49,5 +46,57 @@
     color:  white;
     margin: 0;
     letter-spacing: .75px;
-    width: 150px;
+}
+
+@media screen and (min-width:991px) {
+    .stats{
+        background-color: var(--bgColorFooter2);
+        width: 100%;
+        padding: 30px 10px;
+    }
+    .stats .chiffres{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 0px;
+    }
+    .chiffres .chiffre{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .chiffre i{
+        font-size: 70px;
+        color: #05424d;
+        display: block;
+        padding: 30px;
+        background-color: white;
+        border-radius: 50%;
+    }
+    
+    .chiffre i.fa-solid.fa-graduation-cap::before{
+        font-size: 60px;
+    }
+    
+    .chiffre i.fa-solid.fa-chalkboard-user::before{
+        font-size: 50px;
+    }
+    
+    
+    .chiffre .chiffre-content h4{
+        color: white;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    
+    }
+    
+    .chiffre .chiffre-content p{
+        font-size: 1.2rem;
+        color:  white;
+        margin: 0;
+        letter-spacing: .75px;
+        width: 150px;
+    }
 }

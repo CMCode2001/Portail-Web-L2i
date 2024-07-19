@@ -41,11 +41,11 @@ const ModalBulleMessagerie = () => {
 
   useEffect(() => {
     const user = getUserInfo();
-      setCurrentUser(user);
-      console.log("user user user user :" + user);
-      const jwt = sessionStorage.getItem("jwt");
-      setToken(jwt);
-      fetchForum(jwt);
+    setCurrentUser(user);
+    console.log("user user user user :" + user);
+    const jwt = sessionStorage.getItem("jwt");
+    setToken(jwt);
+    fetchForum(jwt);
   }, [navigate]);
 
   const showModal = () => {
