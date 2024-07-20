@@ -1,5 +1,6 @@
 import React from 'react';
-import '../../../../Styles/CoursPopulaire.css';
+import { Card, CardContent, CardMedia, Typography, Grid, Container, Button } from '@mui/material';
+import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
 import a from "../../../../Assets/img/Algorithme.jpeg";
 import b from "../../../../Assets/img/Programmation.jpeg";
@@ -7,69 +8,198 @@ import c from "../../../../Assets/img/Base de donnee.jpeg";
 import d from "../../../../Assets/img/Reseaux & Telecom.jpeg";
 import e from "../../../../Assets/img/Securite Informatique.jpeg";
 import f from "../../../../Assets/img/Systeme.png";
-import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
 const cardsData = [
   {
-    imgSrc: a,
-    title1: 'Algorithmes',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-1'
+    title: 'Algorithmes',
+    image: a,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 30px 0 90px',
   },
   {
-    imgSrc: b,
-    title1: 'Programmation',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-2'
+    title: 'Programmation',
+    image: b,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 20px 0 0',
   },
   {
-    imgSrc: c,
-    title1: 'Base de Données',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-3'
+    title: 'Bases de Donnees',
+    image: c,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 30px 90px 0',
   },
   {
-    imgSrc: d,
-    title1: 'Réseaux & Télécom',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-4'
+    title: 'Reseaux & Telecom',
+    image: d,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 30px 0 90px',
   },
   {
-    imgSrc: e,
-    title1: 'Sécurite Informatique',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-5'
+    title: 'Securite Informatique',
+    image: e,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 20px 0 0',
   },
   {
-    imgSrc: f,
-    title1: 'Système Dexploitation',
-    text: 'Some quick example text to build on the card title and make up the bulk of the card\'s content.',
-    imgClass: 'card-img-6'
+    title: 'Systeme Dexploitation',
+    image: f,
+    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    borderRadius: '30px 30px 90px',
   },
 ];
 
-const Courspopulaire = () => {
-  return (
-    <div className="container">
-      <div className='team_container'>
-        <SeparatorBlock title="Cours Populaires" />
-      </div>
-      <div className="row">
-        {cardsData.map((card, index) => (
-          <div className="col-lg-4 col-md-6 col-sm-12 mb-2" key={index}>
-            <div className="card" style={{ width: '82%', borderRadius:'33px', backgroundColor:'#13798C'}}>
-              <img className={`card-img-top ${card.imgClass}`} src={card.imgSrc} alt={`Card image cap ${index + 1}`} />
-              <div className="card-body">
-                <h5 className="card-title1" style={{color: '#ffffff', padding:'20px'}}>{card.title1}</h5>
-                <p className="card-text">{card.text}</p>
-                <a href="#" className="btn btn-boutton ">Voir Plus..</a>
-              </div>
-            </div>
-          </div>
+const MyCards = () => (
+  <Container>
+    <SeparatorBlock title="Cours Populaires" />
+    <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '100vh', marginTop: '20px' }}>
+      <Grid container item xs={12} spacing={3} justifyContent="center">
+        {cardsData.slice(0, 3).map((card, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+            <Card sx={{ 
+              borderRadius: '33px', 
+              width: '341px', 
+              height: '473px',
+              backgroundColor: '#13798C',
+            }}>
+              <CardMedia
+                component="img"
+                height="250"
+                image={card.image}
+                alt={card.title}
+                sx={{ borderRadius: card.borderRadius }}
+              />
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{
+                    position: 'relative',
+                    paddingLeft: '40px',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      backgroundColor: 'white',
+                    }
+                  }}
+                >
+                  {card.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="white"
+                >
+                  {card.description}
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{ 
+                    backgroundColor: 'white',
+                    color: 'black',
+                    fontWeight: 'bold',
+                    borderRadius: '33px',
+                    display: 'block', 
+                    margin: '16px auto',
+                    transition: 'background-color 0.3s, color 0.3s',
+                    '&:hover': {
+                      backgroundColor: '#d3d3d3', // Couleur blanche foncée
+                      color: 'black',
+                    },
+                    '&:active': {
+                      backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
+                      color: 'black',
+                    }
+                  }}
+                >
+                  Voir plus
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
-  );
-};
+      </Grid>
+      <Grid container item xs={12} spacing={3} justifyContent="center">
+        {cardsData.slice(3, 6).map((card, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+            <Card sx={{ 
+              borderRadius: '33px', 
+              width: '341px', 
+              height: '473px',
+              backgroundColor: '#13798C',
+            }}>
+              <CardMedia
+                component="img"
+                height="250"
+                image={card.image}
+                alt={card.title}
+                sx={{ borderRadius: card.borderRadius }}
+              />
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{
+                    position: 'relative',
+                    paddingLeft: '40px',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      backgroundColor: 'white',
+                    }
+                  }}
+                >
+                  {card.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="white"
+                >
+                  {card.description}
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{ 
+                    backgroundColor: 'white',
+                    color: 'black',
+                    fontWeight: 'bold',
+                    borderRadius: '33px',
+                    display: 'block', 
+                    margin: '16px auto',
+                    transition: 'background-color 0.3s, color 0.3s',
+                    '&:hover': {
+                      backgroundColor: '#d3d3d3', // Couleur blanche foncée
+                      color: 'black',
+                    },
+                    '&:active': {
+                      backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
+                      color: 'black',
+                    }
+                  }}
+                >
+                  Voir plus
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Grid>
+  </Container>
+);
 
-export default Courspopulaire;
+export default MyCards;

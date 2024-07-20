@@ -6,7 +6,7 @@ export default function DecouvrerIngenierieInfo() {
   return (
     <>
     <SeparatorBlock title="Découvrez l’ingénierie Informatique" />
-    <div className='whole-block'>
+    <div className='whole-block center'>
       <div className='top-section'>
         <div className='left'>
           <div className='left-1 bordure'>
