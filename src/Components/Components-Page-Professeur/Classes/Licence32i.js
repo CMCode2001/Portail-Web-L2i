@@ -1,8 +1,12 @@
 import {
+  CalendarOutlined,
+  CheckOutlined,
   DownloadOutlined,
+  PlusOutlined,
   SearchOutlined,
   SendOutlined,
   TeamOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -14,36 +18,15 @@ import {
   Row,
   Space,
   Table,
+  Upload,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { SERVER_URL } from "../../../constantURL";
-const { TextArea } = Input;
+import * as XLSX from "xlsx";
 
-const data = [
-  {
-    key: "1",
-    prenom: "Cheikh Mbacke",
-    nom: "COLY",
-    email: "cm.c@zig.univ.sn",
-    cin: "202000142",
-  },
-  {
-    key: "1",
-    prenom: "Cheikh Mbacke",
-    nom: "COLY",
-    email: "cm.c@zig.univ.sn",
-    cin: "202000142",
-  },
-  {
-    key: "1",
-    prenom: "Cheikh Mbacke",
-    nom: "COLY",
-    email: "cm.c@zig.univ.sn",
-    cin: "202000142",
-  },
-];
+const { TextArea } = Input;
 
 const Licence32i = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -53,20 +36,23 @@ const Licence32i = () => {
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
   const [etudant, setEtudiant] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false); // Pour le Drawer de programmation de devoir
+  const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
+  const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   const searchInput = useRef(null);
   const token = sessionStorage.getItem("jwt");
+  const [notes, setNotes] = useState({});
+  const [assignmentTitle, setAssignmentTitle] = useState(""); // Ajouté
+  const [assignmentDueDate, setAssignmentDueDate] = useState(""); // Ajouté
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   useEffect(() => {
     const user = getUserInfo();
-    //  setCurrentUser(user);
-    console.log("user user user user :" + user);
-
-    //  setToken(jwt);
     fetchEtudiant();
   }, []);
 
@@ -81,7 +67,6 @@ const Licence32i = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-
         return response.json();
       })
       .then((data) => {
@@ -95,66 +80,53 @@ const Licence32i = () => {
     clearFilters();
     setSearchText("");
   };
+
   const onSendingCourse = () => {
     const donnee = {
       title,
       classeroom_id: 3,
       professor_id: getUserInfo().id,
       createdBy: "Test",
-      // Ajoutez d'autres champs de donnee si nécessaire
     };
-    // console.log(donnee);
 
     const formatDonnee = new FormData();
-    formatDonnee.append("course", JSON.stringify(donnee)); // Si besoin de transmettre des données JSON supplémentaires
-    formatDonnee.append("pdf", pdfContent); // pdfContent est votre fichier PDF
-
-    // Récupérez le jeton d'authentification de sessionStorage si nécessaire
-    // const token = sessionStorage.getItem("jwt");
+    formatDonnee.append("course", JSON.stringify(donnee));
+    formatDonnee.append("pdf", pdfContent);
 
     fetch(SERVER_URL + "/course", {
       method: "POST",
       headers: {
-        Authorization: `${token}`, // Assurez-vous d'avoir correctement récupéré et inclus votre token
+        Authorization: `${token}`,
       },
-      body: formatDonnee, // Passer le FormData directement comme corps de la requête
+      body: formatDonnee,
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
-          throw new Error(response.json);
-          throw new Error("Network response was not ok");
         }
         setIsModalVisible(true);
         return response.json();
       })
       .then((data) => {
         console.log("Course sent successfully:", data);
-        // Réinitialiser le formulaire ou effectuer d'autres actions après l'envoi réussi
       })
       .catch((error) => console.error("Error sending course:", error));
   };
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
-  const getUserInfo = () => {
-    // Récupérer la chaîne JSON stockée dans sessionStorage
-    const userJson = sessionStorage.getItem("user");
 
+  const getUserInfo = () => {
+    const userJson = sessionStorage.getItem("user");
     if (userJson) {
       try {
-        // Convertir la chaîne JSON en un objet JavaScript
         const user = JSON.parse(userJson);
-        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
         return user;
       } catch (error) {
         console.error(
           "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
           error
         );
-        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
       }
     } else {
       console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
     }
   };
 
@@ -242,17 +214,26 @@ const Licence32i = () => {
 
   const columns = [
     {
+      title: "CIN",
+      dataIndex: "cin",
+      key: "cin",
+      width: "20%",
+      ...getColumnSearchProps("cin"),
+      sorter: (a, b) => a.address.length - b.address.length,
+      sortDirections: ["descend", "ascend"],
+    },
+    {
       title: "Prénom",
       dataIndex: "firstName",
       key: "firstName",
-      width: "30%",
+      width: "40%",
       ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
       dataIndex: "name",
       key: "name",
-      width: "20%",
+      width: "30%",
       ...getColumnSearchProps("name"),
     },
     {
@@ -262,90 +243,224 @@ const Licence32i = () => {
       width: "20%",
       ...getColumnSearchProps("email"),
     },
-    {
-      title: "CIN",
-      dataIndex: "cin",
-      key: "cin",
-      ...getColumnSearchProps("cin"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
-    },
+    
   ];
 
-  const showDrawer = () => {
-    setOpen(true);
+  const showDrawerDevoir = () => {
+    setIsDrawerVisible(true);
+  };
+
+  const showDrawerCourse = () => {
+    setIsCourseDrawerVisible(true);
+  };
+
+  const showDrawerNotes = () => {
+    setIsNotesDrawerVisible(true);
   };
 
   const onClose = () => {
-    setOpen(false);
-  };
-  const handleFileChange = (info) => {
-    let fileList = [...info.fileList];
-
-    // Limitez la liste des fichiers à 1 pour n'uploader qu'un seul fichier
-    fileList = fileList.slice(-1);
-
-    // Mettre à jour le state
-    setFichier(fileList);
+    setIsDrawerVisible(false);
+    setIsCourseDrawerVisible(false);
+    setIsNotesDrawerVisible(false);
   };
 
-  const beforeUpload = (file) => {
-    // Limitez le type de fichier à PDF
-    const isPDF = file.type === "application/pdf";
-    if (!isPDF) {
-      console.log(`${file.name} n'est pas un fichier PDF valide.`);
-    }
-    return isPDF;
+  const handleNoteChange = (e, studentId) => {
+    setNotes({
+      ...notes,
+      [studentId]: e.target.value,
+    });
+  };
+
+  const handleValidateNote = (studentId) => {
+    console.log(`Note for student ${studentId} validated: ${notes[studentId]}`);
+    // Optionally, send the note to the server or handle it as needed
+  };
+
+  const handleDownload = () => {
+    const data = etudant.map((student) => ({
+      CIN: student.cin,
+      Prénoms: student.firstName,
+      Noms: student.name,
+      Notes: notes[student.id] || "",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Notes");
+    XLSX.writeFile(workbook, "notes_etudiants_L3-2i.xlsx");
+  };
+
+  const handleSendNotes = () => {
+    console.log("Notes sent to UFR:", notes);
+    // Optionally, send the notes to the server or handle them as needed
   };
 
   return (
     <div id="samaDivContainer">
       <Modal
-        title="Cours envoye avec success"
+        title="Cours envoyé avec succès"
         visible={isModalVisible}
-        // onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
         width={800}
+        footer={[
+          <Button
+            key="ok"
+            onClick={() => setIsModalVisible(false)}
+            style={{ backgroundColor: "#008000", color: "white" }}
+          >
+            OK
+          </Button>,
+        ]}
       ></Modal>
-
+      <div className="spaceContainer" style={{ marginBottom: "2rem" }}>
       <div className="headerSection">
         <h2 className="leftAlign">
           <TeamOutlined />
-          Classe Licence 1-2i
+          Classe Licence 3-2i
         </h2>
-        <Button
-          className="rightAlign"
-          id="btnPro2"
-          type="primary"
-          icon={<DownloadOutlined />}
-          size="large"
-          onClick={showDrawer}
-        >
-          Ajouter Cours
-        </Button>
+        
+        <Space  className="rightAlign">
+          <Button
+            id="btnPro2"
+            type="primary"
+            icon={<CalendarOutlined />}
+            style={{ width: "13rem" }}
+            size="large"
+            onClick={showDrawerDevoir}
+          >
+            Programmer Devoir
+          </Button>
+            <br/>
+            <br/>
+            <br/>
+          <Button
+            id="btnPro2"
+            type="primary"
+            icon={<PlusOutlined />}
+            size="large"
+            onClick={showDrawerNotes}
+          >
+            Ajouter Notes
+          </Button>
+          <br/>
+          <br/>
+          <br/>
+
+          <Button
+            id="btnPro2"
+            type="primary"
+            icon={<DownloadOutlined />}
+            size="large"
+            onClick={showDrawerCourse}
+          >
+            Ajouter Cours
+          </Button>
+        </Space>
+      </div>
       </div>
       <div className="tableSection">
-        <h4 style={{ textAlign: "center" }}>Liste des etudiants</h4>
+        <h4 style={{ textAlign: "center" }}>Liste des étudiants</h4>
         <Table columns={columns} dataSource={etudant} />
       </div>
+      {/* Programmer Devoir */}
+      <Drawer
+        title="Programmer un nouveau devoir"
+        width={720}
+        onClose={onClose}
+        open={isDrawerVisible}
+        bodyStyle={{ paddingBottom: 80 }}
+        extra={
+          <Space>
+            <Button
+              onClick={onClose}
+              style={{ backgroundColor: "#600622", color: "white" }}
+            >
+              Fermer
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
+              onClick={() => {
+                onClose();
+                // onSendingAssignment(); // Uncomment if needed
+              }}
+              type="primary"
+            >
+              Envoyer <SendOutlined />
+            </Button>
+          </Space>
+        }
+      >
+        <Form layout="vertical" hideRequiredMark>
+          <Row gutter={16}>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="assignmentTitle"
+                label="Titre du Devoir"
+                rules={[{ required: true, message: "Veuillez entrer le titre du devoir" }]}
+              >
+                <Input
+                  placeholder="Veuillez entrer le titre du devoir"
+                  onChange={(e) => setAssignmentTitle(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                label="Description"
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer la description du devoir",
+                  },
+                ]}
+              >
+                <TextArea rows={4} placeholder="Veuillez entrer la description du devoir" />
+              </Form.Item>
+            </Col>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="dueDate"
+                label="Date du Devoir"
+                rules={[{ required: true, message: "Veuillez sélectionner une date d'échéance" }]}
+              >
+                <Input
+                  type="date"
+                  onChange={(e) => setAssignmentDueDate(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Drawer>
+      {/* ======================== FIN PROGRAMMER DEVOIR ========================= */}
+
+      {/* ==========================   AJOUTER COURS ============================= */}
       <Drawer
         title="Ajouter un nouveau cours"
         width={720}
         onClose={onClose}
-        open={open}
-        bodyStyle={{
-          paddingBottom: 80,
-        }}
+        open={isCourseDrawerVisible}
+        bodyStyle={{ paddingBottom: 80 }}
         extra={
           <Space>
-            <Button onClick={onClose}>Fermer</Button>
             <Button
+              onClick={onClose}
+              style={{ backgroundColor: "#600622", color: "white" }}
+            >
+              Fermer
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
               onClick={() => {
                 onClose();
                 onSendingCourse();
               }}
               type="primary"
-              id="btnPro2"
             >
               Envoyer <SendOutlined />
             </Button>
@@ -369,40 +484,7 @@ const Licence32i = () => {
                 <Input placeholder="Please enter the course title" />
               </Form.Item>
             </Col>
-            {/* <Col span={12}>
-              <Form.Item
-                name="professorMail"
-                label="Email Professeur"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer votre email",
-                  },
-                ]}
-              >
-                <Input placeholder="Veuillez entrer votre email" />
-              </Form.Item>
-            </Col> */}
           </Row>
-          {/* <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="studentsMail"
-                label="Email Etudiants"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer les mails des etudiants",
-                  },
-                ]}
-              >
-                <TextArea
-                  rows={6}
-                  placeholder="Veuillez entrer les mails des etudiants"
-                />
-              </Form.Item>
-            </Col>
-          </Row> */}
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
@@ -415,32 +497,102 @@ const Licence32i = () => {
                   },
                 ]}
               >
-                {/* <Upload>
-                  <Button onChange={handleFileChange} icon={<PlusOutlined />}>
-                    {" "}
-                    Upload PDF
-                  </Button>
-                </Upload> */}
                 <input
-                  class=" custom-file-input"
-                  formControlName="imageCouverture"
+                  className="custom-file-input"
                   id="imageCouverture"
                   onChange={(e) => setFichier(e.target.files[0])}
                   type="file"
                 />
-                {/* <Upload
-                  beforeUpload={beforeUpload}
-                  onChange={handleFileChange}
-                  // fileList={pdfContent ? [pdfContent] : []}
-                  maxCount={1}
-                >
-                  <Button icon={<PlusOutlined />}>Uploader PDF</Button>
-                </Upload> */}
               </Form.Item>
             </Col>
           </Row>
         </Form>
       </Drawer>
+      {/* ==========================  FIN AJOUTER COURS ============================= */}
+
+      {/* ==========================   AJOUTER NOTES ============================= */}
+      <Drawer
+        title="Ajouter des notes"
+        width={720}
+        onClose={onClose}
+        open={isNotesDrawerVisible}
+        bodyStyle={{ paddingBottom: 80 }}
+        extra={
+          <Space>
+            <Button
+              onClick={onClose}
+              style={{ backgroundColor: "#600622", color: "white" }}
+            >
+              Fermer
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
+              onClick={() => {
+                onClose();
+                handleSendNotes();
+              }}
+              type="primary"
+            >
+              Envoyer à l'UFR <SendOutlined />
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
+              onClick={handleDownload}
+              type="primary"
+            >
+              Télécharger Excel <DownloadOutlined />
+            </Button>
+          </Space>
+        }
+      >
+      <Form layout="vertical" hideRequiredMark>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Table dataSource={etudant} pagination={false} rowKey="id">
+            <Table.Column
+              title="CIN"
+              dataIndex="cin"
+              key="cin"
+              width="20%"
+            />
+            <Table.Column
+              title="Prénom"
+              dataIndex="firstName"
+              key="firstName"
+              width="25%"
+            />
+            <Table.Column
+              title="Nom"
+              dataIndex="name"
+              key="name"
+              width="25%"
+            />
+            <Table.Column
+              title="Note"
+              key="note"
+              width="30%"
+              render={(text, record) => (
+                <Space>
+                  <Input
+                    type="number"
+                    placeholder="Entrez la note"
+                    value={notes[record.id] || ""}
+                    onChange={(e) => handleNoteChange(e, record.id)}
+                    style={{ width: 70 }}
+                  />
+                  <Button onClick={() => handleValidateNote(record.id)} style={{backgroundColor:"#13798C"}}>
+                    <CheckOutlined style={{ color:"white"}} />
+                  </Button>
+                </Space>
+              )}
+            />
+          </Table>
+        </Col>
+      </Row>
+    </Form>
+
+      </Drawer>
+      {/* ==========================  FIN AJOUTER NOTES ============================= */}
     </div>
   );
 };

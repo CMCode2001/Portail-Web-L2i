@@ -1,5 +1,7 @@
 import {
   AppstoreOutlined,
+  EditOutlined,
+  LogoutOutlined,
   ReadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -102,8 +104,9 @@ const SidebarProf2 = () => {
           </SubMenu>
           <SubMenu key="sub2" icon={<UserOutlined />} title="Mon profile">
             <Menu.Item key="5">
-              <Link to="connexion" style={{ textDecoration: "none" }}>
-                Connexion
+              <Link to="update-prof" style={{ textDecoration: "none" }}>
+              <EditOutlined /> &nbsp;
+                Modifier
               </Link>
             </Menu.Item>
             <Menu.Item key="6">
@@ -112,6 +115,7 @@ const SidebarProf2 = () => {
                 style={{ textDecoration: "none" }}
                 onClick={handleLogout}
               >
+                <LogoutOutlined /> &nbsp;
                 Deconnexion
               </Link>
             </Menu.Item>
@@ -127,8 +131,9 @@ const SidebarProf2 = () => {
           }}
         />
         <h3 style={{ textAlign: "center" }}>
+          <br/>
           <UserOutlined /> Bonjour, Pr {currentUser.firstName}{" "}
-          {currentUser.name}
+          {currentUser.name} 
         </h3>
         <Content
           style={{
@@ -151,7 +156,7 @@ const SidebarProf2 = () => {
             textAlign: "center",
           }}
         >
-          <h6>© 2024 - Licence Ingenierie informatique</h6>
+          <h6>© 2024 - Licence Ingénierie informatique</h6>
         </Footer>
       </Layout>
     </Layout>

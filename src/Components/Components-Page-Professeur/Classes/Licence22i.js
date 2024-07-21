@@ -291,7 +291,7 @@ const Licence22i = () => {
       <div className="headerSection">
         <h2 className="leftAlign">
           <TeamOutlined />
-          Classe Licence 1-2i
+          Classe Licence 2-2i
         </h2>
         <Button
           className="rightAlign"

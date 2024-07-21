@@ -12,11 +12,11 @@ import Professeur from "./Pages/Professeur";
 import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
 import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
 import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
-import ConnexionProf from "./Components/Components-Page-Professeur/Profiles/ConnexionProf";
 import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
 import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
+import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
 
 function App() {
   return (
@@ -41,7 +41,7 @@ function App() {
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
-            <Route path="connexion" element={<ConnexionProf />} />
+            <Route path="update-prof" element={<UpdateProf />} />
           </Route>
           {/* ------------ Professeur -------------- */}
 
