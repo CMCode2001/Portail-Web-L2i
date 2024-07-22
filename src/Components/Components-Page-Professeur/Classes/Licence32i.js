@@ -525,7 +525,7 @@ const Licence32i = () => {
             >
               Fermer
             </Button>
-            <Button
+            {/* <Button
               style={{ backgroundColor: "#13798C", color: "white" }}
               onClick={() => {
                 onClose();
@@ -534,7 +534,7 @@ const Licence32i = () => {
               type="primary"
             >
               Envoyer à l'UFR <SendOutlined />
-            </Button>
+            </Button> */}
             <Button
               style={{ backgroundColor: "#13798C", color: "white" }}
               onClick={handleDownload}
