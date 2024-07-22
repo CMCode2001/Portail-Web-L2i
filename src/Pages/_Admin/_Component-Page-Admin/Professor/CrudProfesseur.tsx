@@ -118,8 +118,19 @@ const CrudProfesseur = () => {
       key: "action",
       render: (_, record) => (
         <span>
-          <Button onClick={() => showEditModal(record)}>Edit</Button>
-          <Button onClick={() => handleDelete(record.id)}>Delete</Button>
+          {/* <Button onClick={() => showEditModal(record)}>Edit</Button> */}
+          <Button
+            style={{ backgroundColor: "blue", color: "white" }}
+            onClick={() => showEditModal(record)}
+          >
+            Edit
+          </Button>
+          <Button
+            style={{ backgroundColor: "red", color: "white" }}
+            onClick={() => handleDelete(record.id)}
+          >
+            Delete
+          </Button>
         </span>
       ),
     },
@@ -130,18 +141,24 @@ const CrudProfesseur = () => {
       <Table columns={columns} dataSource={data} rowKey="id" />
       <Modal
         title="Edit Record"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="name" label="Name">
+          <Form.Item name="id" label="ID">
             <Input />
           </Form.Item>
-          <Form.Item name="department" label="Department">
+          <Form.Item name="firstName" label="FirstName">
+            <Input />
+          </Form.Item>
+          <Form.Item name="lastName" label="LastName">
             <Input />
           </Form.Item>
           <Form.Item name="email" label="Email">
+            <Input />
+          </Form.Item>
+          <Form.Item name="department" label="Department">
             <Input />
           </Form.Item>
           <Form.Item name="specialityProfessor" label="Speciality">
