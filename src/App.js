@@ -1,7 +1,14 @@
-import "./Styles/bootstrap.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
+import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
+import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
+import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
+import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
+import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import Accueil from "./Pages/Accueil";
 import Apropos from "./Pages/Apropos";
+import Confirmation from "./Pages/Confirmation";
 import Connexion from "./Pages/Connexion";
 import Cours from "./Pages/Cours";
 import Forum from "./Pages/Forum";
@@ -9,14 +16,8 @@ import Gallerie from "./Pages/Gallerie";
 import Inscription from "./Pages/Inscription";
 import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
-import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
-import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
-import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
-import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
-import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
-import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
-import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import "./Styles/bootstrap.min.css";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+          <Route path="/confirmation/:idtoken" element={<Confirmation />} />
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
