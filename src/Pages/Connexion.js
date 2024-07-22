@@ -6,6 +6,7 @@ import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
 import { SERVER_URL } from "../constantURL";
+import { Link } from "react-router-dom";
 
 const Connexion = () => {
   const [username, setUsername] = useState("");
@@ -155,6 +156,8 @@ const Connexion = () => {
                 <Input.Password placeholder="Password" />
               </Form.Item>
 
+              
+
               <Form.Item>
                 <Button
                   type="primary"
@@ -163,6 +166,9 @@ const Connexion = () => {
                 >
                   Se Connecter →
                 </Button>
+              </Form.Item>
+              <Form.Item>
+                <Link to="/password/reset" id="MdpForget">Mot de passe oublié ?</Link>
               </Form.Item>
             </Form>
           </div>

@@ -17,6 +17,8 @@ import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
 import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import ForgetMotDePasse from "./Components/ForgetMotDePasse";
+import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+          <Route path="/password/reset" element={<ForgetMotDePasse />} />
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
@@ -41,6 +44,7 @@ function App() {
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
+            <Route path="ajouter-notes" element={<AjouterNotes />} />
             <Route path="update-prof" element={<UpdateProf />} />
           </Route>
           {/* ------------ Professeur -------------- */}

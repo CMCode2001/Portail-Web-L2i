@@ -333,19 +333,7 @@ const Licence32i = () => {
             <br/>
             <br/>
             <br/>
-          <Button
-            id="btnPro2"
-            type="primary"
-            icon={<PlusOutlined />}
-            size="large"
-            onClick={showDrawerNotes}
-          >
-            Ajouter Notes
-          </Button>
-          <br/>
-          <br/>
-          <br/>
-
+          
           <Button
             id="btnPro2"
             type="primary"
@@ -418,7 +406,20 @@ const Licence32i = () => {
                   },
                 ]}
               >
-                <TextArea rows={4} placeholder="Veuillez entrer la description du devoir" />
+                <TextArea rows={3} placeholder="Veuillez entrer la description du devoir" />
+              </Form.Item>
+            </Col>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="Salle"
+                label="Salle du Devoir"
+                rules={[{ required: true, message: "Veuillez entrer le lieu de salle du devoir" }]}
+              >
+                <Input
+                  placeholder="Veuillez entrer le lieu de salle du devoir"
+                  onChange={(e) => setAssignmentTitle(e.target.value)}
+                />
               </Form.Item>
             </Col>
             <Col span={17}>
@@ -510,89 +511,7 @@ const Licence32i = () => {
       </Drawer>
       {/* ==========================  FIN AJOUTER COURS ============================= */}
 
-      {/* ==========================   AJOUTER NOTES ============================= */}
-      <Drawer
-        title="Ajouter des notes"
-        width={720}
-        onClose={onClose}
-        open={isNotesDrawerVisible}
-        bodyStyle={{ paddingBottom: 80 }}
-        extra={
-          <Space>
-            <Button
-              onClick={onClose}
-              style={{ backgroundColor: "#600622", color: "white" }}
-            >
-              Fermer
-            </Button>
-            {/* <Button
-              style={{ backgroundColor: "#13798C", color: "white" }}
-              onClick={() => {
-                onClose();
-                handleSendNotes();
-              }}
-              type="primary"
-            >
-              Envoyer à l'UFR <SendOutlined />
-            </Button> */}
-            <Button
-              style={{ backgroundColor: "#13798C", color: "white" }}
-              onClick={handleDownload}
-              type="primary"
-            >
-              Télécharger Excel <DownloadOutlined />
-            </Button>
-          </Space>
-        }
-      >
-      <Form layout="vertical" hideRequiredMark>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Table dataSource={etudant} pagination={false} rowKey="id">
-            <Table.Column
-              title="CIN"
-              dataIndex="cin"
-              key="cin"
-              width="20%"
-            />
-            <Table.Column
-              title="Prénom"
-              dataIndex="firstName"
-              key="firstName"
-              width="25%"
-            />
-            <Table.Column
-              title="Nom"
-              dataIndex="name"
-              key="name"
-              width="25%"
-            />
-            <Table.Column
-              title="Note"
-              key="note"
-              width="30%"
-              render={(text, record) => (
-                <Space>
-                  <Input
-                    type="number"
-                    placeholder="Entrez la note"
-                    value={notes[record.id] || ""}
-                    onChange={(e) => handleNoteChange(e, record.id)}
-                    style={{ width: 70 }}
-                  />
-                  <Button onClick={() => handleValidateNote(record.id)} style={{backgroundColor:"#13798C"}}>
-                    <CheckOutlined style={{ color:"white"}} />
-                  </Button>
-                </Space>
-              )}
-            />
-          </Table>
-        </Col>
-      </Row>
-    </Form>
-
-      </Drawer>
-      {/* ==========================  FIN AJOUTER NOTES ============================= */}
+      
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import {
+  AppstoreAddOutlined,
   AppstoreOutlined,
   EditOutlined,
   HomeFilled,
@@ -78,24 +79,20 @@ const SidebarProf2 = () => {
         </Link>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-          <Menu.Item key="1" icon={<HomeFilled />}>
+          <Menu.Item  icon={<HomeFilled />}>
             <Link to="/" style={{ textDecoration: "none" }}>
               Accueil
             </Link>
             </Menu.Item>
 
-          {/* <Menu.Item key="2" icon={<AppstoreOutlined />}>
-            <Link to="/professeur" style={{ textDecoration: "none" }}>
-              Mon Dashboard
-            </Link>
-          </Menu.Item> */}
-          <SubMenu key="sub1" icon={<ReadOutlined />} title="Mes Classes">
-            <Menu.Item key="1">
+          
+          <SubMenu  icon={<ReadOutlined />} title="Mes Classes">
+            <Menu.Item >
               <Link to="classes/L1-2i" style={{ textDecoration: "none" }}>
                 L1-2i
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item >
               <Link to="classes/L2-2i" style={{ textDecoration: "none" }}>
                 L2-2i
               </Link>
@@ -106,6 +103,11 @@ const SidebarProf2 = () => {
               </Link>
             </Menu.Item>
           </SubMenu>
+          <Menu.Item key="2" icon={<AppstoreAddOutlined />}>
+            <Link to="ajouter-notes" style={{ textDecoration: "none" }}>
+              Ajouter Notes
+            </Link>
+          </Menu.Item>
           <SubMenu key="sub2" icon={<UserOutlined />} title="Mon profile">
             <Menu.Item key="5">
               <Link to="update-prof" style={{ textDecoration: "none" }}>
