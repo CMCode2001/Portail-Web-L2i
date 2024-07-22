@@ -17,7 +17,6 @@ const Middlebar = () => {
         <div className="col-4 col-md-8 text-center">
           <div className="middlebar-text">
             <p className="text1">Licence Ingénierie Informatique : L2i</p>
-            {/* <p className="text2">Informatique : L2i</p> */}
           </div>
         </div>
         <div className="col-4 col-md-2 text-center text-md-end">

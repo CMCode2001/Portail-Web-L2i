@@ -17,7 +17,13 @@ import Inscription from "./Pages/Inscription";
 import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
+<<<<<<< HEAD
 import "./Styles/bootstrap.min.css";
+=======
+import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import ForgetMotDePasse from "./Components/ForgetMotDePasse";
+import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
+>>>>>>> 44ba5c41ca06c3a3b9e2233990efc5c738ec9db1
 
 function App() {
   return (
@@ -35,7 +41,11 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+<<<<<<< HEAD
           <Route path="/confirmation/:idtoken" element={<Confirmation />} />
+=======
+          <Route path="/password/reset" element={<ForgetMotDePasse />} />
+>>>>>>> 44ba5c41ca06c3a3b9e2233990efc5c738ec9db1
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
@@ -43,6 +53,7 @@ function App() {
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
+            <Route path="ajouter-notes" element={<AjouterNotes />} />
             <Route path="update-prof" element={<UpdateProf />} />
           </Route>
           {/* ------------ Professeur -------------- */}
