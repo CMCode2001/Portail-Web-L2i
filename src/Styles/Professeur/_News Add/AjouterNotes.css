@@ -1,0 +1,18 @@
+#downExcel{
+    background-color: white;
+    color: var(--bgColor2);
+    border: dashed 1px;    
+    font-weight: 500;
+    height: 2rem;
+}
+#downExcel:hover{
+    background-color: var(--bgColor2);
+    color: white;
+    border: none;
+}
+#downCSV{
+    border: none;
+    background-color: var(--bgColor1);
+    color: white;
+    width: 17.3rem;
+}

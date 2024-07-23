@@ -3,7 +3,8 @@ import { TeamOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as XLSX from 'xlsx';
-import ImgExcel from '../../../../Assets/img/office365.png'
+import ImgExcel from '../../../../Assets/img/office365.png';
+import '../../../../Styles/Professeur/_News Add/AjouterNotes.css'
 import { SERVER_URL } from '../../../../constantURL';
 
 export default function AjouterNotes() {
@@ -175,13 +176,13 @@ export default function AjouterNotes() {
   ];
 
   const handleNoteChange = (e, studentId, noteType) => {
-    setNotes({
-      ...notes,
+    setNotes((prevNotes) => ({
+      ...prevNotes,
       [studentId]: {
-        ...notes[studentId],
+        ...prevNotes[studentId],
         [noteType]: e.target.value,
       },
-    });
+    }));
   };
 
   const downloadExcel = () => {
@@ -200,6 +201,39 @@ export default function AjouterNotes() {
     XLSX.utils.book_append_sheet(wb, ws, 'Étudiants');
 
     XLSX.writeFile(wb, `${selectedLicence}_notes.xlsx`);
+  };
+
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const parsedData = XLSX.utils.sheet_to_json(sheet);
+
+        // Mapping parsed data to the student structure
+        const updatedStudents = parsedData.map((row) => ({
+          id: row.ID, // Assuming your CSV contains an 'ID' column
+          cin: row.CIN,
+          firstName: row.Prenom,
+          name: row.Nom,
+          email: row.Email,
+        }));
+
+        setEtudiant(updatedStudents);
+        
+        // Initialize notes for the new students
+        const initialNotes = {};
+        updatedStudents.forEach((student) => {
+          initialNotes[student.id] = { cc1: 'absent', cc2: 'absent', exam: 'absent' };
+        });
+        setNotes(initialNotes);
+      };
+      reader.readAsBinaryString(file);
+    }
   };
 
   return (
@@ -238,21 +272,22 @@ export default function AjouterNotes() {
         </Space>
       </div>
       <div style={{ marginTop: '1rem', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  {selectedLicence && (
-    <>
-      <h2 style={{ margin: 0 }}>{selectedLicence}</h2>
-      <Button type="dashed" id='downloadExcel' size="large" onClick={downloadExcel}>
-        Télécharger
-        <img src={ImgExcel} alt="Download" width={30} height={30} style={{ marginLeft: 8 }} />
-      </Button>
-    </>
-  )}
-</div>
-<div style={{ width: '100%', marginTop: '1rem' }}>
-    
-  <Table columns={columns} dataSource={etudant} rowKey="id" />
-</div>
+        {selectedLicence && (
+          <>
+            <input type="file" accept=".csv" onChange={handleCSVUpload} id='downCSV' />
+            
+            <h2 style={{ marginRight: '6rem' }}>{selectedLicence}</h2>
 
+            <Button type="dashed"  size="large" onClick={downloadExcel} id='downExcel'>
+              Télécharger
+              <img src={ImgExcel} alt="Download" width={25} height={25}  />
+            </Button>
+          </>
+        )}
+      </div>
+      <div style={{ width: '100%', marginTop: '1rem' }}>
+        <Table columns={columns} dataSource={etudant} rowKey="id" />
+      </div>
     </div>
   );
 }
