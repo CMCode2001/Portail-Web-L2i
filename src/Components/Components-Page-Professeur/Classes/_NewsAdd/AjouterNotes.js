@@ -118,11 +118,11 @@ export default function AjouterNotes() {
 
   const columns = [
     {
-      title: "CIN",
-      dataIndex: "cin",
-      key: "cin",
+      title: "INE",
+      dataIndex: "ine",
+      key: "ine",
       width: "20%",
-      ...getColumnSearchProps("cin"),
+      ...getColumnSearchProps("ine"),
     },
     {
       title: "Prénom",
