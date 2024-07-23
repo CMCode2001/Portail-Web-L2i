@@ -2,7 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
 import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
 import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
+import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
 import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import ForgetMotDePasse from "./Components/ForgetMotDePasse";
 import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
 import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
@@ -17,13 +19,7 @@ import Inscription from "./Pages/Inscription";
 import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
-<<<<<<< HEAD
 import "./Styles/bootstrap.min.css";
-=======
-import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
-import ForgetMotDePasse from "./Components/ForgetMotDePasse";
-import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
->>>>>>> 44ba5c41ca06c3a3b9e2233990efc5c738ec9db1
 
 function App() {
   return (
@@ -41,11 +37,8 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
-<<<<<<< HEAD
           <Route path="/confirmation/:idtoken" element={<Confirmation />} />
-=======
           <Route path="/password/reset" element={<ForgetMotDePasse />} />
->>>>>>> 44ba5c41ca06c3a3b9e2233990efc5c738ec9db1
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
