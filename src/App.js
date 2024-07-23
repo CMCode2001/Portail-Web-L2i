@@ -20,9 +20,6 @@ import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
 import "./Styles/bootstrap.min.css";
-// import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
-import ForgetMotDePasse from "./Components/ForgetMotDePasse";
-import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
 
 function App() {
   return (
