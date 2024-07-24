@@ -1,20 +1,20 @@
-import React, { useState, useRef } from 'react';
-import { TeamOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Input } from 'antd';
-import Highlighter from 'react-highlight-words';
-import * as XLSX from 'xlsx';
-import ImgExcel from '../../../../Assets/img/office365.png';
-import '../../../../Styles/Professeur/_News Add/AjouterNotes.css'
-import { SERVER_URL } from '../../../../constantURL';
+import React, { useState, useRef } from "react";
+import { TeamOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Space, Table, Input } from "antd";
+import Highlighter from "react-highlight-words";
+import * as XLSX from "xlsx";
+import ImgExcel from "../../../../Assets/img/office365.png";
+import "../../../../Styles/Professeur/_News Add/AjouterNotes.css";
+import { SERVER_URL } from "../../../../constantURL";
 
 export default function AjouterNotes() {
   const [selectedLicence, setSelectedLicence] = useState(null);
   const [etudant, setEtudiant] = useState([]);
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const [notes, setNotes] = useState({});
   const searchInput = useRef(null);
-  const token = sessionStorage.getItem('jwt');
+  const token = sessionStorage.getItem("jwt");
 
   const handleButtonClick = (licence, level) => {
     setSelectedLicence(licence);
@@ -23,7 +23,7 @@ export default function AjouterNotes() {
 
   const fetchEtudiant = (level) => {
     fetch(`${SERVER_URL}/student/niveau/${level}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `${token}`,
       },
@@ -32,12 +32,16 @@ export default function AjouterNotes() {
       .then((data) => {
         const initialNotes = {};
         data.forEach((student) => {
-          initialNotes[student.id] = { cc1: 'absent', cc2: 'absent', exam: 'absent' };
+          initialNotes[student.id] = {
+            cc1: "absent",
+            cc2: "absent",
+            exam: "absent",
+          };
         });
         setEtudiant(data);
         setNotes(initialNotes);
       })
-      .catch((error) => console.error('Error fetching students:', error));
+      .catch((error) => console.error("Error fetching students:", error));
   };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -48,19 +52,26 @@ export default function AjouterNotes() {
 
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
       <div onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
@@ -82,8 +93,11 @@ export default function AjouterNotes() {
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -92,10 +106,10 @@ export default function AjouterNotes() {
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
@@ -104,71 +118,71 @@ export default function AjouterNotes() {
 
   const columns = [
     {
-      title: 'CIN',
-      dataIndex: 'cin',
-      key: 'cin',
-      width: '20%',
-      ...getColumnSearchProps('cin'),
+      title: "INE",
+      dataIndex: "ine",
+      key: "ine",
+      width: "20%",
+      ...getColumnSearchProps("ine"),
     },
     {
-      title: 'Prénom',
-      dataIndex: 'firstName',
-      key: 'firstName',
-      width: '30%',
-      ...getColumnSearchProps('firstName'),
+      title: "Prénom",
+      dataIndex: "firstName",
+      key: "firstName",
+      width: "30%",
+      ...getColumnSearchProps("firstName"),
     },
     {
-      title: 'Nom',
-      dataIndex: 'name',
-      key: 'name',
-      width: '30%',
-      ...getColumnSearchProps('name'),
+      title: "Nom",
+      dataIndex: "name",
+      key: "name",
+      width: "30%",
+      ...getColumnSearchProps("name"),
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      width: '30%',
-      ...getColumnSearchProps('email'),
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: "30%",
+      ...getColumnSearchProps("email"),
     },
     {
-      title: 'CC1',
-      key: 'cc1',
-      width: '10%',
+      title: "CC1",
+      key: "cc1",
+      width: "10%",
       render: (text, record) => (
         <Input
           type="text"
           placeholder="CC1"
-          value={notes[record.id]?.cc1 || 'absent'}
-          onChange={(e) => handleNoteChange(e, record.id, 'cc1')}
+          value={notes[record.id]?.cc1 || "absent"}
+          onChange={(e) => handleNoteChange(e, record.id, "cc1")}
           style={{ width: 70 }}
         />
       ),
     },
     {
-      title: 'CC2',
-      key: 'cc2',
-      width: '10%',
+      title: "CC2",
+      key: "cc2",
+      width: "10%",
       render: (text, record) => (
         <Input
           type="text"
           placeholder="CC2"
-          value={notes[record.id]?.cc2 || 'absent'}
-          onChange={(e) => handleNoteChange(e, record.id, 'cc2')}
+          value={notes[record.id]?.cc2 || "absent"}
+          onChange={(e) => handleNoteChange(e, record.id, "cc2")}
           style={{ width: 70 }}
         />
       ),
     },
     {
-      title: 'Exam',
-      key: 'exam',
-      width: '10%',
+      title: "Exam",
+      key: "exam",
+      width: "10%",
       render: (text, record) => (
         <Input
           type="text"
           placeholder="Exam"
-          value={notes[record.id]?.exam || 'absent'}
-          onChange={(e) => handleNoteChange(e, record.id, 'exam')}
+          value={notes[record.id]?.exam || "absent"}
+          onChange={(e) => handleNoteChange(e, record.id, "exam")}
           style={{ width: 70 }}
         />
       ),
@@ -191,14 +205,14 @@ export default function AjouterNotes() {
       Prénom: student.firstName,
       Nom: student.name,
       Email: student.email,
-      CC1: notes[student.id]?.cc1 || 'absent',
-      CC2: notes[student.id]?.cc2 || 'absent',
-      Exam: notes[student.id]?.exam || 'absent',
+      CC1: notes[student.id]?.cc1 || "absent",
+      CC2: notes[student.id]?.cc2 || "absent",
+      Exam: notes[student.id]?.exam || "absent",
     }));
 
     const ws = XLSX.utils.json_to_sheet(studentData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Étudiants');
+    XLSX.utils.book_append_sheet(wb, ws, "Étudiants");
 
     XLSX.writeFile(wb, `${selectedLicence}_notes.xlsx`);
   };
@@ -209,7 +223,7 @@ export default function AjouterNotes() {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = event.target.result;
-        const workbook = XLSX.read(data, { type: 'binary' });
+        const workbook = XLSX.read(data, { type: "binary" });
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         const parsedData = XLSX.utils.sheet_to_json(sheet);
@@ -224,11 +238,15 @@ export default function AjouterNotes() {
         }));
 
         setEtudiant(updatedStudents);
-        
+
         // Initialize notes for the new students
         const initialNotes = {};
         updatedStudents.forEach((student) => {
-          initialNotes[student.id] = { cc1: 'absent', cc2: 'absent', exam: 'absent' };
+          initialNotes[student.id] = {
+            cc1: "absent",
+            cc2: "absent",
+            exam: "absent",
+          };
         });
         setNotes(initialNotes);
       };
@@ -237,15 +255,26 @@ export default function AjouterNotes() {
   };
 
   return (
-    <div className="spaceContainer" style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className="headerSection" style={{ display: 'flex', justifyContent: 'center' }}>
+    <div
+      className="spaceContainer"
+      style={{
+        marginBottom: "2rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        className="headerSection"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <Space>
           <Button
             id="btnProA"
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick('Licence 1-2i', 1)}
+            onClick={() => handleButtonClick("Licence 1-2i", 1)}
           >
             Licence 1-2i
           </Button>
@@ -255,7 +284,7 @@ export default function AjouterNotes() {
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick('Licence 2-2i', 2)}
+            onClick={() => handleButtonClick("Licence 2-2i", 2)}
           >
             Licence 2-2i
           </Button>
@@ -265,27 +294,45 @@ export default function AjouterNotes() {
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick('Licence 3-2i', 3)}
+            onClick={() => handleButtonClick("Licence 3-2i", 3)}
           >
             Licence 3-2i
           </Button>
         </Space>
       </div>
-      <div style={{ marginTop: '1rem', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div
+        style={{
+          marginTop: "1rem",
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         {selectedLicence && (
           <>
-            <input type="file" accept=".csv" onChange={handleCSVUpload} id='downCSV' />
-            
-            <h2 style={{ marginRight: '6rem' }}>{selectedLicence}</h2>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleCSVUpload}
+              id="downCSV"
+            />
 
-            <Button type="dashed"  size="large" onClick={downloadExcel} id='downExcel'>
+            <h2 style={{ marginRight: "6rem" }}>{selectedLicence}</h2>
+
+            <Button
+              type="dashed"
+              size="large"
+              onClick={downloadExcel}
+              id="downExcel"
+            >
               Télécharger
-              <img src={ImgExcel} alt="Download" width={25} height={25}  />
+              <img src={ImgExcel} alt="Download" width={25} height={25} />
             </Button>
           </>
         )}
       </div>
-      <div style={{ width: '100%', marginTop: '1rem' }}>
+      <div style={{ width: "100%", marginTop: "1rem" }}>
         <Table columns={columns} dataSource={etudant} rowKey="id" />
       </div>
     </div>

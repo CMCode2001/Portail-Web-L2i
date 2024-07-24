@@ -9,8 +9,10 @@ import {
   GoldOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import CrudTable from "./CrudTable.tsx"; // Assurez-vous que le chemin est correct
+import CrudTable from "./CrudTable.tsx";
 import { SERVER_URL } from "../../../constantURL.js";
+import CrudClasse from "./Classes/CrudClasse.tsx";
+import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -21,63 +23,30 @@ const DashboardAdmin = () => {
   } = theme.useToken();
 
   const [selectedCrud, setSelectedCrud] = useState(null);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    if (selectedCrud) {
-      // Fetch data from the back-end based on the selectedCrud
-      fetch(SERVER_URL + `/${selectedCrud}`)
-        .then((response) => response.json())
-        .then((data) => setData(data))
-        .catch((error) => console.error("Error fetching data:", error));
-    }
-  }, [selectedCrud]);
 
   const handleMenuClick = ({ key }) => {
     setSelectedCrud(key);
   };
 
-  const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
-
-    if (window.confirm("Voulez-vous vraiment supprimer cet élément?")) {
-      fetch(SERVER_URL + `/${selectedCrud.split("/")[0]}/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setData(data.filter((item) => item.id !== id));
-          } else {
-            console.error("Failed to delete item");
-          }
-        })
-        .catch((error) => console.error("Error deleting item:", error));
+  const renderContent = () => {
+    switch (selectedCrud) {
+      case "etudiants":
+        return <CrudTable />;
+      case "professor":
+        return <CrudProfesseur />;
+      case "student/niveau/1":
+      case "student/niveau/2":
+      case "student/niveau/3":
+        return <CrudClasse />;
+      case "crud-gallerie":
+        return <CrudTable />;
+      case "crud-module1":
+        return <CrudTable />;
+      case "crud-partenaires":
+        return <CrudTable />;
+      default:
+        return "DashboardAdmin Content";
     }
-  };
-
-  const handleEdit = (id, newData) => {
-    // const token = localStorage.getItem("authToken");
-    const token = sessionStorage.getItem("jwt");
-
-    fetch(SERVER_URL + `/${selectedCrud.split("/")[0]}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData(data.map((item) => (item.id === id ? newData : item)));
-        } else {
-          console.error("Failed to edit item");
-        }
-      })
-      .catch((error) => console.error("Error editing item:", error));
   };
 
   return (
@@ -159,15 +128,7 @@ const DashboardAdmin = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {selectedCrud ? (
-              <CrudTable
-                data={data}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ) : (
-              "DashboardAdmin Content"
-            )}
+            {renderContent()}
           </div>
         </Content>
         <Footer
