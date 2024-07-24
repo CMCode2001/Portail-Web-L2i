@@ -9,7 +9,7 @@ export default function TopBarProf() {
                     <div className=" top-messagerie ">
                         
                         <h5> 
-                            <Link to="mailto:l2iuasz@gmail.com" style={{marginLeft:'20rem', color:'white', textDecoration:'none'}}>
+                            <Link to="mailto:l2iuasz@gmail.com" style={{marginLeft:'9.6rem', color:'white', textDecoration:'none'}}>
                                 <i className="fas fa-envelope "/> &nbsp;
                                 l2iuasz@gmail.com
 

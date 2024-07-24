@@ -241,7 +241,7 @@ export default function AjouterNotes() {
       <div className="headerSection" style={{ display: 'flex', justifyContent: 'center' }}>
         <Space>
           <Button
-            id="btnPro2"
+            id="btnProA"
             type="primary"
             icon={<TeamOutlined />}
             size="large"
@@ -251,7 +251,7 @@ export default function AjouterNotes() {
           </Button>
           <br />
           <Button
-            id="btnPro2"
+            id="btnProB"
             type="primary"
             icon={<TeamOutlined />}
             size="large"
@@ -261,7 +261,7 @@ export default function AjouterNotes() {
           </Button>
           <br />
           <Button
-            id="btnPro2"
+            id="btnProC"
             type="primary"
             icon={<TeamOutlined />}
             size="large"

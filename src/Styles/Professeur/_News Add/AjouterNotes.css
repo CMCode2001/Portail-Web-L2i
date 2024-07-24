@@ -1,3 +1,26 @@
+#btnProA{
+    background-color: #f5f4f4;
+    color: var(--bgColor2);
+    font-weight: bold;
+}
+#btnProA:hover{
+    color: var(--bgColor2);
+    font-weight: bold;
+    border: dashed 1px;
+}
+
+#btnProB{
+    background-color: var(--bgColor2);
+    color: white;
+    font-weight: bold;
+}
+
+
+#btnProC{
+    background-color: var(--bgColor1);
+    color: white;
+    font-weight: bold;
+}
 #downExcel{
     background-color: white;
     color: var(--bgColor2);
