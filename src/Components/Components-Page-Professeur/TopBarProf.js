@@ -1,16 +1,15 @@
-import React from 'react';
-import '../../../Styles/TopbarOfficiel.css';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-
-const Topbar = () => {
-    return (
-        <div className="container-fluid bgCouleur1 py-2  d-md-flex">
+export default function TopBarProf() {
+  return (
+    <div className="container-fluid bgCouleur1 py-2  ">
             <div className="container">
                 <div className="d-flex justify-content-between topbar ">
-                    <div className="top-messagerie d-none d-lg-block">
+                    <div className=" top-messagerie ">
+                        
                         <h5> 
-                            <Link to="mailto:l2iuasz@gmail.com" style={{color:'white', textDecoration:'none'}}>
+                            <Link to="mailto:l2iuasz@gmail.com" style={{marginLeft:'9.6rem', color:'white', textDecoration:'none'}}>
                                 <i className="fas fa-envelope "/> &nbsp;
                                 l2iuasz@gmail.com
 
@@ -18,7 +17,7 @@ const Topbar = () => {
                         </h5>
 
                     </div>
-                    <div className="top-link d-none d-lg-block">
+                    <div className="top-link ">
                         <text id='suivezLink'  style={{color:'white'}}><i>Suivez-nous sur !!</i></text> 
                         <Link to="/" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum'>
                             <i className="fab fa-facebook-f "></i>
@@ -41,7 +40,5 @@ const Topbar = () => {
                 </div>
             </div>
         </div>
-    );
-};
-
-export default Topbar;
+  )
+}

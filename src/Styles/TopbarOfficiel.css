@@ -1,0 +1,48 @@
+.container-fluid {
+    background-color: var(--bgColor2); /* Ajustez cette couleur selon vos besoins */
+    padding: 10px 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-messagerie h5 {
+    margin: 0;
+    color: white;
+}
+
+#suivezLink {
+    color: white;
+    margin-right: 10px;
+}
+
+#IconeCostum {
+    margin: 0 5px;
+    color: #333; /* Ajustez cette couleur selon vos besoins */
+    background-color: white;
+}
+
+#IconeCostum i {
+    font-size: 16px; /* Ajustez cette taille selon vos besoins */
+}
+
+.top-link {
+    display: flex;
+    align-items: center;
+}
+
+.bg-light {
+    background-color: #fff !important; /* Assurez-vous que les icônes sont visibles */
+    color: #333 !important;
+}
+
+.top-link a, .top-link text {
+    margin-right: 10px;
+}
+
+.bgCouleur1 {
+    background-color:var(--bgColor1); /* Ajustez cette couleur selon vos besoins */
+}

@@ -4,7 +4,7 @@ import '../../Styles/SidebarProf.css';
 
 const SidebarProf = () => (
   <div id='bgRedProf'>
-    <h1 style={{textAlign:'center', color:'white'}}>
+    <h1 id='nekalNitte'>
         Espace Professeur Licence Ingénierie Informatique
     </h1>
   </div>

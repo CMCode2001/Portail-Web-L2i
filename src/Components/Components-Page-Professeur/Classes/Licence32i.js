@@ -214,9 +214,9 @@ const Licence32i = () => {
 
   const columns = [
     {
-      title: "CIN",
-      dataIndex: "cin",
-      key: "cin",
+      title: "INE",
+      dataIndex: "ine",
+      key: "ine",
       width: "20%",
       ...getColumnSearchProps("cin"),
       sorter: (a, b) => a.address.length - b.address.length,
@@ -231,10 +231,10 @@ const Licence32i = () => {
     },
     {
       title: "Nom",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "lastName",
+      key: "lastName",
       width: "30%",
-      ...getColumnSearchProps("name"),
+      ...getColumnSearchProps("lastName"),
     },
     {
       title: "Email",
@@ -243,7 +243,6 @@ const Licence32i = () => {
       width: "20%",
       ...getColumnSearchProps("email"),
     },
-    
   ];
 
   const showDrawerDevoir = () => {
@@ -313,38 +312,38 @@ const Licence32i = () => {
         ]}
       ></Modal>
       <div className="spaceContainer" style={{ marginBottom: "2rem" }}>
-      <div className="headerSection">
-        <h2 className="leftAlign">
-          <TeamOutlined />
-          Classe Licence 3-2i
-        </h2>
-        
-        <Space  className="rightAlign">
-          <Button
-            id="btnPro2"
-            type="primary"
-            icon={<CalendarOutlined />}
-            style={{ width: "13rem" }}
-            size="large"
-            onClick={showDrawerDevoir}
-          >
-            Programmer Devoir
-          </Button>
-            <br/>
-            <br/>
-            <br/>
-          
-          <Button
-            id="btnPro2"
-            type="primary"
-            icon={<DownloadOutlined />}
-            size="large"
-            onClick={showDrawerCourse}
-          >
-            Ajouter Cours
-          </Button>
-        </Space>
-      </div>
+        <div className="headerSection">
+          <h2 className="leftAlign">
+            <TeamOutlined />
+            Classe Licence 3-2i
+          </h2>
+
+          <Space className="rightAlign">
+            <Button
+              id="btnPro2"
+              type="primary"
+              icon={<CalendarOutlined />}
+              style={{ width: "13rem" }}
+              size="large"
+              onClick={showDrawerDevoir}
+            >
+              Programmer Devoir
+            </Button>
+            <br />
+            <br />
+            <br />
+
+            <Button
+              id="btnPro2"
+              type="primary"
+              icon={<DownloadOutlined />}
+              size="large"
+              onClick={showDrawerCourse}
+            >
+              Ajouter Cours
+            </Button>
+          </Space>
+        </div>
       </div>
       <div className="tableSection">
         <h4 style={{ textAlign: "center" }}>Liste des étudiants</h4>
@@ -385,7 +384,12 @@ const Licence32i = () => {
                 style={{ fontWeight: "600" }}
                 name="assignmentTitle"
                 label="Titre du Devoir"
-                rules={[{ required: true, message: "Veuillez entrer le titre du devoir" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer le titre du devoir",
+                  },
+                ]}
               >
                 <Input
                   placeholder="Veuillez entrer le titre du devoir"
@@ -406,7 +410,10 @@ const Licence32i = () => {
                   },
                 ]}
               >
-                <TextArea rows={3} placeholder="Veuillez entrer la description du devoir" />
+                <TextArea
+                  rows={3}
+                  placeholder="Veuillez entrer la description du devoir"
+                />
               </Form.Item>
             </Col>
             <Col span={17}>
@@ -414,7 +421,12 @@ const Licence32i = () => {
                 style={{ fontWeight: "600" }}
                 name="Salle"
                 label="Salle du Devoir"
-                rules={[{ required: true, message: "Veuillez entrer le lieu de salle du devoir" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer le lieu de salle du devoir",
+                  },
+                ]}
               >
                 <Input
                   placeholder="Veuillez entrer le lieu de salle du devoir"
@@ -427,7 +439,12 @@ const Licence32i = () => {
                 style={{ fontWeight: "600" }}
                 name="dueDate"
                 label="Date du Devoir"
-                rules={[{ required: true, message: "Veuillez sélectionner une date d'échéance" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez sélectionner une date d'échéance",
+                  },
+                ]}
               >
                 <Input
                   type="date"
@@ -510,8 +527,6 @@ const Licence32i = () => {
         </Form>
       </Drawer>
       {/* ==========================  FIN AJOUTER COURS ============================= */}
-
-      
     </div>
   );
 };

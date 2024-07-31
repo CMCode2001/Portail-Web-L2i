@@ -132,9 +132,10 @@ const SidebarProf2 = () => {
           style={{
             padding: 0,
             background: colorBgContainer,
+            height:'0'
           }}
         />
-        <h3 style={{ textAlign: "center" }}>
+        <h3 style={{ textAlign: "center"  }}>
           <br />
           <UserOutlined /> Bonjour, Pr {currentUser?.firstName}{" "}
           {currentUser?.name}
