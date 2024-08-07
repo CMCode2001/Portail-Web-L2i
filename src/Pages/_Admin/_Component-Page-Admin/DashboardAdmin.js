@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Layout, Menu, theme } from "antd";
 import "../_Styles/DashboardAdmin.css";
 import {
@@ -10,9 +10,9 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CrudTable from "./CrudTable.tsx";
-import { SERVER_URL } from "../../../constantURL.js";
-import CrudClasse from "./Classes/CrudClasse.tsx";
+import CrudClasse from "./Classes/CrudClasseL1.tsx";
 import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
+import CrudClasseL1 from "./Classes/CrudClasseL1.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -37,7 +37,7 @@ const DashboardAdmin = () => {
       case "student/niveau/1":
       case "student/niveau/2":
       case "student/niveau/3":
-        return <CrudClasse />;
+        return <CrudClasseL1 />;
       case "crud-gallerie":
         return <CrudTable />;
       case "crud-module1":
@@ -82,6 +82,13 @@ const DashboardAdmin = () => {
             <Menu.Item key="professor">Professeurs</Menu.Item>
           </SubMenu>
           <SubMenu
+            key="utilisateurs"
+            icon={<UserOutlined />}
+            title="Utilisateurs"
+          >
+            <Menu.Item key="utilisateurs">Utilisateurs</Menu.Item>
+          </SubMenu>
+          <SubMenu
             key="gallerie"
             icon={<VideoCameraOutlined />}
             title="Galleries"
@@ -90,6 +97,16 @@ const DashboardAdmin = () => {
           </SubMenu>
           <SubMenu key="module" icon={<VideoCameraOutlined />} title="Modules">
             <Menu.Item key="crud-module1">Modules</Menu.Item>
+          </SubMenu>
+          <SubMenu key="forum" icon={<VideoCameraOutlined />} title="Forum">
+            <Menu.Item key="forum">Forum</Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="messageForum"
+            icon={<VideoCameraOutlined />}
+            title="Messages Forum"
+          >
+            <Menu.Item key="messageForum">Messages Forum</Menu.Item>
           </SubMenu>
           <SubMenu
             key="partenaires"

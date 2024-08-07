@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { SERVER_URL } from "../../../../constantURL";
 
-const CrudProfesseur = () => {
+const CrudClasseL1 = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -10,29 +10,24 @@ const CrudProfesseur = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
 
-  // const fetchProfessors = () => {
-  //   fetch(SERVER_URL + "/professor")
-  //     .then((response) => response.json())
-  //     .then((data) => setData(data))
-  //     .catch((error) => console.error("Error fetching data professor:", error));
-  // };
-
-  const fetchProfessors = () => {
-    fetch(SERVER_URL + "/professor")
+  const fetchClasseL1 = () => {
+    fetch(SERVER_URL + "/student/niveau/1")
       .then((response) => response.json())
       .then((data) => setData(data.reverse())) // Inverser l'ordre des données
-      .catch((error) => console.error("Error fetching data professor:", error));
+      .catch((error) =>
+        console.error("Error fetching data student level 1:", error)
+      );
   };
 
   useEffect(() => {
-    fetchProfessors();
+    fetchClasseL1();
   }, []);
 
   const handleDelete = (id) => {
     const token = sessionStorage.getItem("jwt");
 
-    if (window.confirm("Voulez-vous vraiment supprimer ce professeur?")) {
-      fetch(SERVER_URL + `/professor/${id}`, {
+    if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
+      fetch(SERVER_URL + `/student/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -42,7 +37,7 @@ const CrudProfesseur = () => {
           if (response.ok) {
             setData((prevData) => prevData.filter((item) => item.id !== id));
           } else {
-            console.error("Failed to delete item professor");
+            console.error("Failed to delete item student");
           }
         })
         .catch((error) => console.error("Error deleting item:", error));
@@ -52,7 +47,7 @@ const CrudProfesseur = () => {
   const handleEdit = (id, newData) => {
     const token = sessionStorage.getItem("jwt");
 
-    fetch(SERVER_URL + `/professor/${id}`, {
+    fetch(SERVER_URL + `/student/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +61,7 @@ const CrudProfesseur = () => {
             prevData.map((item) => (item.id === id ? newData : item))
           );
         } else {
-          console.error("Failed to edit item professor");
+          console.error("Failed to edit item student");
         }
       })
       .catch((error) => console.error("Error editing item:", error));
@@ -75,7 +70,7 @@ const CrudProfesseur = () => {
   const handleAdd = (newData) => {
     const token = sessionStorage.getItem("jwt");
 
-    fetch(SERVER_URL + "/professor", {
+    fetch(SERVER_URL + "/student", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +82,7 @@ const CrudProfesseur = () => {
       .then((data) => {
         setIsAddModalOpen(false);
         addForm.resetFields();
-        // fetchProfessors();
+        // fetchClasseL1();
         setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
       })
       .catch((error) => console.error("Error adding item:", error));
@@ -102,7 +97,7 @@ const CrudProfesseur = () => {
   const showAddModal = () => {
     addForm.setFieldsValue({
       password: generateDefaultPassword(),
-      department: "INFORMATIQUE",
+      classeroom_id: 1,
     });
     setIsAddModalOpen(true);
   };
@@ -157,9 +152,9 @@ const CrudProfesseur = () => {
 
   const columns = [
     {
-      title: "FirstName",
-      dataIndex: "firstName",
-      key: "firstName",
+      title: "INE",
+      dataIndex: "ine",
+      key: "ine",
     },
     {
       title: "LastName",
@@ -167,19 +162,19 @@ const CrudProfesseur = () => {
       key: "lastName",
     },
     {
+      title: "FirstName",
+      dataIndex: "firstName",
+      key: "firstName",
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
-    {
       title: "Speciality",
-      dataIndex: "specialityProfessor",
-      key: "specialityProfessor",
+      dataIndex: "specialityStudent",
+      key: "specialityStudent",
     },
     {
       title: "Action",
@@ -208,7 +203,7 @@ const CrudProfesseur = () => {
       <Table columns={columns} dataSource={data} rowKey="id" />
       <div style={{ textAlign: "center", marginTop: 20 }}>
         <Button type="primary" onClick={showAddModal}>
-          Add Professor
+          Add student
         </Button>
       </div>
       <Modal
@@ -218,46 +213,43 @@ const CrudProfesseur = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="firstName" label="FirstName">
+          <Form.Item name="ine" label="INE">
             <Input />
           </Form.Item>
           <Form.Item name="lastName" label="LastName">
+            <Input />
+          </Form.Item>
+          <Form.Item name="firstName" label="FirstName">
             <Input />
           </Form.Item>
           <Form.Item name="email" label="Email">
             <Input />
           </Form.Item>
-          <Form.Item name="department" label="Department">
-            <Input />
-          </Form.Item>
-          <Form.Item name="specialityProfessor" label="Speciality">
+          <Form.Item name="specialityStudent" label="Speciality">
             <Input />
           </Form.Item>
         </Form>
       </Modal>
       <Modal
-        title="Add Professor"
+        title="Add student"
         open={isAddModalOpen}
         onOk={handleAddOk}
         onCancel={handleAddCancel}
       >
         <Form form={addForm} layout="vertical">
-          <Form.Item name="department" label="Department">
-            <Input defaultValue={"INFORMATIQUE"} />
+          <Form.Item required name="ine" label="INE">
+            <Input />
           </Form.Item>
-          <Form.Item hidden name="specialityProfessor" label="Speciality">
+          <Form.Item required name="specialityStudent" label="Speciality">
             <Input />
           </Form.Item>
           <Form.Item hidden name="classeroom_id" label="Classeroom ID">
             <Input />
           </Form.Item>
-          <Form.Item hidden name="courses" label="Courses">
+          <Form.Item required name="firstName" label="FirstName">
             <Input />
           </Form.Item>
-          <Form.Item name="firstName" label="FirstName">
-            <Input />
-          </Form.Item>
-          <Form.Item name="lastName" label="LastName">
+          <Form.Item required name="lastName" label="LastName">
             <Input />
           </Form.Item>
           <Form.Item required name="email" label="Email">
@@ -272,4 +264,4 @@ const CrudProfesseur = () => {
   );
 };
 
-export default CrudProfesseur;
+export default CrudClasseL1;
