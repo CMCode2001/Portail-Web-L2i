@@ -13,6 +13,9 @@ import CrudTable from "./CrudTable.tsx";
 import CrudClasse from "./Classes/CrudClasseL1.tsx";
 import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 import CrudClasseL1 from "./Classes/CrudClasseL1.tsx";
+import CrudClasseL2 from "./Classes/CrudClasseL2.tsx";
+import CrudClasseL3 from "./Classes/CrudClasseL3.tsx";
+import UploadPicture from "./Galleries/UploadPicture.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -35,11 +38,13 @@ const DashboardAdmin = () => {
       case "professor":
         return <CrudProfesseur />;
       case "student/niveau/1":
-      case "student/niveau/2":
-      case "student/niveau/3":
         return <CrudClasseL1 />;
+      case "student/niveau/2":
+        return <CrudClasseL2 />;
+      case "student/niveau/3":
+        return <CrudClasseL3 />;
       case "crud-gallerie":
-        return <CrudTable />;
+        return <UploadPicture />;
       case "crud-module1":
         return <CrudTable />;
       case "crud-partenaires":

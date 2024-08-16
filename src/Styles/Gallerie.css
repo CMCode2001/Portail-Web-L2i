@@ -1,16 +1,79 @@
 /* Gallerie.css */
+/* 
+.gallerie-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: -35px;
+}
+
+.gallerie-text {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.gallerie-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.gallerie-images img {
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallerie-images img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gallerie-images p {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+} */
+
+/* --------------- */
 
 .gallerie-container {
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    gap: -35px; 
-  }
-  
-  
-  .gallerie-text {
-    text-align: center;
-    font-size: 34px; 
-    font-weight: 800;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: -35px;
+}
+
+.gallerie-text {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.pictures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px; /* Espacement uniforme entre les images */
+  padding: 20px;
+}
+
+.pictures-grid img {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Conserve le ratio de l'image */
+  border-radius: 8px; /* Coins arrondis pour un effet plus soigné */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Légère ombre portée pour un meilleur contraste */
+}
+
+.pictures-grid p {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}

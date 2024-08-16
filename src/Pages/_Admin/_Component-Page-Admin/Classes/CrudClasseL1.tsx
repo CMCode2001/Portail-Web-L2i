@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { SERVER_URL } from "../../../../constantURL";
+import { Select } from "antd";
 
 const CrudClasseL1 = () => {
   const [data, setData] = useState([]);
@@ -11,9 +12,19 @@ const CrudClasseL1 = () => {
   const [addForm] = Form.useForm();
 
   const fetchClasseL1 = () => {
-    fetch(SERVER_URL + "/student/niveau/1")
+    fetch(SERVER_URL + "/curentListStudent/niveau/licence1")
       .then((response) => response.json())
-      .then((data) => setData(data.reverse())) // Inverser l'ordre des données
+      .then((data) => {
+        const sortedData = data.sort((a, b) => {
+          if (a.lastName < b.lastName) return -1;
+          if (a.lastName > b.lastName) return 1;
+          if (a.firstName < b.firstName) return -1;
+          if (a.firstName > b.firstName) return 1;
+          return 0;
+        });
+        // setData(sortedData.reverse()); // Inverser l'ordre des données
+        setData(sortedData);
+      })
       .catch((error) =>
         console.error("Error fetching data student level 1:", error)
       );
@@ -27,7 +38,7 @@ const CrudClasseL1 = () => {
     const token = sessionStorage.getItem("jwt");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
-      fetch(SERVER_URL + `/student/${id}`, {
+      fetch(SERVER_URL + `/curentListStudent/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -47,7 +58,7 @@ const CrudClasseL1 = () => {
   const handleEdit = (id, newData) => {
     const token = sessionStorage.getItem("jwt");
 
-    fetch(SERVER_URL + `/student/${id}`, {
+    fetch(SERVER_URL + `/curentListStudent/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +81,7 @@ const CrudClasseL1 = () => {
   const handleAdd = (newData) => {
     const token = sessionStorage.getItem("jwt");
 
-    fetch(SERVER_URL + "/student", {
+    fetch(SERVER_URL + "/curentListStudent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,8 +107,8 @@ const CrudClasseL1 = () => {
 
   const showAddModal = () => {
     addForm.setFieldsValue({
-      password: generateDefaultPassword(),
-      classeroom_id: 1,
+      classeroom: "LICENCE1",
+      // classeroom_id: 1,
     });
     setIsAddModalOpen(true);
   };
@@ -138,17 +149,20 @@ const CrudClasseL1 = () => {
     addForm.resetFields(); // Réinitialisez les champs du formulaire en cas d'annulation
   };
 
-  const generateDefaultPassword = () => {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let password = "";
-    for (let i = 0; i < 6; i++) {
-      password += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-    }
-    return password;
-  };
+  const classroomOptions = [
+    { label: "Licence 1", value: "LICENCE1" },
+    { label: "Licence 2", value: "LICENCE2" },
+    { label: "Licence 3", value: "LICENCE3" },
+    // { label: "Master 1", value: "MASTER1" },
+    // { label: "Master 2", value: "MASTER2" },
+    // { label: "None", value: "NONE" },
+  ];
+
+  const specialityStudentOptions = [
+    { label: "Génie Logiciel", value: "GL" },
+    { label: "Réseau", value: "RS" },
+    { label: "None", value: "None" },
+  ];
 
   const columns = [
     {
@@ -213,6 +227,9 @@ const CrudClasseL1 = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
+          <Form.Item name="classeroom" label="Classeroom">
+            <Select options={classroomOptions} />
+          </Form.Item>
           <Form.Item name="ine" label="INE">
             <Input />
           </Form.Item>
@@ -225,8 +242,8 @@ const CrudClasseL1 = () => {
           <Form.Item name="email" label="Email">
             <Input />
           </Form.Item>
-          <Form.Item name="specialityStudent" label="Speciality">
-            <Input />
+          <Form.Item required name="specialityStudent" label="Speciality">
+            <Select defaultValue={"None"} options={specialityStudentOptions} />
           </Form.Item>
         </Form>
       </Modal>
@@ -237,14 +254,14 @@ const CrudClasseL1 = () => {
         onCancel={handleAddCancel}
       >
         <Form form={addForm} layout="vertical">
+          <Form.Item hidden required name="classeroom" label="Classeroom">
+            <Input value={"LICENCE1"} />
+          </Form.Item>
           <Form.Item required name="ine" label="INE">
             <Input />
           </Form.Item>
           <Form.Item required name="specialityStudent" label="Speciality">
-            <Input />
-          </Form.Item>
-          <Form.Item hidden name="classeroom_id" label="Classeroom ID">
-            <Input />
+            <Select defaultValue={"None"} options={specialityStudentOptions} />
           </Form.Item>
           <Form.Item required name="firstName" label="FirstName">
             <Input />
@@ -254,9 +271,6 @@ const CrudClasseL1 = () => {
           </Form.Item>
           <Form.Item required name="email" label="Email">
             <Input />
-          </Form.Item>
-          <Form.Item required name="password" label="Password">
-            <Input defaultValue={generateDefaultPassword()} />
           </Form.Item>
         </Form>
       </Modal>
