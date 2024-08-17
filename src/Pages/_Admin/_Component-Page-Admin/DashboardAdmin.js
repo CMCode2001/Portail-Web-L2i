@@ -3,10 +3,15 @@ import { Layout, Menu, theme } from "antd";
 import "../_Styles/DashboardAdmin.css";
 import {
   UserOutlined,
-  VideoCameraOutlined,
   AppstoreOutlined,
   HomeOutlined,
   GoldOutlined,
+  FileTextOutlined,
+  PictureOutlined,
+  MessageOutlined,
+  WechatOutlined,
+  PushpinOutlined,
+  PieChartOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CrudTable from "./CrudTable.tsx";
@@ -16,6 +21,11 @@ import CrudClasseL1 from "./Classes/CrudClasseL1.tsx";
 import CrudClasseL2 from "./Classes/CrudClasseL2.tsx";
 import CrudClasseL3 from "./Classes/CrudClasseL3.tsx";
 import UploadPicture from "./Galleries/UploadPicture.js";
+import ScreenText from "./text/ScreenText.tsx";
+import UserSite from "./user/UserSite.tsx";
+import OldStudent from "./Classes/OldStudent.tsx";
+import CrudForum from "./Forum/CrudForum.tsx";
+import CrudMessageForum from "./Forum/CrudMessageForum.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -37,16 +47,26 @@ const DashboardAdmin = () => {
         return <CrudTable />;
       case "professor":
         return <CrudProfesseur />;
+      case "utilisateurs":
+        return <UserSite />;
       case "student/niveau/1":
         return <CrudClasseL1 />;
       case "student/niveau/2":
         return <CrudClasseL2 />;
       case "student/niveau/3":
         return <CrudClasseL3 />;
+      case "student/niveau/ancien":
+        return <OldStudent />;
       case "crud-gallerie":
         return <UploadPicture />;
+      case "crud-welcomeText":
+        return <ScreenText />;
       case "crud-module1":
         return <CrudTable />;
+      case "forum":
+        return <CrudForum />;
+      case "messageForum":
+        return <CrudMessageForum />;
       case "crud-partenaires":
         return <CrudTable />;
       default:
@@ -82,6 +102,7 @@ const DashboardAdmin = () => {
             <Menu.Item key="student/niveau/1">Licence1-2I</Menu.Item>
             <Menu.Item key="student/niveau/2">Licence2-2I</Menu.Item>
             <Menu.Item key="student/niveau/3">Licence3-2I</Menu.Item>
+            <Menu.Item key="student/niveau/ancien">Anciens</Menu.Item>
           </SubMenu>
           <SubMenu key="professeur" icon={<UserOutlined />} title="Professeurs">
             <Menu.Item key="professor">Professeurs</Menu.Item>
@@ -93,29 +114,32 @@ const DashboardAdmin = () => {
           >
             <Menu.Item key="utilisateurs">Utilisateurs</Menu.Item>
           </SubMenu>
-          <SubMenu
-            key="gallerie"
-            icon={<VideoCameraOutlined />}
-            title="Galleries"
-          >
+          <SubMenu key="gallerie" icon={<PictureOutlined />} title="Galleries">
             <Menu.Item key="crud-gallerie">Gallerie</Menu.Item>
           </SubMenu>
-          <SubMenu key="module" icon={<VideoCameraOutlined />} title="Modules">
+          <SubMenu
+            key="welcomeText"
+            icon={<FileTextOutlined />}
+            title="Texte Ecran"
+          >
+            <Menu.Item key="crud-welcomeText">Text</Menu.Item>
+          </SubMenu>
+          <SubMenu key="module" icon={<PieChartOutlined />} title="Modules">
             <Menu.Item key="crud-module1">Modules</Menu.Item>
           </SubMenu>
-          <SubMenu key="forum" icon={<VideoCameraOutlined />} title="Forum">
+          <SubMenu key="forum" icon={<MessageOutlined />} title="Forum">
             <Menu.Item key="forum">Forum</Menu.Item>
           </SubMenu>
           <SubMenu
             key="messageForum"
-            icon={<VideoCameraOutlined />}
+            icon={<WechatOutlined />}
             title="Messages Forum"
           >
             <Menu.Item key="messageForum">Messages Forum</Menu.Item>
           </SubMenu>
           <SubMenu
             key="partenaires"
-            icon={<GoldOutlined />}
+            icon={<PushpinOutlined />}
             title="Partenaires"
           >
             <Menu.Item key="crud-partenaires">Nos Partenaires</Menu.Item>

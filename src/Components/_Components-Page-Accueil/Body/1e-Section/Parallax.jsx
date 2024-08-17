@@ -1,23 +1,42 @@
-import { React, useEffect, useRef } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import { Parallax } from "react-parallax";
 import Typewriter from "typewriter-effect/dist/core";
 import image from "../../../../Assets/img/Graduation.png";
 import "../../../../Styles/Parallax.css";
+import { SERVER_URL } from "../../../../constantURL";
 
 const Para = () => {
   const typewriterRef = useRef(null);
-  useEffect(() => {
-    typewriterRef.current = new Typewriter("#typewriter", {
-      strings: [
-        "La meilleure filière d'informatique du Sénégal",
-        "Rejoignez-nous pour une carrière brillante",
-      ],
-      autoStart: true,
-      loop: true, // Added for continuous typing
-    });
+  const [data, setData] = useState([]);
 
-    typewriterRef.current.start();
+  const fetchText = () => {
+    fetch(SERVER_URL + "/text")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.error("Error fetching data text :", error));
+  };
+
+  useEffect(() => {
+    fetchText();
   }, []);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      typewriterRef.current = new Typewriter("#typewriter", {
+        strings: [
+          data[0].textDeroulant,
+          "Rejoignez-nous pour une carrière brillante",
+        ],
+        autoStart: true,
+        loop: true,
+      });
+
+      typewriterRef.current.start();
+    }
+  }, [data]);
+
   return (
     <Parallax
       bgImage={image}
@@ -30,7 +49,11 @@ const Para = () => {
                         <img src={uniLogo} alt="Logo de l'université" className="logo" />
                         <img src={filiereLogo} alt="Logo de la filière" className="logo" />
                     </div> */}
-          <h1>Votre filière informatique</h1>
+          <h1>
+            {data.length > 0
+              ? data[0].textFiliere
+              : "Votre filière informatique"}
+          </h1>
           <p id="typewriter"></p>
         </div>
       </div>

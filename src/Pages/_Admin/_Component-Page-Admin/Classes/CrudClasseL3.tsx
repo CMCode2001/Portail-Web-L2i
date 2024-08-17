@@ -153,6 +153,7 @@ const CrudClasseL3 = () => {
     { label: "Licence 1", value: "LICENCE1" },
     { label: "Licence 2", value: "LICENCE2" },
     { label: "Licence 3", value: "LICENCE3" },
+    { label: "Ancien", value: "ANCIEN" },
     // { label: "Master 1", value: "MASTER1" },
     // { label: "Master 2", value: "MASTER2" },
     // { label: "None", value: "NONE" },

@@ -52,8 +52,8 @@ function App() {
           {/* ------------ Professeur -------------- */}
 
           {/* ---------------- ADMIN --------------- */}
-          {/* <Route path="/#01admin-4359" element={<PageAdmin />} /> */}
-          <Route path="/admin" element={<PageAdmin />} />
+          <Route path="/adminflksosdjds" element={<PageAdmin />} />
+          {/* <Route path="/admin" element={<PageAdmin />} /> */}
           {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>

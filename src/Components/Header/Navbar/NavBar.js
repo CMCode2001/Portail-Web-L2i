@@ -159,7 +159,10 @@ const Navbar = () => {
                         )}
                         {currentUser?.role === "admin" && (
                           <Menu.Item key="espaceAdmin">
-                            <NavLink to="/admin">Espace Admin</NavLink>
+                            {/* <NavLink to="/admin">Espace Admin</NavLink> */}
+                            <NavLink to="/adminflksosdjds">
+                              Espace Admin
+                            </NavLink>
                           </Menu.Item>
                         )}
                       </Menu>
