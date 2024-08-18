@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
-import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  CloseOutlined,
+  EditOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import "../../../Styles/Navbar-Topbar.css";
 import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
@@ -149,7 +154,11 @@ const Navbar = () => {
                   <Dropdown
                     overlay={
                       <Menu>
-                        <Menu.Item key="logout" onClick={handleLogout}>
+                        <Menu.Item
+                          icon={<LogoutOutlined />}
+                          key="logout"
+                          onClick={handleLogout}
+                        >
                           Déconnexion
                         </Menu.Item>
                         {currentUser?.role === "student" && (
