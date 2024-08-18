@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
-import { UserOutlined, CloseOutlined } from "@ant-design/icons";
+import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import "../../../Styles/Navbar-Topbar.css";
 import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
@@ -152,6 +152,11 @@ const Navbar = () => {
                         <Menu.Item key="logout" onClick={handleLogout}>
                           Déconnexion
                         </Menu.Item>
+                        {currentUser?.role === "student" && (
+                          <Menu.Item icon={<EditOutlined />} key="dashboard">
+                            <NavLink to="/studentProfile">Profile</NavLink>
+                          </Menu.Item>
+                        )}
                         {currentUser?.role === "professor" && (
                           <Menu.Item key="dashboard">
                             <NavLink to="/professeur">Dashboard</NavLink>

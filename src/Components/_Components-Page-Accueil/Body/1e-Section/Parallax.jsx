@@ -3,7 +3,7 @@ import { Parallax } from "react-parallax";
 import Typewriter from "typewriter-effect/dist/core";
 import image from "../../../../Assets/img/Graduation.png";
 import "../../../../Styles/Parallax.css";
-import { SERVER_URL } from "../../../../constantURL";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
 const Para = () => {
   const typewriterRef = useRef(null);

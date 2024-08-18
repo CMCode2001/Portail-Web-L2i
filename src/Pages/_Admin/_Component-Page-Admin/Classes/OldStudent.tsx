@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Input } from "antd";
-import { SERVER_URL } from "../../../../constantURL";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
 const { Search } = Input;
 

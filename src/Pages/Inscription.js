@@ -5,7 +5,7 @@ import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Inscription.css";
 import "../Styles/_RESPONSIVES/Inscription-Rsp.css";
-import { SERVER_URL } from "../constantURL";
+import { SERVER_URL } from "../Utils/constantURL";
 
 const Inscription = () => {
   /* Déclaration des variables */
@@ -18,9 +18,9 @@ const Inscription = () => {
 
   const openSuccessNotification = () => {
     notification.success({
-      message: 'Inscription Réussie',
-      description: 'Votre inscription a été réalisée avec succès!',
-      placement: 'top',
+      message: "Inscription Réussie",
+      description: "Votre inscription a été réalisée avec succès!",
+      placement: "top",
     });
   };
 
@@ -55,7 +55,7 @@ const Inscription = () => {
         openSuccessNotification();
         setTimeout(() => {
           window.location.href = "/"; // Redirection après 3 secondes
-        },500);
+        }, 500);
       } else {
         throw new Error("Token JWT non trouvé dans la réponse");
       }

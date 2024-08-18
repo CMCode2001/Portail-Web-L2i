@@ -1,0 +1,60 @@
+/* Styles généraux pour centrer le contenu */
+/* .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+} */
+
+h4 {
+  font-weight: bold;
+}
+
+/* Style pour les boutons */
+.backBouton {
+  margin-bottom: 20px;
+}
+
+/* Style pour le formulaire */
+.ant-form {
+  width: 100%;
+  max-width: 600px;
+}
+
+.ant-form-item {
+  margin-bottom: 20px;
+}
+
+.ant-form-item .ant-form-item-label {
+  text-align: center;
+}
+
+.ant-form-item .ant-form-item-control {
+  display: flex;
+  justify-content: center;
+}
+
+.ant-input,
+.ant-input-password {
+  width: 100%;
+  max-width: 70%;
+}
+
+/* Style pour le bouton de soumission */
+.login-form-button {
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .ant-input,
+  .ant-input-password {
+    max-width: 90%;
+  }
+
+  .login-form-button {
+    max-width: 100%;
+  }
+}

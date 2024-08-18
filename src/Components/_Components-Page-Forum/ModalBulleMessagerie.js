@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
 import "../../Styles/ModalBulleMessagerie.css";
-import { SERVER_URL } from "../../constantURL";
+import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;

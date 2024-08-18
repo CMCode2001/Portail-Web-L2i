@@ -12,6 +12,8 @@ import {
   WechatOutlined,
   PushpinOutlined,
   PieChartOutlined,
+  EditOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CrudTable from "./CrudTable.tsx";
@@ -26,6 +28,7 @@ import UserSite from "./user/UserSite.tsx";
 import OldStudent from "./Classes/OldStudent.tsx";
 import CrudForum from "./Forum/CrudForum.tsx";
 import CrudMessageForum from "./Forum/CrudMessageForum.tsx";
+import UpdateAdmin from "./Professor/UpdateAdmin.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -39,6 +42,11 @@ const DashboardAdmin = () => {
 
   const handleMenuClick = ({ key }) => {
     setSelectedCrud(key);
+  };
+
+  const handleLogout = () => {
+    window.sessionStorage.clear();
+    window.location.href = "/";
   };
 
   const renderContent = () => {
@@ -69,6 +77,8 @@ const DashboardAdmin = () => {
         return <CrudMessageForum />;
       case "crud-partenaires":
         return <CrudTable />;
+      case "mon-profile":
+        return <UpdateAdmin />;
       default:
         return "DashboardAdmin Content";
     }
@@ -146,11 +156,19 @@ const DashboardAdmin = () => {
           </SubMenu>
           <SubMenu
             key="authentification"
-            icon={<GoldOutlined />}
+            icon={<UserOutlined />}
             title="Authentification"
           >
-            <Menu.Item key="mon-profile">Mon Profile</Menu.Item>
-            <Menu.Item key="deconnexion">Deconnexion</Menu.Item>
+            <Menu.Item icon={<EditOutlined />} key="mon-profile">
+              Mon Profile
+            </Menu.Item>
+            <Menu.Item
+              icon={<LogoutOutlined />}
+              key="deconnexion"
+              onClick={handleLogout}
+            >
+              Deconnexion
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </Sider>
