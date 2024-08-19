@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import "../../../Styles/stats.css";
-import { SERVER_URL } from "../../../constantURL";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 function Stats() {
   const [totalStudents, setTotalStudents] = useState(0);

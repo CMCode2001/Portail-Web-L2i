@@ -19,7 +19,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
-import { SERVER_URL } from "../../../constantURL";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 const { TextArea } = Input;
 

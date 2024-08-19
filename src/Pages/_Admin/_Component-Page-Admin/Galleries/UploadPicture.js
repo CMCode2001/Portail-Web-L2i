@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { SERVER_URL } from "../../../../constantURL";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 import { Button, Image } from "antd";
 
 const UploadPicture = () => {

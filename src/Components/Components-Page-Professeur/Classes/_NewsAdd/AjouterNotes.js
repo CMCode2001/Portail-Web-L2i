@@ -5,7 +5,7 @@ import Highlighter from "react-highlight-words";
 import * as XLSX from "xlsx";
 import ImgExcel from "../../../../Assets/img/office365.png";
 import "../../../../Styles/Professeur/_News Add/AjouterNotes.css";
-import { SERVER_URL } from "../../../../constantURL";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
 export default function AjouterNotes() {
   const [selectedLicence, setSelectedLicence] = useState(null);

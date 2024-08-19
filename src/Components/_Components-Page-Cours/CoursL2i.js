@@ -1,9 +1,17 @@
-import { SERVER_URL } from "../../constantURL";
 import { FilePdfOutlined } from "@ant-design/icons";
-import { AiOutlineSearch } from "react-icons/ai"; 
+import { AiOutlineSearch } from "react-icons/ai";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Form, Button, Container, Card, InputGroup } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Form,
+  Button,
+  Container,
+  Card,
+  InputGroup,
+} from "react-bootstrap";
 import "../../Styles/Cours.css";
+import { SERVER_URL } from "../../Utils/constantURL";
 
 const CoursL2i = () => {
   const [cours, setCours] = useState([]);
@@ -107,7 +115,9 @@ const CoursL2i = () => {
           <Col md={2} className="mb-2 mb-md-0">
             <Form.Select
               value={selectedLevel}
-              onChange={(e) => handleFilter(e.target.value, selectedProfessor, selectedDate)}
+              onChange={(e) =>
+                handleFilter(e.target.value, selectedProfessor, selectedDate)
+              }
             >
               <option value="">Tous les niveaux</option>
               <option value="L1">L1</option>
@@ -121,7 +131,9 @@ const CoursL2i = () => {
                 type="text"
                 placeholder="Professeur"
                 value={selectedProfessor}
-                onChange={(e) => handleFilter(selectedLevel, e.target.value, selectedDate)}
+                onChange={(e) =>
+                  handleFilter(selectedLevel, e.target.value, selectedDate)
+                }
               />
               <InputGroup.Text className="loupe">
                 <AiOutlineSearch />
@@ -133,7 +145,9 @@ const CoursL2i = () => {
               <Form.Control
                 type="date"
                 value={selectedDate}
-                onChange={(e) => handleFilter(selectedLevel, selectedProfessor, e.target.value)}
+                onChange={(e) =>
+                  handleFilter(selectedLevel, selectedProfessor, e.target.value)
+                }
               />
               <InputGroup.Text className="loupe">
                 <AiOutlineSearch />
@@ -141,12 +155,15 @@ const CoursL2i = () => {
             </InputGroup>
           </Col>
           <Col md={3}>
-            <Button onClick={() => handleFilter("", "", "")} className="w-100" style={{ 
-              backgroundColor: '#13798C', 
-              color: '#ffffff', 
-              // border: '5px solid #6B2239'
-              
-              }}>
+            <Button
+              onClick={() => handleFilter("", "", "")}
+              className="w-100"
+              style={{
+                backgroundColor: "#13798C",
+                color: "#ffffff",
+                // border: '5px solid #6B2239'
+              }}
+            >
               Réinitialiser les filtres
             </Button>
           </Col>
@@ -154,7 +171,14 @@ const CoursL2i = () => {
       </Form>
       <Row className="justify-content-center">
         {filteredCours.map((course) => (
-          <Col xs={12} sm={6} md={4} lg={4} key={course.id} className="custom-col mb-4 d-flex">
+          <Col
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            key={course.id}
+            className="custom-col mb-4 d-flex"
+          >
             <Card className="card w-100">
               <Card.Body>
                 <Card.Title>{course.title}</Card.Title>
@@ -164,15 +188,16 @@ const CoursL2i = () => {
                 <Card.Text>
                   Niveau : {course.classeroom.name}
                   <br />
-                  Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
+                  Date d'upload :{" "}
+                  {new Date(course.creatAt).toLocaleDateString()}
                 </Card.Text>
                 <Button
                   variant="primary"
                   className="btn"
                   href={SERVER_URL + `/course/${course?.id}/pdf`}
-                  style={{ backgroundColor: '#13798C', color: '#ffffff' }}
+                  style={{ backgroundColor: "#13798C", color: "#ffffff" }}
                 >
-                  <FilePdfOutlined /> Télécharger 
+                  <FilePdfOutlined /> Télécharger
                 </Button>
               </Card.Body>
             </Card>

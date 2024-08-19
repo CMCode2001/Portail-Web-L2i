@@ -5,7 +5,7 @@ import "../Styles/Gallerie.css";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import DevTeamComponent from "../Components/_Components-Page-Gallerie/DevTeamComponent";
 import axios from "axios";
-import { SERVER_URL } from "../constantURL";
+import { SERVER_URL } from "../Utils/constantURL";
 import { Image } from "antd";
 
 export default function Gallerie() {

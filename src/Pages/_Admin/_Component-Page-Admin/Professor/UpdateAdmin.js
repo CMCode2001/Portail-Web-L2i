@@ -1,16 +1,19 @@
 import { Button, Form, Input, notification, Upload, Avatar } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
-import { SERVER_URL } from "../../../Utils/constantURL";
-
-const UpdateProf = () => {
+const UpdateAdmin = () => {
   const [user, setUser] = useState({
     id: "",
     firstName: "",
     lastName: "",
     email: "",
     photo: "",
+  });
+  const [passwords, setPasswords] = useState({
+    oldPassword: "",
+    newPassword: "",
   });
 
   const [emailStatus, setEmailStatus] = useState("");
@@ -58,7 +61,6 @@ const UpdateProf = () => {
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         email: currentUser.email,
-        photo: currentUser.photo,
       });
       form.setFieldsValue({
         firstName: currentUser.firstName,
@@ -70,18 +72,27 @@ const UpdateProf = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    if (name === "oldPassword" || name === "newPassword") {
+      setPasswords({ ...passwords, [name]: value });
+    } else {
+      setUser({ ...user, [name]: value });
+    }
   };
 
   const handleFormSubmit = async () => {
+    const token = sessionStorage.getItem("jwt");
     try {
-      const response = await fetch(`${SERVER_URL}/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      const response = await fetch(
+        `${SERVER_URL}/adminl2Ikfdsjlkjmsd/${user.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ ...user, ...passwords }),
+        }
+      );
 
       if (response.ok) {
         const updatedUser = await response.json();
@@ -184,7 +195,7 @@ const UpdateProf = () => {
             <Input
               placeholder="Nom"
               name="lastName"
-              value={user.name}
+              value={user.lastName}
               style={{ width: "70%" }}
             />
           </Form.Item>
@@ -209,6 +220,46 @@ const UpdateProf = () => {
             />
           </Form.Item>
           <Form.Item
+            className="text-lg-center"
+            name="oldPassword"
+            onChange={handleInputChange}
+            rules={[
+              {
+                // required: true,
+                required: false,
+                message: "Veuillez entrer votre ancien mot de passe !",
+              },
+            ]}
+            style={{ marginBottom: 20 }}
+          >
+            <Input.Password
+              placeholder="Ancien mot de passe"
+              name="oldPassword"
+              value={passwords.oldPassword}
+              style={{ width: "70%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            className="text-lg-center"
+            name="newPassword"
+            onChange={handleInputChange}
+            rules={[
+              {
+                // required: true,
+                required: false,
+                message: "Veuillez entrer votre nouveau mot de passe !",
+              },
+            ]}
+            style={{ marginBottom: 20 }}
+          >
+            <Input.Password
+              placeholder="Nouveau mot de passe"
+              name="newPassword"
+              value={passwords.newPassword}
+              style={{ width: "70%" }}
+            />
+          </Form.Item>
+          <Form.Item
             style={{ textAlign: "center", width: "70%", margin: "auto" }}
           >
             <Button
@@ -225,4 +276,4 @@ const UpdateProf = () => {
   );
 };
 
-export default UpdateProf;
+export default UpdateAdmin;
