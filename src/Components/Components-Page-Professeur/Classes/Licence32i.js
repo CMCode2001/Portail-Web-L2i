@@ -1,12 +1,9 @@
 import {
   CalendarOutlined,
-  CheckOutlined,
   DownloadOutlined,
-  PlusOutlined,
   SearchOutlined,
   SendOutlined,
   TeamOutlined,
-  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -18,21 +15,23 @@ import {
   Row,
   Space,
   Table,
-  Upload,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import * as XLSX from "xlsx";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { SERVER_URL } from "../../../constantURL";
-import * as XLSX from "xlsx";
 
 const { TextArea } = Input;
 
 const Licence32i = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [title, setTitre] = useState("");
+  const [titreDev, setTitreDev] = useState("");
+  const [descriptionDev, setDescriptionDev] = useState("");
+  const [salleDev, setSalleDev] = useState("");
+  const [dateDuDevoirDev, setDateDuDevoirDev] = useState("");
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
   const [etudant, setEtudiant] = useState([]);
@@ -42,8 +41,8 @@ const Licence32i = () => {
   const searchInput = useRef(null);
   const token = sessionStorage.getItem("jwt");
   const [notes, setNotes] = useState({});
-  const [assignmentTitle, setAssignmentTitle] = useState(""); // Ajouté
-  const [assignmentDueDate, setAssignmentDueDate] = useState(""); // Ajouté
+  const [modalTitle, setModalTitle] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -56,8 +55,9 @@ const Licence32i = () => {
     fetchEtudiant();
   }, []);
 
+  // `/curentListStudent/${id}`
   const fetchEtudiant = () => {
-    fetch(`${SERVER_URL}/student/niveau/3`, {
+    fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE3`, {
       method: "GET",
       headers: {
         Authorization: `${token}`,
@@ -81,6 +81,39 @@ const Licence32i = () => {
     setSearchText("");
   };
 
+  const annocerUnDevoir = () => {
+    const donnee = {
+      titre: titreDev,
+      description: descriptionDev,
+      salle: salleDev,
+      dateDuDevoir: dateDuDevoirDev,
+      classroomId: 3,
+      // professor_id: getUserInfo().id,
+      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
+    };
+
+    fetch(SERVER_URL + "/annonceDevoir", {
+      method: "POST",
+      headers: {
+        Authorization: `${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(donnee),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        setModalTitle("Devoir annoncé avec succès");
+        setIsModalVisible(true);
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Course sent successfully:", data);
+      })
+      .catch((error) => console.error("Error sending course:", error));
+  };
   const onSendingCourse = () => {
     const donnee = {
       title,
@@ -104,6 +137,7 @@ const Licence32i = () => {
         if (!response.ok) {
           throw new Error(response.status);
         }
+        setModalTitle("Cours envoyé avec succès");
         setIsModalVisible(true);
         return response.json();
       })
@@ -297,7 +331,8 @@ const Licence32i = () => {
   return (
     <div id="samaDivContainer">
       <Modal
-        title="Cours envoyé avec succès"
+        // title="Cours envoyé avec succès"
+        title={modalTitle}
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         width={800}
@@ -368,6 +403,7 @@ const Licence32i = () => {
               style={{ backgroundColor: "#13798C", color: "white" }}
               onClick={() => {
                 onClose();
+                annocerUnDevoir();
                 // onSendingAssignment(); // Uncomment if needed
               }}
               type="primary"
@@ -393,7 +429,7 @@ const Licence32i = () => {
               >
                 <Input
                   placeholder="Veuillez entrer le titre du devoir"
-                  onChange={(e) => setAssignmentTitle(e.target.value)}
+                  onChange={(e) => setTitreDev(e.target.value)}
                 />
               </Form.Item>
             </Col>
@@ -411,6 +447,7 @@ const Licence32i = () => {
                 ]}
               >
                 <TextArea
+                  onChange={(e) => setDescriptionDev(e.target.value)}
                   rows={3}
                   placeholder="Veuillez entrer la description du devoir"
                 />
@@ -430,7 +467,7 @@ const Licence32i = () => {
               >
                 <Input
                   placeholder="Veuillez entrer le lieu de salle du devoir"
-                  onChange={(e) => setAssignmentTitle(e.target.value)}
+                  onChange={(e) => setSalleDev(e.target.value)}
                 />
               </Form.Item>
             </Col>
@@ -448,7 +485,7 @@ const Licence32i = () => {
               >
                 <Input
                   type="date"
-                  onChange={(e) => setAssignmentDueDate(e.target.value)}
+                  onChange={(e) => setDateDuDevoirDev(e.target.value)}
                 />
               </Form.Item>
             </Col>

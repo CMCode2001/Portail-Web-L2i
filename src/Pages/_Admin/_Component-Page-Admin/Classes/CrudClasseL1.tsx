@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Button, Form, Input, Modal, Select, Table } from "antd";
+import React, { useEffect, useState } from "react";
 import { SERVER_URL } from "../../../../constantURL";
-import { Select } from "antd";
 
 const CrudClasseL1 = () => {
   const [data, setData] = useState([]);
@@ -160,7 +159,7 @@ const CrudClasseL1 = () => {
 
   const specialityStudentOptions = [
     { label: "Génie Logiciel", value: "GL" },
-    { label: "Réseau", value: "RS" },
+    { label: "Réseau et Services", value: "RS" },
     { label: "None", value: "None" },
   ];
 
@@ -171,12 +170,12 @@ const CrudClasseL1 = () => {
       key: "ine",
     },
     {
-      title: "LastName",
+      title: "Nom",
       dataIndex: "lastName",
       key: "lastName",
     },
     {
-      title: "FirstName",
+      title: "Prenom",
       dataIndex: "firstName",
       key: "firstName",
     },
