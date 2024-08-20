@@ -1,14 +1,25 @@
 import {
+  CalendarOutlined,
   DownloadOutlined,
   SearchOutlined,
   SendOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Space, Table } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Table,
+} from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
-import { SERVER_URL } from "../../../constantURL";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 const { TextArea } = Input;
 
@@ -39,13 +50,44 @@ const data = [
 const Licence22i = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [title, setTitre] = useState("");
+
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
   const [etudant, setEtudiant] = useState([]);
   const [open, setOpen] = useState(false);
   const searchInput = useRef(null);
+  const [title, setTitre] = useState("");
+
+  const [titreDev, setTitreDev] = useState("");
+  const [descriptionDev, setDescriptionDev] = useState("");
+  const [salleDev, setSalleDev] = useState("");
+  const [dateDuDevoirDev, setDateDuDevoirDev] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false); // Pour le Drawer de programmation de devoir
+  const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
+  const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   const token = sessionStorage.getItem("jwt");
+
+  const showDrawerDevoir = () => {
+    setIsDrawerVisible(true);
+  };
+
+  const showDrawerCourse = () => {
+    setIsCourseDrawerVisible(true);
+  };
+
+  const showDrawerNotes = () => {
+    setIsNotesDrawerVisible(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+    setIsDrawerVisible(false);
+    setIsCourseDrawerVisible(false);
+    setIsNotesDrawerVisible(false);
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -61,7 +103,7 @@ const Licence22i = () => {
   }, []);
 
   const fetchEtudiant = () => {
-    fetch(`${SERVER_URL}/student/niveau/2`, {
+    fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE2`, {
       method: "GET",
       headers: {
         Authorization: `${token}`,
@@ -84,44 +126,72 @@ const Licence22i = () => {
     clearFilters();
     setSearchText("");
   };
+  const annocerUnDevoir = () => {
+    const donnee = {
+      titre: titreDev,
+      description: descriptionDev,
+      salle: salleDev,
+      dateDuDevoir: dateDuDevoirDev,
+      classroomId: 2,
+      // professor_id: getUserInfo().id,
+      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
+    };
+
+    fetch(SERVER_URL + "/annonceDevoir", {
+      method: "POST",
+      headers: {
+        Authorization: `${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(donnee),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        setModalTitle("Devoir annoncé avec succès");
+        setIsModalVisible(true);
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Course sent successfully:", data);
+      })
+      .catch((error) => console.error("Error sending course:", error));
+  };
   const onSendingCourse = () => {
     const donnee = {
       title,
       classeroom_id: 2,
       professor_id: getUserInfo().id,
-      createdBy: "Test",
-      // Ajoutez d'autres champs de donnee si nécessaire
+      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
     };
-    // console.log(donnee);
 
     const formatDonnee = new FormData();
-    formatDonnee.append("course", JSON.stringify(donnee)); // Si besoin de transmettre des données JSON supplémentaires
-    formatDonnee.append("pdf", pdfContent); // pdfContent est votre fichier PDF
-
-    // Récupérez le jeton d'authentification de sessionStorage si nécessaire
-    // const token = sessionStorage.getItem("jwt");
+    formatDonnee.append("course", JSON.stringify(donnee));
+    formatDonnee.append("pdf", pdfContent);
 
     fetch(SERVER_URL + "/course", {
       method: "POST",
       headers: {
-        Authorization: `${token}`, // Assurez-vous d'avoir correctement récupéré et inclus votre token
+        Authorization: `${token}`,
       },
-      body: formatDonnee, // Passer le FormData directement comme corps de la requête
+      body: formatDonnee,
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
-          throw new Error(response.json);
-          throw new Error("Network response was not ok");
         }
+        setModalTitle("Cours envoyé avec succès");
+        setIsModalVisible(true);
         return response.json();
       })
       .then((data) => {
         console.log("Course sent successfully:", data);
-        // Réinitialiser le formulaire ou effectuer d'autres actions après l'envoi réussi
       })
       .catch((error) => console.error("Error sending course:", error));
   };
+
   // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
     // Récupérer la chaîne JSON stockée dans sessionStorage
@@ -264,9 +334,6 @@ const Licence22i = () => {
     setOpen(true);
   };
 
-  const onClose = () => {
-    setOpen(false);
-  };
   const handleFileChange = (info) => {
     let fileList = [...info.fileList];
 
@@ -288,44 +355,193 @@ const Licence22i = () => {
 
   return (
     <div id="samaDivContainer">
+      <Modal
+        // title="Cours envoyé avec succès"
+        title={modalTitle}
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        width={800}
+        footer={[
+          <Button
+            key="ok"
+            onClick={() => setIsModalVisible(false)}
+            style={{ backgroundColor: "#008000", color: "white" }}
+          >
+            OK
+          </Button>,
+        ]}
+      ></Modal>
+
       <div className="headerSection">
         <h2 className="leftAlign">
           <TeamOutlined />
-          Classe Licence 1-2i
+          Classe Licence 2-2i
         </h2>
-        <Button
-          className="rightAlign"
-          id="btnPro2"
-          type="primary"
-          icon={<DownloadOutlined />}
-          size="large"
-          onClick={showDrawer}
-        >
-          Ajouter Cours
-        </Button>
+        <Space className="rightAlign">
+          <Button
+            id="btnPro2"
+            type="primary"
+            icon={<CalendarOutlined />}
+            style={{ width: "13rem" }}
+            size="large"
+            onClick={showDrawerDevoir}
+          >
+            Programmer Devoir
+          </Button>
+          <br />
+          <br />
+          <br />
+
+          <Button
+            id="btnPro2"
+            type="primary"
+            icon={<DownloadOutlined />}
+            size="large"
+            onClick={showDrawerCourse}
+          >
+            Ajouter Cours
+          </Button>
+        </Space>
       </div>
       <div className="tableSection">
         <h4 style={{ textAlign: "center" }}>Liste des etudiants</h4>
         <Table columns={columns} dataSource={etudant} />
       </div>
+
+      {/* Debut de l'annoce de devoir */}
+      {/* Programmer Devoir */}
+      <Drawer
+        title="Programmer un nouveau devoir"
+        width={720}
+        onClose={onClose}
+        open={isDrawerVisible}
+        bodyStyle={{ paddingBottom: 80 }}
+        extra={
+          <Space>
+            <Button
+              onClick={onClose}
+              style={{ backgroundColor: "#600622", color: "white" }}
+            >
+              Fermer
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
+              onClick={() => {
+                onClose();
+                annocerUnDevoir();
+                // onSendingAssignment(); // Uncomment if needed
+              }}
+              type="primary"
+            >
+              Envoyer <SendOutlined />
+            </Button>
+          </Space>
+        }
+      >
+        <Form layout="vertical" hideRequiredMark>
+          <Row gutter={16}>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="assignmentTitle"
+                label="Titre du Devoir"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer le titre du devoir",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Veuillez entrer le titre du devoir"
+                  onChange={(e) => setTitreDev(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                label="Description"
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer la description du devoir",
+                  },
+                ]}
+              >
+                <TextArea
+                  onChange={(e) => setDescriptionDev(e.target.value)}
+                  rows={3}
+                  placeholder="Veuillez entrer la description du devoir"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="Salle"
+                label="Salle du Devoir"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer le lieu de salle du devoir",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Veuillez entrer le lieu de salle du devoir"
+                  onChange={(e) => setSalleDev(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="dueDate"
+                label="Date du Devoir"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez sélectionner une date d'échéance",
+                  },
+                ]}
+              >
+                <Input
+                  type="date"
+                  onChange={(e) => setDateDuDevoirDev(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Drawer>
+      {/* ======================== FIN PROGRAMMER DEVOIR ========================= */}
+
+      {/* Fin de l'annoce de devoir */}
+      {/* ==========================   AJOUTER COURS ============================= */}
       <Drawer
         title="Ajouter un nouveau cours"
         width={720}
         onClose={onClose}
-        open={open}
-        bodyStyle={{
-          paddingBottom: 80,
-        }}
+        open={isCourseDrawerVisible}
+        bodyStyle={{ paddingBottom: 80 }}
         extra={
           <Space>
-            <Button onClick={onClose}>Fermer</Button>
             <Button
+              onClick={onClose}
+              style={{ backgroundColor: "#600622", color: "white" }}
+            >
+              Fermer
+            </Button>
+            <Button
+              style={{ backgroundColor: "#13798C", color: "white" }}
               onClick={() => {
                 onClose();
                 onSendingCourse();
               }}
               type="primary"
-              id="btnPro2"
             >
               Envoyer <SendOutlined />
             </Button>
@@ -349,40 +565,7 @@ const Licence22i = () => {
                 <Input placeholder="Please enter the course title" />
               </Form.Item>
             </Col>
-            {/* <Col span={12}>
-              <Form.Item
-                name="professorMail"
-                label="Email Professeur"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer votre email",
-                  },
-                ]}
-              >
-                <Input placeholder="Veuillez entrer votre email" />
-              </Form.Item>
-            </Col> */}
           </Row>
-          {/* <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="studentsMail"
-                label="Email Etudiants"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer les mails des etudiants",
-                  },
-                ]}
-              >
-                <TextArea
-                  rows={6}
-                  placeholder="Veuillez entrer les mails des etudiants"
-                />
-              </Form.Item>
-            </Col>
-          </Row> */}
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
@@ -395,32 +578,18 @@ const Licence22i = () => {
                   },
                 ]}
               >
-                {/* <Upload>
-                  <Button onChange={handleFileChange} icon={<PlusOutlined />}>
-                    {" "}
-                    Upload PDF
-                  </Button>
-                </Upload> */}
                 <input
-                  class=" custom-file-input"
-                  formControlName="imageCouverture"
+                  className="custom-file-input"
                   id="imageCouverture"
                   onChange={(e) => setFichier(e.target.files[0])}
                   type="file"
                 />
-                {/* <Upload
-                  beforeUpload={beforeUpload}
-                  onChange={handleFileChange}
-                  // fileList={pdfContent ? [pdfContent] : []}
-                  maxCount={1}
-                >
-                  <Button icon={<PlusOutlined />}>Uploader PDF</Button>
-                </Upload> */}
               </Form.Item>
             </Col>
           </Row>
         </Form>
       </Drawer>
+      {/* ==========================  FIN AJOUTER COURS ============================= */}
     </div>
   );
 };

@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
 import "../../Styles/ModalBulleMessagerie.css";
-import { SERVER_URL } from "../../constantURL";
+import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
@@ -97,8 +97,8 @@ const ModalBulleMessagerie = () => {
       content: reponse,
       forum_id,
       author_id: currentUser.id,
-      creatAt: new Date().toISOString(), // Current time in ISO format
-      createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+      // creatAt: new Date().toISOString(), // Current time in ISO format
+      createdBy: currentUser.firstName + " " + currentUser.lastName, // Remplacez par l'utilisateur actuel si disponible
     };
     // const token = sessionStorage.getItem("jwt");
     console.log(token);
@@ -153,8 +153,9 @@ const ModalBulleMessagerie = () => {
       const newForum = {
         probleme: values.probleme,
         description: values.description,
-        creatAt: new Date().toISOString(),
-        createdBy: currentUser.firstName + " " + currentUser.name,
+        author_id: currentUser.id,
+        // creatAt: new Date().toISOString(),
+        createdBy: currentUser.firstName + " " + currentUser.lastName,
       };
 
       fetch(SERVER_URL + "/forum", {

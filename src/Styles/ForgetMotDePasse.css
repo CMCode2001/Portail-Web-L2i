@@ -1,0 +1,43 @@
+
+.text12{
+    font-weight: bold;
+    color: var(--bgColor2);
+}
+.text13{
+    padding-top: 8px;
+    font-size: 18px;
+    font-weight: 500;
+}
+#OuvrirCompte{
+    text-decoration: none;
+}
+#mdpoublie{
+    background-color: var(--bgColor1);
+    border: none;
+    border-radius: 30px;
+    padding: 15px 18px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1rem;
+    width: 20rem;
+    height: 3rem;
+    cursor:auto;
+
+}
+#AugTaille{
+    height: 50px; 
+    font-size: 16px;
+}
+.Btnvalidate{
+    width: 100%;
+    background-color: var(--bgColor2) !important;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.Btnvalidate:hover{
+    color: white !important;
+    background-color: var(--bgColor1) !important;
+    transform: scale(1.05);
+}

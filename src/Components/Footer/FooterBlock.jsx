@@ -38,15 +38,15 @@ function FooterBlock() {
         <div className="tel">
           <img src={tell} alt="Phone icone" />
           <div className="info">
-            <h3>Telephone</h3>
-            <p>+221 33 000 00 00</p>
+            <h3>Téléphone</h3>
+            <p>+221 77 495 20 24</p>
           </div>
         </div>
         <div className="tel">
           <img src={email} alt="email icone" />
           <div className="info">
             <h3>Email</h3>
-            <p>l2i.uasz@gmail.com</p>
+            <p>l2iuasz@gmail.com</p>
           </div>
         </div>
         <div className="tel">

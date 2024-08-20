@@ -1,0 +1,41 @@
+#btnProA{
+    background-color: #f5f4f4;
+    color: var(--bgColor2);
+    font-weight: bold;
+}
+#btnProA:hover{
+    color: var(--bgColor2);
+    font-weight: bold;
+    border: dashed 1px;
+}
+
+#btnProB{
+    background-color: var(--bgColor2);
+    color: white;
+    font-weight: bold;
+}
+
+
+#btnProC{
+    background-color: var(--bgColor1);
+    color: white;
+    font-weight: bold;
+}
+#downExcel{
+    background-color: white;
+    color: var(--bgColor2);
+    border: dashed 1px;    
+    font-weight: 500;
+    height: 2rem;
+}
+#downExcel:hover{
+    background-color: var(--bgColor2);
+    color: white;
+    border: none;
+}
+#downCSV{
+    border: none;
+    background-color: var(--bgColor1);
+    color: white;
+    width: 17.3rem;
+}

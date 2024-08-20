@@ -1,32 +1,39 @@
-import { Button, Form, Input } from "antd";
-import { React, useEffect, useState } from "react";
+import { Button, Form, Input, Modal } from "antd";
+import React, { useEffect, useState } from "react";
 import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
+import { SERVER_URL } from "../Utils/constantURL";
+import { Link } from "react-router-dom";
 
-import { SERVER_URL } from "../constantURL";
-// import React, { useEffect, useState } from "react";
-// import HeaderBlock from "../Components/Header/HeaderBlock";
 const Connexion = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [isAuthenticated, setAuth] = useState(false);
   const [erreur, setErreur] = useState(false);
-  const [erreurMsg, setErreurMsg] = useState(false);
-  // Lorsque isAuthenticated change, appelez la fonction de rappel
+  const [erreurMsg, setErreurMsg] = useState("");
+
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+
   useEffect(() => {
     setEstAuthentifieCallback(isAuthenticated);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
-  // Fonction de rappel pour mettre à jour estAuthentifie dans le composant parent
   const setEstAuthentifieCallback = (newValue) => {
     setAuth(newValue);
-    // Mettez à jour estAuthentifie dans le composant parent
-    // setEstAuthentifie(newValue);
+  };
+
+  const showModal = (type, message) => {
+    if (type === "success") {
+      setSuccessModalVisible(true);
+    } else if (type === "error") {
+      setErreurMsg(message);
+      setErrorModalVisible(true);
+    }
   };
 
   const login = async () => {
@@ -44,32 +51,39 @@ const Connexion = () => {
       if (!response.ok) {
         setErreur(true);
         const errorData = await response.json();
-        setErreurMsg("Erreur lors de la connexion");
+        //setErreurMsg("Erreur lors de la connexion");
+        showModal("error", "Erreur lors de la connexion");
         throw new Error(erreurMsg);
+      }
+
+      if (response.ok) {
+        setAuth(true);
+        //const errorData = await response.json();
+        //setErreurMsg("Erreur lors de la connexion");
+        showModal("success", "Connexion Réussie");
+        // throw new Success(erreurMsg);
       }
 
       const jwtToken = response.headers.get("Authorization");
       if (jwtToken) {
-        // Récupérer le corps de la réponse pour obtenir l'objet user
         const userData = await response.json();
 
-        // Stocker le token JWT et les détails de l'utilisateur
         sessionStorage.setItem("jwt", jwtToken);
         sessionStorage.setItem("isLoggedIn", true);
-        sessionStorage.setItem("user", JSON.stringify(userData.user)); // Stocker l'objet utilisateur sous forme de chaîne JSON
+        sessionStorage.setItem("user", JSON.stringify(userData.user));
 
-        // Mettre à jour l'état d'authentification
-        setAuth(true);
+        showModal("success", "Connexion Réussie");
+        setTimeout(() => {
+          window.location.href = "/";
+        });
       } else {
         throw new Error("Token JWT non trouvé dans la réponse");
       }
     } catch (error) {
       console.error("Erreur lors de la requête de connexion :", error);
-      // Afficher un message d'erreur à l'utilisateur si nécessaire
+      showModal("error", "Erreur lors de la requête de connexion");
     }
   };
-
-  /* ********************* */
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -79,7 +93,6 @@ const Connexion = () => {
     console.log("Failed:", errorInfo);
   };
 
-  /**VALIDITE EMAIL */
   const [emailStatus, setEmailStatus] = useState("");
 
   const validateEmail = (_, value) => {
@@ -91,17 +104,13 @@ const Connexion = () => {
       setEmailStatus("error");
       return Promise.reject(new Error("Invalide"));
     }
-    // if (!value.endsWith('@zig.univ.sn')) {
-    //   setEmailStatus('error');
-    //   return Promise.reject(new Error('Veuillez entrer une adresse email professionnelle se terminant par @zig.univ.sn !'));
-    // }
     setEmailStatus("success");
     return Promise.resolve();
   };
+
   if (isAuthenticated) {
-    // window.location.reload();
-    window.location.href = "/"; // Vous pouvez utiliser React Router pour la navigation
-  } else
+    window.location.href = "/";
+  } else {
     return (
       <div className="connexion">
         <HeaderBlock />
@@ -119,12 +128,10 @@ const Connexion = () => {
               {erreur && <h2 className="erreur-login">{erreurMsg}</h2>}
               <p className="form-title">Welcome to L2i !</p>
               <p>
-                {" "}
                 Ravie de vous revoir, <br />
                 Connectez-vous à votre compte !
               </p>
 
-              {/* Je force le user à utiliser son mail professionnel */}
               <Form.Item
                 name="username"
                 validateStatus={emailStatus}
@@ -152,12 +159,16 @@ const Connexion = () => {
               <Form.Item>
                 <Button
                   type="primary"
-                  // htmlType="submit"
                   className="login-form-button"
                   onClick={login}
                 >
                   Se Connecter →
                 </Button>
+              </Form.Item>
+              <Form.Item>
+                <Link to="/password/reset" id="MdpForget">
+                  Mot de passe oublié ?
+                </Link>
               </Form.Item>
             </Form>
           </div>
@@ -165,6 +176,7 @@ const Connexion = () => {
         <FooterBlock />
       </div>
     );
+  }
 };
 
 export default Connexion;

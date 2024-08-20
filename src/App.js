@@ -1,7 +1,15 @@
-import "./Styles/bootstrap.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
+import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
+import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
+import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
+import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
+import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
+import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import Accueil from "./Pages/Accueil";
 import Apropos from "./Pages/Apropos";
+import Confirmation from "./Pages/Confirmation";
 import Connexion from "./Pages/Connexion";
 import Cours from "./Pages/Cours";
 import Forum from "./Pages/Forum";
@@ -9,14 +17,10 @@ import Gallerie from "./Pages/Gallerie";
 import Inscription from "./Pages/Inscription";
 import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
-import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
-import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
-import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
-import ConnexionProf from "./Components/Components-Page-Professeur/Profiles/ConnexionProf";
-import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
-import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
-import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
+import "./Styles/bootstrap.min.css";
+import ForgetMotDePasse from "./Components/ForgetMotDePasse";
+import ProfileStudent from "./Components/Profile/ProfileStudent";
 
 function App() {
   return (
@@ -34,6 +38,9 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+          <Route path="/confirmation/:idtoken" element={<Confirmation />} />
+          <Route path="/password/reset" element={<ForgetMotDePasse />} />
+          <Route path="studentProfile" element={<ProfileStudent />} />
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
@@ -41,13 +48,14 @@ function App() {
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
-            <Route path="connexion" element={<ConnexionProf />} />
+            <Route path="ajouter-notes" element={<AjouterNotes />} />
+            <Route path="update-prof" element={<UpdateProf />} />
           </Route>
           {/* ------------ Professeur -------------- */}
 
           {/* ---------------- ADMIN --------------- */}
-          {/* <Route path="/#01admin-4359" element={<PageAdmin />} /> */}
-          <Route path="/admin" element={<PageAdmin />} />
+          <Route path="/adminflksosdjds" element={<PageAdmin />} />
+          {/* <Route path="/admin" element={<PageAdmin />} /> */}
           {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>

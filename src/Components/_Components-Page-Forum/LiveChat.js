@@ -3,7 +3,7 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import SendIcon from "@mui/icons-material/Send";
 import "../../Styles/LiveChat.css";
-import { SERVER_URL } from "../../constantURL";
+import { SERVER_URL } from "../../Utils/constantURL";
 
 const LiveChat = () => {
   const [messages, setMessages] = useState([]);
@@ -152,7 +152,7 @@ const LiveChat = () => {
             onKeyPress={handleKeyPress}
             className="message-input"
           />
-          <SendIcon className="send-icon" id='btnPro' onClick={sendMessage} />
+          <SendIcon className="send-icon" id="btnPro" onClick={sendMessage} />
         </div>
       </div>
     </div>
