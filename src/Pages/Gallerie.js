@@ -66,31 +66,10 @@ export default function Gallerie() {
               src={SERVER_URL + picture.url}
               alt={picture.description}
             />
+            <p>{picture.description}</p>
           </div>
         ))}
       </div>
-      {/* <div className="pictures-grid">
-        {Array(4)
-          .fill(null)
-          .map((_, i) => (
-            <div key={i}>
-              {pictures
-                .slice(
-                  i * Math.ceil(pictures.length / 4),
-                  (i + 1) * Math.ceil(pictures.length / 4)
-                )
-                .map((picture) => (
-                  <div key={picture.id}>
-                    <img
-                      src={SERVER_URL + picture.url}
-                      alt={picture.description}
-                    />
-                    <p>{picture.description}</p>
-                  </div>
-                ))}
-            </div>
-          ))}
-      </div> */}
 
       <div className="pictures-grid">
         {Array(4)
