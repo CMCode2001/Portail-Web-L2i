@@ -29,6 +29,8 @@ const ModalBulleMessagerie = () => {
   const [token, setToken] = useState(null);
   const [reponse, setReponse] = useState("");
   const [forum_id, setForumID] = useState(0);
+  const [isChatIconOpen, setIsChatIconOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const userJson = sessionStorage.getItem("user");
 
@@ -38,6 +40,14 @@ const ModalBulleMessagerie = () => {
   //   setIsModalVisible(true);
 
   // };
+  const toggleChatIcon = () => {
+    setIsChatIconOpen(!isChatIconOpen);
+  };
+  const cardStyle = {
+    margin: "20px 0",
+    width: windowWidth < 768 ? "100%" : "90%", // 100% width pour les petits écrans
+    height: windowWidth < 768 ? "auto" : "auto", // Auto height pour les petits écrans
+  };
 
   useEffect(() => {
     const user = getUserInfo();
@@ -237,7 +247,7 @@ const ModalBulleMessagerie = () => {
   };
 
   return (
-    <div>
+    <div className={`container the-forum ${isChatIconOpen ? 'blur-background' : ''}`}>
       <Button id="monbtnProMax" onClick={showModal}>
         Posez une question ?
       </Button>
@@ -279,7 +289,8 @@ const ModalBulleMessagerie = () => {
       {listeForum.map((forum, index) => (
         <Card
           key={index}
-          style={{ margin: "20px 0", width: "50rem", height: "200px" }}
+          // style={{ margin: "20px 0", width: "50rem", height: "200px" }}
+          style={cardStyle}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -372,7 +383,7 @@ const ModalBulleMessagerie = () => {
           </Button>
         </Form>
       </Modal>
-      <ChatIconComponent />
+      <ChatIconComponent  onClick={toggleChatIcon} />
     </div>
   );
 };
