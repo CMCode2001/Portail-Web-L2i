@@ -40,7 +40,7 @@ const ModalBulleMessagerie = () => {
   //   setIsModalVisible(true);
 
   // };
-  const toggleChatIcon = () => {
+  const handleChatIconToggle = () => {
     setIsChatIconOpen(!isChatIconOpen);
   };
   const cardStyle = {
@@ -247,7 +247,7 @@ const ModalBulleMessagerie = () => {
   };
 
   return (
-    <div className={`container the-forum ${isChatIconOpen ? 'blur-background' : ''}`}>
+    <div className='container'>
       <Button id="monbtnProMax" onClick={showModal}>
         Posez une question ?
       </Button>
@@ -288,6 +288,7 @@ const ModalBulleMessagerie = () => {
 
       {listeForum.map((forum, index) => (
         <Card
+          className={`${isChatIconOpen ? 'blur-background' : ''}`}
           key={index}
           // style={{ margin: "20px 0", width: "50rem", height: "200px" }}
           style={cardStyle}
@@ -383,7 +384,9 @@ const ModalBulleMessagerie = () => {
           </Button>
         </Form>
       </Modal>
-      <ChatIconComponent  onClick={toggleChatIcon} />
+      {/* <ChatIconComponent  onClick={toggleChatIcon} />
+       */}
+      <ChatIconComponent isLiveChatVisible={isChatIconOpen} onToggle={handleChatIconToggle} />
     </div>
   );
 };
