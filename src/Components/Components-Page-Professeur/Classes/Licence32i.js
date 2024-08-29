@@ -218,7 +218,7 @@ const Licence32i = () => {
       dataIndex: "ine",
       key: "ine",
       width: "20%",
-      ...getColumnSearchProps("cin"),
+      ...getColumnSearchProps("ine"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
     },
@@ -437,7 +437,7 @@ const Licence32i = () => {
             <Col span={17}>
               <Form.Item
                 style={{ fontWeight: "600" }}
-                name="dueDate"
+                name="date"
                 label="Date du Devoir"
                 rules={[
                   {
@@ -448,6 +448,24 @@ const Licence32i = () => {
               >
                 <Input
                   type="date"
+                  onChange={(e) => setAssignmentDueDate(e.target.value)}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={17}>
+              <Form.Item
+                style={{ fontWeight: "600" }}
+                name="heure"
+                label="Heure du Devoir"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez sélectionner l'heure du devoir",
+                  },
+                ]}
+              >
+                <Input
+                  type="time"
                   onChange={(e) => setAssignmentDueDate(e.target.value)}
                 />
               </Form.Item>

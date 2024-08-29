@@ -16,7 +16,7 @@ const partners = [
         
     },
     {
-        name:'partner3',
+        name:'partner3',  
         path:part3
     },
     {
