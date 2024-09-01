@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, Select, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { SERVER_URL } from "../../../../constantURL";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
 const CrudClasseL1 = () => {
   const [data, setData] = useState([]);
