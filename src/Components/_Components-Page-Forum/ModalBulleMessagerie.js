@@ -19,10 +19,12 @@ import ChatIconComponent from "./ChatIconComponent";
 const { TextArea } = Input;
 const ModalBulleMessagerie = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleEditForum, setIsModalVisibleEditForum] = useState(false);
   const [isMessagesModalVisible, setIsMessagesModalVisible] = useState(false);
   const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
   const [formQuestion] = Form.useForm(); // Formulaire pour poser une question
   const [formResponse] = Form.useForm(); // Formulaire pour répondre à une question
+  const [form] = Form.useForm(); // Ajoutez cette ligne pour définir le formulaire form
   const [listeForum, setListeForum] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
@@ -59,6 +61,14 @@ const ModalBulleMessagerie = () => {
       setIsModalVisible(true);
     }
   };
+
+  // const showModalEditForum = () => {
+  //   if (!currentUser) {
+  //     navigate("/connexion");
+  //   } else {
+  //     setIsModalVisibleEditForum(true);
+  //   }
+  // };
 
   const handleReplyModalCancel = () => {
     setIsReplyModalVisible(false);
@@ -151,6 +161,61 @@ const ModalBulleMessagerie = () => {
           console.error("Error in form submission or closing modal:", error);
         });
     });
+  };
+
+  const handleDeleteOwnMessages = (id) => {
+    const token = sessionStorage.getItem("jwt");
+
+    if (window.confirm("Voulez-vous vraiment supprimer votre message ?")) {
+      fetch(SERVER_URL + `/message/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            setSelectedForum((prevForum) => ({
+              ...prevForum,
+              messages: prevForum.messages.filter(
+                (message) => message.id !== id
+              ),
+            }));
+          } else {
+            console.error("Échec de la suppression du message");
+          }
+        })
+        .catch((error) =>
+          console.error("Erreur lors de la suppression :", error)
+        );
+    }
+  };
+
+  const handleEditForum = (id, newData) => {
+    const token = sessionStorage.getItem("jwt");
+
+    fetch(SERVER_URL + `/forum/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setListeForum((prevData) =>
+            prevData.map((item) =>
+              item.id === id ? { ...item, ...newData } : item
+            )
+          );
+        } else {
+          console.error("Échec de la modification du forum");
+        }
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la modification du forum :", error)
+      );
   };
 
   const showReplyModal = () => {
@@ -268,6 +333,28 @@ const ModalBulleMessagerie = () => {
             <img src={Chat} alt="Chat" width={15} height={15} />
             Réponses
           </Button>
+
+          {currentUser && currentUser.id === forum.author_id && (
+            <Button
+              id="btnModifier"
+              onClick={() => {
+                setIsModalVisibleEditForum(true);
+                form.setFieldsValue({
+                  probleme: forum.probleme,
+                  description: forum.description,
+                });
+                setForumID(forum.id);
+              }}
+              style={{
+                backgroundColor: "#6b2239",
+                color: "white",
+                float: "right", // Pour aligner à droite
+                marginLeft: "auto", // Assure un alignement à droite
+              }}
+            >
+              Modifier
+            </Button>
+          )}
         </Card>
       ))}
 
@@ -285,7 +372,6 @@ const ModalBulleMessagerie = () => {
             <hr style={{ borderTop: "2px solid blue" }} />
             <br />
             <List
-              // dataSource={selectedForum.messages}
               dataSource={selectedForum.messages.sort(
                 (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
               )}
@@ -319,6 +405,16 @@ const ModalBulleMessagerie = () => {
                       <Typography.Paragraph>
                         {message.message}
                       </Typography.Paragraph>
+                      {currentUser && currentUser.id === message.author_id && (
+                        <Button
+                          type="link"
+                          onClick={() => handleDeleteOwnMessages(message.id)}
+                          // style={{ color: "red" }}
+                          style={{ backgroundColor: "red", color: "white" }}
+                        >
+                          Supprimer
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </List.Item>
@@ -361,6 +457,27 @@ const ModalBulleMessagerie = () => {
           >
             Envoyer
           </Button>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Modifier le Forum"
+        open={isModalVisibleEditForum}
+        onOk={() => {
+          form.validateFields().then((values) => {
+            handleEditForum(forum_id, values);
+            setIsModalVisibleEditForum(false);
+          });
+        }}
+        onCancel={() => setIsModalVisibleEditForum(false)}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="probleme" label="Problème">
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea rows={5} />
+          </Form.Item>
         </Form>
       </Modal>
 
