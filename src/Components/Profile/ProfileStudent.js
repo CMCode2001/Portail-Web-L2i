@@ -1,8 +1,7 @@
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input, notification, Select, Switch } from "antd";
 import React, { useState, useEffect } from "react";
 import { SERVER_URL } from "../../Utils/constantURL";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import "./ProfileStudent.css";
 
 const ProfileStudent = () => {
   const [student, setStudent] = useState({
@@ -21,6 +20,7 @@ const ProfileStudent = () => {
     newPassword: "",
   });
 
+  const [changePassword, setChangePassword] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
   const [form] = Form.useForm();
 
@@ -32,16 +32,16 @@ const ProfileStudent = () => {
     });
   };
 
-  const openErrorNotification = (message) => {
+  const openErrorNotification = () => {
     notification.error({
       message: "Erreur de mise à jour",
-      description: message,
+      // description: message,
       placement: "top",
     });
   };
 
   const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("student");
+    const userJson = sessionStorage.getItem("user");
     if (userJson) {
       try {
         const student = JSON.parse(userJson);
@@ -58,70 +58,32 @@ const ProfileStudent = () => {
     return null;
   };
 
-  // const getUserInfo = () => {
-  //   const userJson = sessionStorage.getItem("student");
-  //   if (userJson) {
-  //     try {
-  //       const student = JSON.parse(userJson);
-  //       return student;
-  //     } catch (error) {
-  //       console.error(
-  //         "Erreur lors de l'analyse de l'étudiant depuis le sessionStorage:",
-  //         error
-  //       );
-  //     }
-  //   } else {
-  //     console.warn("Aucun étudiant trouvé dans le sessionStorage");
-  //   }
-  //   return null;
-  // };
-
-  // useEffect(() => {
-  //   const currentStudent = getUserInfo();
-  //   if (currentStudent) {
-  //     setStudent({
-  //       id: currentStudent.id,
-  //       firstName: currentStudent.firstName,
-  //       lastName: currentStudent.lastName,
-  //       email: currentStudent.email,
-  //       specialityStudent: currentStudent.specialityStudent,
-  //       classeroom_id: currentStudent.classeroom_id,
-  //       active: currentStudent.active,
-  //       ine: currentStudent.ine,
-  //     });
-  //     form.setFieldsValue({
-  //       firstName: currentStudent.firstName,
-  //       lastName: currentStudent.lastName,
-  //       email: currentStudent.email,
-  //       specialityStudent: currentStudent.specialityStudent,
-  //       // classeroom_id: currentStudent.classeroom_id,
-  //       // active: currentStudent.active,
-  //       ine: currentStudent.ine,
-  //     });
-  //   }
-  // }, [form]);
-
   useEffect(() => {
     const currentStudent = getUserInfo();
+
     if (currentStudent) {
-      setStudent({
-        id: currentStudent.id,
-        firstName: currentStudent.firstName,
-        lastName: currentStudent.lastName,
-        email: currentStudent.email,
-        specialityStudent: currentStudent.specialityStudent,
-        classeroom_id: currentStudent.classeroom_id,
-        active: currentStudent.active,
-        ine: currentStudent.ine,
-      });
-      form.setFieldsValue({
-        firstName: currentStudent.firstName,
-        lastName: currentStudent.lastName,
-        email: currentStudent.email,
-        specialityStudent: currentStudent.specialityStudent,
-        classeroom_id: currentStudent.classeroom_id,
-        ine: currentStudent.ine,
-      });
+      const fetchStudent = async () => {
+        try {
+          const response = await fetch(
+            SERVER_URL + `/student/${currentStudent.id}`
+          );
+          const data = await response.json();
+          setStudent(data);
+
+          form.setFieldsValue({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            specialityStudent: data.specialityStudent,
+            classeroom_id: data.classeroom_id,
+            ine: data.ine,
+          });
+        } catch (error) {
+          console.error("Error fetching data student:", error);
+        }
+      };
+
+      fetchStudent();
     }
   }, [form]);
 
@@ -134,22 +96,63 @@ const ProfileStudent = () => {
     }
   };
 
+  // const handleFormSubmit = async () => {
+  //   const token = sessionStorage.getItem("jwt");
+  //   try {
+  //     const body = changePassword
+  //       ? { ...student, ...passwords }
+  //       : { ...student };
+
+  //     const response = await fetch(`${SERVER_URL}/student/${student.id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify(body),
+  //     });
+
+  //     if (response.ok) {
+  //       const updatedStudent = await response.json();
+  //       sessionStorage.setItem("student", JSON.stringify(updatedStudent));
+  //       openSuccessNotification();
+  //     } else {
+  //       const errorData = await response.json();
+  //       throw new Error(
+  //         errorData.message || "Erreur lors de la mise à jour des informations"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la mise à jour des informations:", error);
+  //     openErrorNotification(error.message);
+  //   }
+  // };
+
   const handleFormSubmit = async () => {
     const token = sessionStorage.getItem("jwt");
     try {
+      const body = changePassword
+        ? { ...student, ...passwords }
+        : { ...student };
+
       const response = await fetch(`${SERVER_URL}/student/${student.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...student, ...passwords }),
+        body: JSON.stringify(body),
       });
 
       if (response.ok) {
-        const updatedStudent = await response.json();
-        sessionStorage.setItem("student", JSON.stringify(updatedStudent));
-        openSuccessNotification();
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const updatedStudent = await response.json();
+          sessionStorage.setItem("student", JSON.stringify(updatedStudent));
+          openSuccessNotification();
+        } else {
+          openSuccessNotification();
+        }
       } else {
         const errorData = await response.json();
         throw new Error(
@@ -158,7 +161,7 @@ const ProfileStudent = () => {
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour des informations:", error);
-      openErrorNotification(error.message);
+      openErrorNotification();
     }
   };
 
@@ -183,8 +186,21 @@ const ProfileStudent = () => {
     window.location.href = "/";
   };
 
+  const classroomOptions = [
+    { label: "Licence 1", value: 1 },
+    { label: "Licence 2", value: 2 },
+    { label: "Licence 3", value: 3 },
+  ];
+
+  const choixOptions = [
+    { label: "None", value: "None" },
+    { label: "GL", value: "GL" },
+    { label: "RS", value: "RS" },
+  ];
+
   return (
     <div className="container">
+      <br />
       <Button
         style={{ backgroundColor: "#6B2239", color: "white" }}
         className="backBouton"
@@ -192,6 +208,8 @@ const ProfileStudent = () => {
       >
         <ArrowLeftOutlined />
       </Button>
+
+      <br />
 
       <Form
         form={form}
@@ -202,6 +220,7 @@ const ProfileStudent = () => {
         style={{ maxWidth: 600, margin: "0 auto" }}
       >
         <p className="text-center h4" style={{ fontWeight: "bold" }}>
+          <br />
           Mettre à jour vos informations
         </p>
         <br />
@@ -264,11 +283,17 @@ const ProfileStudent = () => {
           ]}
           style={{ marginBottom: 20 }}
         >
-          <Input
+          {/* <Input
             placeholder="Spécialité"
             name="specialityStudent"
             value={student.specialityStudent}
             style={{ width: "70%" }}
+          /> */}
+          <Select
+            name="specialityStudent"
+            value={student.specialityStudent}
+            style={{ width: "70%" }}
+            options={choixOptions}
           />
         </Form.Item>
         <Form.Item
@@ -280,11 +305,11 @@ const ProfileStudent = () => {
           ]}
           style={{ marginBottom: 20 }}
         >
-          <Input
-            placeholder="Classe"
+          <Select
             name="classeroom_id"
             value={student.classeroom_id}
             style={{ width: "70%" }}
+            options={classroomOptions}
           />
         </Form.Item>
         <Form.Item
@@ -301,53 +326,78 @@ const ProfileStudent = () => {
             style={{ width: "70%" }}
           />
         </Form.Item>
+
+        {/* Toggle pour changer le mot de passe */}
         <Form.Item
-          className="text-lg-center"
-          name="oldPassword"
-          onChange={handleInputChange}
-          rules={[
-            {
-              required: true,
-              message: "Veuillez entrer votre ancien mot de passe !",
-            },
-          ]}
-          style={{ marginBottom: 20 }}
+          label="Voulez-vous changer votre mot de passe ?"
+          style={{ textAlign: "center", marginBottom: 20 }}
         >
-          <Input.Password
-            placeholder="Ancien mot de passe"
-            name="oldPassword"
-            value={passwords.oldPassword}
-            style={{ width: "70%" }}
-          />
+          <Switch checked={changePassword} onChange={setChangePassword} />
         </Form.Item>
-        <Form.Item
-          className="text-lg-center"
-          name="newPassword"
-          onChange={handleInputChange}
-          rules={[
-            {
-              required: true,
-              message: "Veuillez entrer votre nouveau mot de passe !",
-            },
-          ]}
-          style={{ marginBottom: 20 }}
+        {/* <Form.Item
+          label="Voulez-vous changer votre mot de passe ?"
+          style={{ marginBottom: 20, textAlign: "center" }}
+          labelCol={{ span: 24 }} // Cela permet de centrer le label sur toute la largeur
         >
-          <Input.Password
-            placeholder="Nouveau mot de passe"
-            name="newPassword"
-            value={passwords.newPassword}
-            style={{ width: "70%" }}
+          <Switch
+            style={{ position: "center" }}
+            checked={changePassword}
+            onChange={setChangePassword}
           />
-        </Form.Item>
-        <Form.Item
-          style={{ textAlign: "center", width: "70%", margin: "auto" }}
-        >
+        </Form.Item> */}
+
+        {changePassword && (
+          <>
+            <Form.Item
+              className="text-lg-center"
+              name="oldPassword"
+              onChange={handleInputChange}
+              rules={[
+                {
+                  required: true,
+                  message: "Veuillez entrer votre ancien mot de passe !",
+                },
+              ]}
+              style={{ marginBottom: 20 }}
+            >
+              <Input.Password
+                placeholder="Ancien mot de passe"
+                name="oldPassword"
+                style={{ width: "70%" }}
+              />
+            </Form.Item>
+            <Form.Item
+              className="text-lg-center"
+              name="newPassword"
+              onChange={handleInputChange}
+              rules={[
+                {
+                  required: changePassword,
+                  message: "Veuillez entrer votre nouveau mot de passe !",
+                },
+              ]}
+              style={{ marginBottom: 20 }}
+            >
+              <Input.Password
+                placeholder="Nouveau mot de passe"
+                name="newPassword"
+                style={{ width: "70%" }}
+              />
+            </Form.Item>
+          </>
+        )}
+
+        <Form.Item style={{ textAlign: "center", marginBottom: 20 }}>
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            style={{
+              backgroundColor: "#6B2239",
+              borderColor: "#6B2239",
+              width: "50%",
+            }}
           >
-            Mettre à jour →
+            Mettre à jour
           </Button>
         </Form.Item>
       </Form>

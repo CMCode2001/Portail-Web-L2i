@@ -25,12 +25,12 @@
   gap: 15px;
 }
 .Footer-class .top-footer .tel .info h3 {
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   margin: 0;
 }
 
 .Footer-class .top-footer .tel .info p {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   margin: 0;
   color: white;
 }
@@ -197,7 +197,7 @@
 }
 
 /* la responsivite pour les ecrans de grands tailles */
-@media (min-width: 768px) {
+@media (min-width: 750px) {
   .Footer-class {
     position: relative;
     padding-top: 100px;
@@ -206,9 +206,9 @@
   .Footer-class .top-footer {
     flex-direction: row;
     position: absolute;
-    width: 80%;
-    gap: 30px;
-    left: 9.2%;
+    width: 100%;
+    gap: 10px;
+    left: -0.1%;
     transform: translateX(-50%);
     top: 5%;
     padding: 30px 10px;
@@ -234,7 +234,7 @@
   }
 
   .Footer-class .top-footer .tel .info h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .Footer-class .top-footer .tel .info p {
@@ -304,5 +304,23 @@
   }
   .Footer-class.animate .top-footer {
     animation: slideIn 0.5s forwards;
+  }
+}
+
+@media (min-width: 991px)  {
+  .Footer-class .top-footer {
+    width: 80%;
+    gap: 30px;
+    left: 9.2%;
+  }
+
+
+  .Footer-class .top-footer .tel .info h3 {
+    font-size: 1.5rem;
+  }
+
+  .Footer-class .top-footer .tel .info p {
+    color: white;
+    font-size: 1.25rem;
   }
 }

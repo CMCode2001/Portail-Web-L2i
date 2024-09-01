@@ -17,48 +17,52 @@ import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
-
 const ModalBulleMessagerie = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isMessagesModalVisible, setIsMessagesModalVisible] = useState(false);
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false); // Ajout de l'état pour la modal de réponse
-  const [form] = Form.useForm();
+  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
+  const [formQuestion] = Form.useForm(); // Formulaire pour poser une question
+  const [formResponse] = Form.useForm(); // Formulaire pour répondre à une question
   const [listeForum, setListeForum] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [reponse, setReponse] = useState("");
+  const [response, setResponse] = useState("");
   const [forum_id, setForumID] = useState(0);
+  const [isChatIconOpen, setIsChatIconOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const userJson = sessionStorage.getItem("user");
+  const handleChatIconToggle = () => {
+    setIsChatIconOpen(!isChatIconOpen);
+  };
+
+  const cardStyle = {
+    margin: "20px 0",
+    width: windowWidth < 768 ? "100%" : "90%", // 100% width pour les petits écrans
+    height: windowWidth < 768 ? "auto" : "auto", // Auto height pour les petits écrans
+  };
 
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
-
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-
-  // };
 
   useEffect(() => {
     const user = getUserInfo();
     setCurrentUser(user);
-    console.log("user user user user :" + user);
     const jwt = sessionStorage.getItem("jwt");
     setToken(jwt);
     fetchForum(jwt);
-  }, [navigate]);
+  }, []);
 
   const showModal = () => {
     if (!currentUser) {
-      navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
+      navigate("/connexion");
     } else {
       setIsModalVisible(true);
     }
   };
 
   const handleReplyModalCancel = () => {
-    // Fonction pour fermer la modal de réponse
     setIsReplyModalVisible(false);
+    formResponse.resetFields();
   };
 
   const getUserInfo = () => {
@@ -79,82 +83,48 @@ const ModalBulleMessagerie = () => {
     return null;
   };
 
-  // useEffect(() => {
-  //   const user = getUserInfo();
-  //   // if (!user) {
-  //   //   navigate("/connexion"); // Rediriger si l'utilisateur n'est pas connecté
-  //   // }
-  //   setCurrentUser(user);
-  //   console.log("user user user user :" + user);
-  //   const jwt = sessionStorage.getItem("jwt");
-  //   setToken(jwt);
-  //   fetchForum(jwt);
-  // }, [navigate]);
-
   const handleAnswerseMessages = () => {
-    // form.validateFields().then((values) => {
-    const newMessage = {
-      content: reponse,
-      forum_id,
-      author_id: currentUser.id,
-      // creatAt: new Date().toISOString(), // Current time in ISO format
-      createdBy: currentUser.firstName + " " + currentUser.lastName, // Remplacez par l'utilisateur actuel si disponible
-    };
-    // const token = sessionStorage.getItem("jwt");
-    console.log(token);
-    // Update the server with the new forum entry
-    fetch(SERVER_URL + "/message", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`, // Ajout du token dans les headers
-      },
-      body: JSON.stringify(newMessage),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+    formResponse.validateFields().then((values) => {
+      const newMessage = {
+        message: response,
+        forum_id: forum_id,
+        author_id: currentUser.id,
+        createdBy: `${currentUser.firstName} ${currentUser.lastName}`,
+      };
+
+      fetch(SERVER_URL + "/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newMessage),
       })
-      .then((data) => {
-        // Add the new message to the forum list
-        // Update messages for the selected forum
-        const updatedForum = {
-          ...selectedForum,
-          messages: [...selectedForum.messages, data],
-        };
-        setSelectedForum(updatedForum);
-        form.resetFields();
-        setIsReplyModalVisible(false);
-        // Update messages for the selected forum
-        // const updatedForum = {
-        // ...selectedForum,
-        // messages: [...selectedForum.messages, data],
-        // };
-        // setSelectedForum(updatedForum);
-        // form.resetFields();
-        // setIsReplyModalVisible(false);
-        // setListeForum([data, ...listeForum]);
-        // form.resetFields();
-        // handleReplyModalCancel(false);
-        // isMessagesModalVisible(false);
-        // fetchForum();
-        // // selectedForum(null);
-        // isMessagesModalVisible(false);
-        // handleMessagesModalCancel(true);
-      })
-      .catch((error) => console.error("Error adding forum:", error));
-    // });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const updatedForum = {
+            ...selectedForum,
+            messages: [...selectedForum.messages, data],
+          };
+          setSelectedForum(updatedForum);
+          formResponse.resetFields();
+          setIsReplyModalVisible(false);
+        })
+        .catch((error) => console.error("Error adding message:", error));
+    });
   };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
+    formQuestion.validateFields().then((values) => {
       const newForum = {
         probleme: values.probleme,
         description: values.description,
         author_id: currentUser.id,
-        // creatAt: new Date().toISOString(),
         createdBy: currentUser.firstName + " " + currentUser.lastName,
       };
 
@@ -167,9 +137,6 @@ const ModalBulleMessagerie = () => {
         body: JSON.stringify(newForum),
       })
         .then((response) => {
-          console.log("##########################");
-          console.log(response);
-          console.log(response.data);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
@@ -177,15 +144,31 @@ const ModalBulleMessagerie = () => {
         })
         .then((data) => {
           setListeForum([data, ...listeForum]);
-          form.resetFields();
+          formQuestion.resetFields();
           setIsModalVisible(false);
         })
-        .catch((error) => console.error("Error adding forum:", error));
+        .catch((error) => {
+          console.error("Error in form submission or closing modal:", error);
+        });
     });
   };
 
   const showReplyModal = () => {
-    setIsReplyModalVisible(true);
+    if (!currentUser) {
+      navigate("/connexion");
+    } else {
+      setIsReplyModalVisible(true);
+    }
+  };
+
+  const showMessages = (forum) => {
+    setSelectedForum(forum);
+    setIsMessagesModalVisible(true);
+  };
+
+  const handleMessagesModalCancel = () => {
+    setIsMessagesModalVisible(false);
+    setSelectedForum(null);
   };
 
   const fetchForum = (jwt) => {
@@ -208,16 +191,6 @@ const ModalBulleMessagerie = () => {
       .catch((error) => console.error("Error fetching forum:", error));
   };
 
-  const handleCancel = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
-
-  const handleMessagesModalCancel = () => {
-    setIsMessagesModalVisible(false);
-    setSelectedForum(null);
-  };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -231,24 +204,19 @@ const ModalBulleMessagerie = () => {
     return `${formattedDate} à ${formattedTime}`;
   };
 
-  const showMessages = (forum) => {
-    setSelectedForum(forum);
-    setIsMessagesModalVisible(true);
-  };
-
   return (
-    <div>
+    <div className="container">
       <Button id="monbtnProMax" onClick={showModal}>
         Posez une question ?
       </Button>
       <Modal
         title="Posez une question dans L2i-Forum ?"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={() => setIsModalVisible(false)}
         width={800}
       >
-        <Form form={form} layout="vertical">
+        <Form form={formQuestion} layout="vertical">
           <Form.Item
             label="Problème"
             name="probleme"
@@ -278,8 +246,9 @@ const ModalBulleMessagerie = () => {
 
       {listeForum.map((forum, index) => (
         <Card
+          className={`${isChatIconOpen ? "blur-background" : ""}`}
           key={index}
-          style={{ margin: "20px 0", width: "50rem", height: "200px" }}
+          style={cardStyle}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -297,14 +266,14 @@ const ModalBulleMessagerie = () => {
             }}
           >
             <img src={Chat} alt="Chat" width={15} height={15} />
-            Répondre
+            Réponses
           </Button>
         </Card>
       ))}
 
       <Modal
         title="Messages du forum"
-        visible={isMessagesModalVisible}
+        open={isMessagesModalVisible}
         onCancel={handleMessagesModalCancel}
         footer={null}
         width={800}
@@ -312,30 +281,52 @@ const ModalBulleMessagerie = () => {
         {selectedForum && (
           <div>
             <h2>{selectedForum.probleme}</h2>
-            <p> {selectedForum.description}</p>
+            <p>{selectedForum.description}</p>
+            <hr style={{ borderTop: "2px solid blue" }} />
+            <br />
             <List
-              dataSource={selectedForum.messages}
+              // dataSource={selectedForum.messages}
+              dataSource={selectedForum.messages.sort(
+                (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
+              )}
               renderItem={(message) => (
                 <List.Item key={message.id}>
-                  <List.Item.Meta
-                    title={
-                      (
-                        <div>
-                          {" "}
-                          <UserOutlined />
-                          &nbsp;
-                          {message.authorName}
-                        </div>
-                      ) || "Anonyme"
-                    }
-                    description={formatDate(message.creatAt)}
-                  />
-                  <Typography.Paragraph>{message.message}</Typography.Paragraph>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Avatar size="small" icon={<UserOutlined />} />
+                        <span style={{ marginLeft: 8, fontWeight: "bold" }}>
+                          {message?.authorName || "Anonyme"}
+                        </span>
+                      </div>
+                      <div style={{ marginLeft: "auto", textAlign: "right" }}>
+                        <span>{formatDate(message?.creatAt)}</span>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <Typography.Paragraph>
+                        {message.message}
+                      </Typography.Paragraph>
+                    </div>
+                  </div>
                 </List.Item>
               )}
             />
           </div>
         )}
+
         <Button id="btnRepondre" onClick={showReplyModal}>
           <img src={Chat} alt="Chat" width={15} height={15} />
           Répondre
@@ -344,16 +335,16 @@ const ModalBulleMessagerie = () => {
 
       <Modal
         title="Répondre au forum"
-        visible={isReplyModalVisible}
+        open={isReplyModalVisible}
         onCancel={handleReplyModalCancel}
         footer={null}
         width={800}
       >
-        <Form form={form} layout="vertical">
+        <Form form={formResponse} layout="vertical">
           <Form.Item
             label="Réponse"
             name="response"
-            onChange={(e) => setReponse(e.target.value)}
+            onChange={(e) => setResponse(e.target.value)}
             rules={[
               {
                 required: true,
@@ -372,9 +363,12 @@ const ModalBulleMessagerie = () => {
           </Button>
         </Form>
       </Modal>
-      <ChatIconComponent />
+
+      <ChatIconComponent
+        isLiveChatVisible={isChatIconOpen}
+        onToggle={handleChatIconToggle}
+      />
     </div>
   );
 };
-
 export default ModalBulleMessagerie;

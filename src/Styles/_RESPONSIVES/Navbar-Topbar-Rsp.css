@@ -1,6 +1,7 @@
 /* Partie Responsive */
 /* Exemple de styles pour le menu */
-@media (max-width: 800px) {
+
+@media (max-width: 991px) {
 #montitleL2i{
     font-size: 12px;
     font-weight: 700;

@@ -6,6 +6,7 @@ import {
   CloseOutlined,
   EditOutlined,
   LogoutOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 import "../../../Styles/Navbar-Topbar.css";
 import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
@@ -167,13 +168,15 @@ const Navbar = () => {
                           </Menu.Item>
                         )}
                         {currentUser?.role === "professor" && (
-                          <Menu.Item key="dashboard">
+                          <Menu.Item
+                            icon={<AppstoreOutlined />}
+                            key="dashboard"
+                          >
                             <NavLink to="/professeur">Dashboard</NavLink>
                           </Menu.Item>
                         )}
                         {currentUser?.role === "admin" && (
-                          <Menu.Item key="espaceAdmin">
-                            {/* <NavLink to="/admin">Espace Admin</NavLink> */}
+                          <Menu.Item icon={<UserOutlined />} key="espaceAdmin">
                             <NavLink to="/adminflksosdjds">
                               Espace Admin
                             </NavLink>

@@ -10,7 +10,7 @@ import { SERVER_URL } from "../Utils/constantURL";
 const Inscription = () => {
   /* Déclaration des variables */
   const [firstName, setPrenom] = useState("");
-  const [name, setNom] = useState("");
+  const [lastName, setlastName] = useState("");
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [niveau, setNiveau] = useState("");
@@ -69,7 +69,7 @@ const Inscription = () => {
     try {
       const user = {
         firstName,
-        name,
+        lastName,
         email,
         password,
         classeroom_id: parseInt(niveau),
@@ -145,7 +145,7 @@ const Inscription = () => {
 
             <Form.Item
               name="nom"
-              onChange={(e) => setNom(e.target.value)}
+              onChange={(e) => setlastName(e.target.value)}
               rules={[
                 { required: true, message: "Veuillez entrer votre nom !" },
               ]}
