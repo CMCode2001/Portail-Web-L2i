@@ -281,30 +281,52 @@ const ModalBulleMessagerie = () => {
         {selectedForum && (
           <div>
             <h2>{selectedForum.probleme}</h2>
-            <p> {selectedForum.description}</p>
+            <p>{selectedForum.description}</p>
+            <hr style={{ borderTop: "2px solid blue" }} />
+            <br />
             <List
-              dataSource={selectedForum.messages}
+              // dataSource={selectedForum.messages}
+              dataSource={selectedForum.messages.sort(
+                (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
+              )}
               renderItem={(message) => (
                 <List.Item key={message.id}>
-                  <List.Item.Meta
-                    title={
-                      (
-                        <div>
-                          {" "}
-                          <UserOutlined />
-                          &nbsp;
-                          {message.authorName}
-                        </div>
-                      ) || "Anonyme"
-                    }
-                    description={formatDate(message.creatAt)}
-                  />
-                  <Typography.Paragraph>{message.message}</Typography.Paragraph>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Avatar size="small" icon={<UserOutlined />} />
+                        <span style={{ marginLeft: 8, fontWeight: "bold" }}>
+                          {message?.authorName || "Anonyme"}
+                        </span>
+                      </div>
+                      <div style={{ marginLeft: "auto", textAlign: "right" }}>
+                        <span>{formatDate(message?.creatAt)}</span>
+                      </div>
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <Typography.Paragraph>
+                        {message.message}
+                      </Typography.Paragraph>
+                    </div>
+                  </div>
                 </List.Item>
               )}
             />
           </div>
         )}
+
         <Button id="btnRepondre" onClick={showReplyModal}>
           <img src={Chat} alt="Chat" width={15} height={15} />
           Répondre
