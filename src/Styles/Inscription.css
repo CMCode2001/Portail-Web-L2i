@@ -1,51 +1,63 @@
 .login-page-inscription {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #ffffff;
-  }
-  
-  .login-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 60px;
-    width:50% ;
-    margin-top: 4rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .illustration-wrapper {
-    text-align: center;
-    margin-bottom: 4px;
-  }
-  
-  .illustration-wrapper img {
-    /* max-width: 100%; */
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .form-title {
-    font-size: 40px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  
-  .login-form-button {
-    width: 100%;
-    background-color: var(--bgColor2) !important;
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-    font-family: "Poppins";
-    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .login-form-button:hover {
-    color: white !important;
-    background-color: var(--bgColor1) !important;
-    transform: scale(1.05);
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 60px;
+  width: 50%;
+  margin-top: 4rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.illustration-wrapper {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.illustration-wrapper img {
+  /* max-width: 100%; */
+  height: auto;
+  border-radius: 8px;
+}
+
+.form-title {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.login-form-button {
+  width: 100%;
+  background-color: var(--bgColor2) !important;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Poppins";
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-form-button:hover {
+  color: white !important;
+  background-color: var(--bgColor1) !important;
+  transform: scale(1.05);
+}
+
+.erreur-login {
+  color: #ff4d4f; /* Couleur rouge pour indiquer une erreur */
+  background-color: #fff1f0; /* Fond légèrement rosé */
+  border: 1px solid #ffccc7; /* Bordure assortie */
+  padding: 10px; /* Espacement intérieur pour aérer le texte */
+  border-radius: 4px; /* Coins arrondis */
+  text-align: center; /* Centrer le texte */
+  margin: 10px 0; /* Marge pour espacer du contenu environnant */
+  font-size: 16px; /* Taille de police lisible */
+  font-weight: bold; /* Mettre le texte en gras pour plus de visibilité */
+  width: 100%; /* S'assurer que l'élément prend toute la largeur disponible */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Légère ombre portée pour le relief */
+}

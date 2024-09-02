@@ -20,10 +20,6 @@ const Confirmation = () => {
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
 
-  useEffect(() => {
-    setEstAuthentifieCallback(isAuthenticated);
-  }, [isAuthenticated]);
-
   const setEstAuthentifieCallback = (newValue) => {
     setAuth(newValue);
   };
@@ -38,38 +34,41 @@ const Confirmation = () => {
   };
 
   const login = async (u, p) => {
-    try {
-      const user = {
-        username: u,
-        password: p,
-      };
+    while (!isAuthenticated) {
+      try {
+        const user = {
+          username: u,
+          password: p,
+        };
 
-      /*  */
+        /*  */
 
-      const response = await fetch(SERVER_URL + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
-      });
+        const response = await fetch(SERVER_URL + "/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
+        });
 
-      if (!response.ok) {
-        setErreur(true);
-        const errorData = await response.json();
-        //setErreurMsg("Erreur lors de la connexion");
-        showModal("error", "Erreur lors de la connexion");
-        throw new Error(erreurMsg);
-      }
+        if (!response.ok) {
+          setErreur(true);
+          const errorData = await response
+            .text()
+            .then((msg) => showModal("error", msg));
+          //setErreurMsg("Erreur lors de la connexion");
+          return;
+          // throw new Error(erreurMsg);
+        }
 
-      if (response.ok) {
-        setAuth(true);
-        //const errorData = await response.json();
-        //setErreurMsg("Erreur lors de la connexion");
-        showModal("success", "Connexion Réussie");
-        // throw new Success(erreurMsg);
-      }
+        if (response.ok) {
+          setAuth(true);
+          //const errorData = await response.json();
+          //setErreurMsg("Erreur lors de la connexion");
+          showModal("success", "Connexion Réussie");
+          // throw new Success(erreurMsg);
+        }
 
-      const jwtToken = response.headers.get("Authorization");
-      if (jwtToken) {
+        const jwtToken = response.headers.get("Authorization");
+        // if (jwtToken) {
         const userData = await response.json();
 
         sessionStorage.setItem("jwt", jwtToken);
@@ -80,12 +79,15 @@ const Confirmation = () => {
         setTimeout(() => {
           window.location.href = "/";
         });
-      } else {
-        throw new Error("Token JWT non trouvé dans la réponse");
+        // } else {
+        //   throw new Error("Token JWT non trouvé dans la réponse");
+        // }
+      } catch (error) {
+        console.log(error);
+        showModal("error", "Erreur lors de la requête de connexion");
       }
-    } catch (error) {
-      console.error("Erreur lors de la requête de connexion :", error);
-      showModal("error", "Erreur lors de la requête de connexion");
+
+      // alert(error.text());
     }
   };
 
@@ -116,50 +118,58 @@ const Confirmation = () => {
   const [status, setStatus] = useState("pending");
 
   const [hasFetched, setHasFetched] = useState(false); // State flag to prevent double fetch
+  const [regener, setRegener] = useState(""); // State flag to prevent double fetch
 
   const loginWithToken = async () => {
-    if (hasFetched) return; // Prevent fetching if already fetched
+    if (hasFetched) return; // Empêche de fetcher si déjà fait
     const token = idtoken;
     console.log(token);
 
     if (token) {
-      let aTermine = "";
-      while (aTermine === "") {
-        try {
-          const response = await fetch(`${SERVER_URL}/confirm?token=${token}`, {
-            method: "GET",
-          });
+      // let aTermine = false;
 
-          if (response.ok) {
-            const rep = await response.json();
-            setUsername(rep.email);
-            setPassword(rep.password);
+      // while (!aTermine) {
+      try {
+        const response = await fetch(`${SERVER_URL}/confirm?token=${token}`, {
+          method: "PATCH",
+        });
 
-            if (username) {
-              console.log(username);
-              console.log(password);
-            }
+        if (response.status === 200) {
+          const rep = await response.json();
+          setUsername(rep.email);
+          setPassword(rep.password);
+
+          if (rep.email) {
             console.log(rep.email);
-            if (rep.email !== "") {
-              login(rep.email, rep.password);
-            }
-
-            aTermine = "s";
-            setStatus("success");
-            setHasFetched(true); // Set the flag to true after fetching
-          } else {
-            setStatus("error");
+            console.log(rep.password);
+            login(rep.email, rep.password);
           }
-        } catch (error) {
-          console.error("Error during email confirmation:", error);
+
+          // aTermine = true;
+          setStatus("success");
+          setHasFetched(true); // Mettre le flag à true après le fetch
+        } else {
+          const rep = await response
+            .text()
+            .then((message) => setRegener(message));
+          // if (response.status === 400) {
+
+          // }
+
           setStatus("error");
         }
+      } catch (error) {
+        console.error("Error during email confirmation:", error);
+        setStatus("error");
+        // aTermine = true; // Sortir de la boucle en cas d'erreur
+        // }
       }
     }
   };
+
   useEffect(() => {
     loginWithToken();
-  }, [username]);
+  }, []);
 
   if (status === "pending") {
     return <Spin tip="Confirming your email..." />;
@@ -234,7 +244,7 @@ const Confirmation = () => {
                 <Result
                   status="error"
                   title="Échec de la confirmation de l'e-mail"
-                  subTitle="Le lien de confirmation est invalide ou a expiré."
+                  subTitle={regener}
                   extra={[
                     <Button type="primary" key="home" href="/inscription">
                       Retour à l'inscription

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, notification } from "antd";
+import { Button, Form, Input, Select, Spin, notification } from "antd";
 import React, { useState } from "react";
 import SvgRegister from "../Assets/svg/sign-up-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
@@ -9,64 +9,46 @@ import { SERVER_URL } from "../Utils/constantURL";
 
 const Inscription = () => {
   /* Déclaration des variables */
-  const [firstName, setPrenom] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [email, setMail] = useState("");
-  const [password, setPassword] = useState("");
-  const [niveau, setNiveau] = useState("");
+  const [firstName, setPrenom] = useState("test");
+  const [lastName, setlastName] = useState("test");
+  const [email, setMail] = useState("oriontheroot@gmail.com");
+  const [password, setPassword] = useState("12345678");
+  const [passwordConfirm, setPasswordConfim] = useState("12345678");
+  const [niveau, setNiveau] = useState("3");
   const [emailStatus, setEmailStatus] = useState("");
+  const [messageReponse, setMessageReponse] = useState({
+    erreur: false,
+    message: "",
+  });
+  const openMessageReponse = () => {
+    if (!messageReponse.erreur && messageReponse.message)
+      notification.success({
+        message: "Inscription Réussie, Procedez a l'activation",
+        description: messageReponse.message,
+        placement: "top",
+      });
+    else
+      notification.error({
+        message: "Inscription Non Réussie",
+        description: messageReponse.message || "Erreur, Veuillez reessayer",
+        placement: "top",
+      });
+  };
 
-  const openSuccessNotification = () => {
-    notification.success({
-      message: "Inscription Réussie",
-      description: "Votre inscription a été réalisée avec succès!",
+  const openErrorNotification = () => {
+    notification.error({
+      message: "Erreur : Incohérence des mots de passe",
+      description:
+        "Les mots de passe ne correspondent pas. Veuillez vérifier et réessayer.",
       placement: "top",
     });
   };
 
-  const login = async () => {
-    try {
-      const user = {
-        username: email,
-        password,
-      };
-      const response = await fetch(SERVER_URL + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erreur lors de la connexion");
-      }
-
-      const jwtToken = response.headers.get("Authorization");
-      if (jwtToken) {
-        // Récupérer le corps de la réponse pour obtenir l'objet user
-        const userData = await response.json();
-
-        // Stocker le token JWT et les détails de l'utilisateur
-        sessionStorage.setItem("jwt", jwtToken);
-        sessionStorage.setItem("isLoggedIn", true);
-        sessionStorage.setItem("user", JSON.stringify(userData.user)); // Stocker l'objet utilisateur sous forme de chaîne JSON
-
-        // Afficher la notification de succès avant de rediriger
-        openSuccessNotification();
-        setTimeout(() => {
-          window.location.href = "/"; // Redirection après 3 secondes
-        }, 500);
-      } else {
-        throw new Error("Token JWT non trouvé dans la réponse");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête de connexion :", error);
-      // Afficher un message d'erreur à l'utilisateur si nécessaire
-    }
-  };
-
-  const sinscrire = async () => {
-    try {
+  const [loading, setLoading] = useState(false);
+  const [isDesabled, setDisable] = useState(false);
+  const sinscrire = () => {
+    if (password === passwordConfirm) {
+      setLoading(true);
       const user = {
         firstName,
         lastName,
@@ -75,20 +57,49 @@ const Inscription = () => {
         classeroom_id: parseInt(niveau),
       };
 
-      console.log("***********8Debut des Donnees aenvoyer");
-      console.log(user);
-      const response = await fetch(SERVER_URL + "/student", {
+      fetch(SERVER_URL + "/student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
-      });
+      })
+        .then((response) => {
+          response.text().then((message) => {
+            const isError = !response.ok;
+            const errorMessage = isError
+              ? message || "Erreur lors de l'inscription."
+              : message || "Inscription réussie avec succès.";
 
-      if (response.ok) {
-        login();
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête de connexion :", error);
-      // Afficher un message d'erreur à l'utilisateur si nécessaire
+            setMessageReponse({
+              erreur: isError,
+              message: errorMessage,
+            });
+            if (isError) {
+              setDisable(true);
+            }
+
+            openMessageReponse();
+            setLoading(false);
+
+            if (!isError) {
+              // En cas de succès, rediriger vers la page de connexion après 2 minutes
+              setTimeout(() => {
+                window.location.href = "/connexion";
+                // }, 5000);
+              }, 60000);
+            }
+          });
+        })
+        .catch((error) => {
+          setMessageReponse({
+            erreur: true,
+            message: error.text || "Erreur inattendue lors de l'inscription.",
+          });
+          console.error("Erreur lors de la requête:", error);
+          openMessageReponse();
+          setLoading(false);
+        });
+    } else {
+      openErrorNotification();
     }
   };
 
@@ -125,6 +136,10 @@ const Inscription = () => {
           <div className="illustration-wrapper">
             <img src={SvgRegister} alt="Register" id="SvgRsp" />
           </div>
+
+          {messageReponse.message != "" && (
+            <h2 className="erreur-login">{messageReponse.message}</h2>
+          )}
           <Form
             name="register-form"
             initialValues={{ remember: true }}
@@ -183,6 +198,7 @@ const Inscription = () => {
             <Form.Item
               name="confirm"
               dependencies={["password"]}
+              onChange={(e) => setPasswordConfim(e.target.value)}
               hasFeedback
               rules={[
                 {
@@ -221,14 +237,25 @@ const Inscription = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-                onClick={sinscrire}
-              >
-                S'inscrire →
-              </Button>
+              <Spin spinning={loading}>
+                {loading ? (
+                  <div>
+                    <h1>
+                      <p>Traitement de l'inscription...</p>
+                    </h1>
+                  </div>
+                ) : (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                    disabled={isDesabled}
+                    onClick={sinscrire}
+                  >
+                    S'inscrire →
+                  </Button>
+                )}
+              </Spin>
             </Form.Item>
           </Form>
         </div>

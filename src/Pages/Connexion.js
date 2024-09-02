@@ -1,16 +1,17 @@
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, notification } from "antd";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
 import { SERVER_URL } from "../Utils/constantURL";
-import { Link } from "react-router-dom";
 
 const Connexion = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [messageReponse, setMessageReponse] = useState("");
 
   const [isAuthenticated, setAuth] = useState(false);
   const [erreur, setErreur] = useState(false);
@@ -50,8 +51,9 @@ const Connexion = () => {
 
       if (!response.ok) {
         setErreur(true);
-        const errorData = await response.json();
-        //setErreurMsg("Erreur lors de la connexion");
+        const errorData = await response.text();
+        setMessageReponse(errorData);
+        setErreurMsg("Erreur lors de la connexion");
         showModal("error", "Erreur lors de la connexion");
         throw new Error(erreurMsg);
       }
@@ -59,7 +61,7 @@ const Connexion = () => {
       if (response.ok) {
         setAuth(true);
         //const errorData = await response.json();
-        //setErreurMsg("Erreur lors de la connexion");
+        setErreurMsg("Connexion Réussie");
         showModal("success", "Connexion Réussie");
         // throw new Success(erreurMsg);
       }
@@ -67,24 +69,52 @@ const Connexion = () => {
       const jwtToken = response.headers.get("Authorization");
       if (jwtToken) {
         const userData = await response.json();
+        console.log("$$$$$$$$$Le logging");
+        console.log(userData.user.active);
+        // window.localStorage.clear();
 
-        sessionStorage.setItem("jwt", jwtToken);
-        sessionStorage.setItem("isLoggedIn", true);
-        sessionStorage.setItem("user", JSON.stringify(userData.user));
-
-        showModal("success", "Connexion Réussie");
-        setTimeout(() => {
-          window.location.href = "/";
-        });
+        if (userData.user.active) {
+          sessionStorage.setItem("jwt", jwtToken);
+          sessionStorage.setItem("isLoggedIn", true);
+          sessionStorage.setItem("user", JSON.stringify(userData.user));
+          showModal("success", "Connexion Réussie");
+          setTimeout(() => {
+            window.location.href = "/";
+          });
+        } else {
+          // showModal(
+          //   "error",
+          //   "Veuillez vérifier votre email et activer votre compte pour accéder à toutes les fonctionnalités."
+          // );
+          setMessageReponse(
+            "Cher " +
+              userData.user.firstName +
+              " " +
+              userData.user.lastName +
+              " Veuillez vérifier votre email et activer votre compte pour accéder à toutes les fonctionnalités."
+          );
+          openErreurNotification();
+        }
       } else {
-        throw new Error("Token JWT non trouvé dans la réponse");
+        // throw new Error("Token JWT non trouvé dans la réponse");
       }
     } catch (error) {
+      //  "Erreur lors de la requête de connexion. Veuillez vérifier votre email et votre mot de passe.";
+      console.log(error.status);
+      // setMessageReponse(error.status);
+      openErreurNotification();
       console.error("Erreur lors de la requête de connexion :", error);
       showModal("error", "Erreur lors de la requête de connexion");
     }
   };
 
+  const openErreurNotification = () => {
+    notification.error({
+      message: "Echec de la connexion",
+      description: messageReponse,
+      placement: "top",
+    });
+  };
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -125,7 +155,10 @@ const Connexion = () => {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
-              {erreur && <h2 className="erreur-login">{erreurMsg}</h2>}
+              {messageReponse && (
+                <h2 className="erreur-login">{messageReponse}</h2>
+              )}
+
               <p className="form-title">Welcome to L2i !</p>
               <p>
                 Ravie de vous revoir, <br />
