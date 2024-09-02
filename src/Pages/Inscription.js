@@ -73,7 +73,7 @@ const Inscription = () => {
               erreur: isError,
               message: errorMessage,
             });
-            if (isError) {
+            if (!isError) {
               setDisable(true);
             }
 
