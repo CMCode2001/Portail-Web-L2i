@@ -384,8 +384,19 @@ const ModalBulleMessagerie = () => {
   // };
 
   const handleEditForum = (id, newData) => {
+    // Vérifier si les champs ne sont pas vides
+    if (!newData.probleme || !newData.description) {
+      notification.error({
+        message: "Erreur de validation",
+        description: "Tous les champs doivent être remplis pour modifier le forum.",
+        placement: "topRight",
+        showProgress: true
+      });
+      return; // Ne pas poursuivre si les champs sont vides
+    }
+  
     const token = sessionStorage.getItem("jwt");
-
+  
     fetch(SERVER_URL + `/forum/${id}`, {
       method: "PATCH",
       headers: {
@@ -401,7 +412,7 @@ const ModalBulleMessagerie = () => {
               item.id === id ? { ...item, ...newData } : item
             )
           );
-
+  
           // Notification de succès
           notification.success({
             message: "Modification réussie",
@@ -421,7 +432,7 @@ const ModalBulleMessagerie = () => {
       })
       .catch((error) => {
         console.error("Erreur lors de la modification du forum :", error);
-
+  
         // Notification d'erreur
         notification.error({
           message: "Erreur lors de la modification",
@@ -431,6 +442,7 @@ const ModalBulleMessagerie = () => {
         });
       });
   };
+  
 
   const showReplyModal = () => {
     if (!currentUser) {
