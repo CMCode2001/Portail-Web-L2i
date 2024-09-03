@@ -1,34 +1,32 @@
-import React, { useState } from "react";
-import { Layout, Menu, theme } from "antd";
-import "../_Styles/DashboardAdmin.css";
 import {
-  UserOutlined,
   AppstoreOutlined,
-  HomeOutlined,
-  GoldOutlined,
-  FileTextOutlined,
-  PictureOutlined,
-  MessageOutlined,
-  WechatOutlined,
-  PushpinOutlined,
-  PieChartOutlined,
   EditOutlined,
+  FileTextOutlined,
+  HomeOutlined,
   LogoutOutlined,
+  MessageOutlined,
+  PictureOutlined,
+  PieChartOutlined,
+  PushpinOutlined,
+  UserOutlined,
+  WechatOutlined,
 } from "@ant-design/icons";
+import { Layout, Menu, theme } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import CrudTable from "./CrudTable.tsx";
-import CrudClasse from "./Classes/CrudClasseL1.tsx";
-import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
-import CrudClasseL1 from "./Classes/CrudClasseL1.tsx";
-import CrudClasseL2 from "./Classes/CrudClasseL2.tsx";
-import CrudClasseL3 from "./Classes/CrudClasseL3.tsx";
-import UploadPicture from "./Galleries/UploadPicture.js";
-import ScreenText from "./text/ScreenText.tsx";
-import UserSite from "./user/UserSite.tsx";
+import "../_Styles/DashboardAdmin.css";
+import CrudClasseL1 from "./Classes/CrudClasseL1.jsx";
+import CrudClasseL2 from "./Classes/CrudClasseL2.jsx";
+import CrudClasseL3 from "./Classes/CrudClasseL3.jsx";
 import OldStudent from "./Classes/OldStudent.tsx";
+import CrudTable from "./CrudTable.tsx";
 import CrudForum from "./Forum/CrudForum.tsx";
 import CrudMessageForum from "./Forum/CrudMessageForum.tsx";
+import UploadPicture from "./Galleries/UploadPicture.js";
+import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 import UpdateAdmin from "./Professor/UpdateAdmin.js";
+import ScreenText from "./text/ScreenText.tsx";
+import UserSite from "./user/UserSite.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;

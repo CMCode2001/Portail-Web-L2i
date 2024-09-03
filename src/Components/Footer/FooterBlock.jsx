@@ -80,16 +80,16 @@ function FooterBlock() {
           <Link to="/gallerie">Gallerie</Link>
         </div>
         <div className="social-media">
-          <Link to="#">
+          <Link to="https://uasz.sn/">
             <img src={uasz} alt="Logo de l'universite Assane SECK" />
           </Link>
-          <Link to="#">
+          <Link to="https://www.facebook.com/profile.php?id=61565542792170">
             <i className="fa-brands fa-square-facebook"></i>
           </Link>
-          <Link to="#">
+          <Link to="https://www.linkedin.com/company/licence-ing%C3%A9nierie-informatique/">
             <i className="fa-brands fa-linkedin"></i>
           </Link>
-          <Link to="#">
+          <Link to="https://github.com/L2IUASZ/">
             <i className="fa-brands fa-github"></i>
           </Link>
         </div>

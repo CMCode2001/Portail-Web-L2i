@@ -20,7 +20,7 @@ const Topbar = () => {
                     </div>
                     <div className="top-link d-none d-lg-block">
                         <text id='suivezLink'  style={{color:'white'}}><i>Suivez-nous sur !!</i></text> 
-                        <Link to="/" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum'>
+                        <Link to="https://www.facebook.com/profile.php?id=61565542792170" className="bg-light nav-fill btn btn-sm-square rounded-circle " id='IconeCostum'>
                             <i className="fab fa-facebook-f "></i>
                         </Link>
                         
@@ -34,7 +34,7 @@ const Topbar = () => {
                             <i className="fab fa-github"></i>
                             </a>
 
-                        <Link to ="/" className="bg-light nav-fill btn btn-sm-square rounded-circle me-0" id='IconeCostum'>
+                        <Link to ="https://www.linkedin.com/company/licence-ing%C3%A9nierie-informatique/" className="bg-light nav-fill btn btn-sm-square rounded-circle me-0" id='IconeCostum'>
                             <i className="fab fa-linkedin-in "></i>
                         </Link>
                     </div>
