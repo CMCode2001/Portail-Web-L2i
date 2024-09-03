@@ -54,7 +54,7 @@ const MyCards = () => {
   const navigate = useNavigate();
 
   const handleClick = ()=>{
-    navigate('/cours');
+    navigate('/cours'); 
     console.log("Parenaathi !!!");
     
   }
