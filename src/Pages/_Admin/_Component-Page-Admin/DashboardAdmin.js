@@ -51,8 +51,8 @@ const DashboardAdmin = () => {
     switch (selectedCrud) {
       case "etudiants":
         return <CrudTable />;
-      case "professor":
-        return <CrudProfesseur />;
+      // case "professor":
+      //   return <CrudProfesseur />;
       case "utilisateurs":
         return <UserSite />;
       case "student/niveau/1":
@@ -101,11 +101,11 @@ const DashboardAdmin = () => {
               Go to Etudiants
             </Link>
           </Menu.Item>
-          <Menu.Item key="professor" icon={<HomeOutlined />}>
+          {/* <Menu.Item key="professor" icon={<HomeOutlined />}>
             <Link to="/professeur" style={{ textDecoration: "none" }}>
               Go to Professors
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <SubMenu key="classe" icon={<AppstoreOutlined />} title="Classes">
             <Menu.Item key="student/niveau/1">Licence1-2I</Menu.Item>
             <Menu.Item key="student/niveau/2">Licence2-2I</Menu.Item>

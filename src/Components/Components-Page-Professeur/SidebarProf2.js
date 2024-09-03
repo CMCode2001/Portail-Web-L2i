@@ -79,20 +79,19 @@ const SidebarProf2 = () => {
         </Link>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-          <Menu.Item  icon={<HomeFilled />}>
+          <Menu.Item icon={<HomeFilled />}>
             <Link to="/" style={{ textDecoration: "none" }}>
               Accueil
             </Link>
-            </Menu.Item>
+          </Menu.Item>
 
-          
-          <SubMenu  icon={<ReadOutlined />} title="Mes Classes">
-            <Menu.Item >
+          <SubMenu icon={<ReadOutlined />} title="Mes Classes">
+            <Menu.Item>
               <Link to="classes/L1-2i" style={{ textDecoration: "none" }}>
                 L1-2i
               </Link>
             </Menu.Item>
-            <Menu.Item >
+            <Menu.Item>
               <Link to="classes/L2-2i" style={{ textDecoration: "none" }}>
                 L2-2i
               </Link>
@@ -132,10 +131,10 @@ const SidebarProf2 = () => {
           style={{
             padding: 0,
             background: colorBgContainer,
-            height:'0'
+            height: "0",
           }}
         />
-        <h3 style={{ textAlign: "center"  }}>
+        <h3 style={{ textAlign: "center" }}>
           <br />
           <UserOutlined /> Bonjour, Pr {currentUser?.firstName}{" "}
           {currentUser?.name}
@@ -161,7 +160,10 @@ const SidebarProf2 = () => {
             textAlign: "center",
           }}
         >
-          <h6>© 2024 - Licence Ingénierie informatique</h6>
+          {/* <h6>© 2024 - Licence Ingénierie informatique</h6> */}
+          <h6>
+            © {new Date().getFullYear()} - Licence Ingénierie informatique
+          </h6>
         </Footer>
       </Layout>
     </Layout>
