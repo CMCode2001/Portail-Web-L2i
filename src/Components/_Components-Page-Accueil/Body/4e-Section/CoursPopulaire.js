@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Typography, Grid, Container, Button } from '@mui/material';
 import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
@@ -48,158 +49,171 @@ const cardsData = [
   },
 ];
 
-const MyCards = () => (
-  <Container>
-    <SeparatorBlock title="Cours Populaires" />
-    <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '100vh', marginTop: '20px' }}>
-      <Grid container item xs={12} spacing={3} justifyContent="center">
-        {cardsData.slice(0, 3).map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
-            <Card sx={{ 
-              borderRadius: '33px', 
-              width: '341px', 
-              height: '473px',
-              backgroundColor: '#13798C',
-            }}>
-              <CardMedia
-                component="img"
-                height="250"
-                image={card.image}
-                alt={card.title}
-                sx={{ borderRadius: card.borderRadius }}
-              />
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  sx={{
-                    position: 'relative',
-                    paddingLeft: '40px',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: 0,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
+const MyCards = () => {
+  
+  const navigate = useNavigate();
+
+  const handleClick = ()=>{
+    navigate('/cours');
+    console.log("Parenaathi !!!");
+    
+  }
+
+    return (
+    <Container>
+      <SeparatorBlock title="Cours Populaires" />
+      <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '100vh', marginTop: '20px' }}>
+        <Grid container item xs={12} spacing={3} justifyContent="center">
+          {cardsData.slice(0, 3).map((card, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+              <Card sx={{ 
+                borderRadius: '33px', 
+                width: '341px', 
+                height: '473px',
+                backgroundColor: '#13798C',
+              }}>
+                <CardMedia
+                  component="img"
+                  height="250"
+                  image={card.image}
+                  alt={card.title}
+                  sx={{ borderRadius: card.borderRadius }}
+                />
+                <CardContent>
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    sx={{
+                      position: 'relative',
+                      paddingLeft: '40px',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '12px',
+                        height: '12px',
+                        borderRadius: '50%',
+                        backgroundColor: 'white',
+                      }
+                    }}
+                  >
+                    {card.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="white"
+                  >
+                    {card.description}
+                  </Typography>
+                  <Button
+                    onClick={handleClick}
+                    variant="contained"
+                    sx={{ 
                       backgroundColor: 'white',
-                    }
-                  }}
-                >
-                  {card.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="white"
-                >
-                  {card.description}
-                </Typography>
-                <Button
-                  variant="contained"
-                  sx={{ 
-                    backgroundColor: 'white',
-                    color: 'black',
-                    fontWeight: 'bold',
-                    borderRadius: '33px',
-                    display: 'block', 
-                    margin: '16px auto',
-                    transition: 'background-color 0.3s, color 0.3s',
-                    '&:hover': {
-                      backgroundColor: '#d3d3d3', // Couleur blanche foncée
                       color: 'black',
-                    },
-                    '&:active': {
-                      backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
-                      color: 'black',
-                    }
-                  }}
-                >
-                  Voir plus
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid container item xs={12} spacing={3} justifyContent="center">
-        {cardsData.slice(3, 6).map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
-            <Card sx={{ 
-              borderRadius: '33px', 
-              width: '341px', 
-              height: '473px',
-              backgroundColor: '#13798C',
-            }}>
-              <CardMedia
-                component="img"
-                height="250"
-                image={card.image}
-                alt={card.title}
-                sx={{ borderRadius: card.borderRadius }}
-              />
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  sx={{
-                    position: 'relative',
-                    paddingLeft: '40px',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: 0,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
+                      fontWeight: 'bold',
+                      borderRadius: '33px',
+                      display: 'block', 
+                      margin: '16px auto',
+                      transition: 'background-color 0.3s, color 0.3s',
+                      '&:hover': {
+                        backgroundColor: '#d3d3d3', // Couleur blanche foncée
+                        color: 'black',
+                      },
+                      '&:active': {
+                        backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
+                        color: 'black',
+                      }
+                    }}
+                  >
+                    Voir plus
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+        <Grid container item xs={12} spacing={3} justifyContent="center">
+          {cardsData.slice(3, 6).map((card, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+              <Card sx={{ 
+                borderRadius: '33px', 
+                width: '341px', 
+                height: '473px',
+                backgroundColor: '#13798C',
+              }}>
+                <CardMedia
+                  component="img"
+                  height="250"
+                  image={card.image}
+                  alt={card.title}
+                  sx={{ borderRadius: card.borderRadius }}
+                />
+                <CardContent>
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    sx={{
+                      position: 'relative',
+                      paddingLeft: '40px',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '12px',
+                        height: '12px',
+                        borderRadius: '50%',
+                        backgroundColor: 'white',
+                      }
+                    }}
+                  >
+                    {card.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="white"
+                  >
+                    {card.description}
+                  </Typography>
+                  <Button
+                    onClick={handleClick}
+                    variant="contained"
+                    sx={{ 
                       backgroundColor: 'white',
-                    }
-                  }}
-                >
-                  {card.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="white"
-                >
-                  {card.description}
-                </Typography>
-                <Button
-                  variant="contained"
-                  sx={{ 
-                    backgroundColor: 'white',
-                    color: 'black',
-                    fontWeight: 'bold',
-                    borderRadius: '33px',
-                    display: 'block', 
-                    margin: '16px auto',
-                    transition: 'background-color 0.3s, color 0.3s',
-                    '&:hover': {
-                      backgroundColor: '#d3d3d3', // Couleur blanche foncée
                       color: 'black',
-                    },
-                    '&:active': {
-                      backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
-                      color: 'black',
-                    }
-                  }}
-                >
-                  Voir plus
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                      fontWeight: 'bold',
+                      borderRadius: '33px',
+                      display: 'block', 
+                      margin: '16px auto',
+                      transition: 'background-color 0.3s, color 0.3s',
+                      '&:hover': {
+                        backgroundColor: '#d3d3d3', // Couleur blanche foncée
+                        color: 'black',
+                      },
+                      '&:active': {
+                        backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
+                        color: 'black',
+                      }
+                    }}
+                  >
+                    Voir plus
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
-    </Grid>
-  </Container>
-);
+    </Container>
+  );
+}
 
 export default MyCards;
