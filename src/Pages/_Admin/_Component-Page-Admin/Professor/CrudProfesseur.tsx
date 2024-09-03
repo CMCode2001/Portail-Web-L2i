@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
 import { SERVER_URL } from "../../../../Utils/constantURL";
 
 const CrudProfesseur = () => {
@@ -155,6 +155,15 @@ const CrudProfesseur = () => {
     return password;
   };
 
+  const classroomOptions = [
+    { label: "Licence 1", value: 1 },
+    { label: "Licence 2", value: 2 },
+    { label: "Licence 3", value: 3 },
+    // { label: "Master 1", value: 4 },
+    // { label: "Master 2", value: 5 },
+    // { label: "None", value: 0 },
+  ];
+
   const columns = [
     {
       title: "FirstName",
@@ -248,8 +257,8 @@ const CrudProfesseur = () => {
           <Form.Item hidden name="specialityProfessor" label="Speciality">
             <Input />
           </Form.Item>
-          <Form.Item hidden name="classeroom_id" label="Classeroom ID">
-            <Input />
+          <Form.Item required name="classeroom_id" label="Classeroom">
+            <Select options={classroomOptions} />
           </Form.Item>
           <Form.Item hidden name="courses" label="Courses">
             <Input />

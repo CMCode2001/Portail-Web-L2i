@@ -26,3 +26,44 @@
     margin-top: -25px;
     border-radius: 20px;
 }
+
+@media (max-width: 991px) {
+    .header-forum .header-message h3{
+        font-weight: 700;
+        font-size: 1.5rem ;
+        letter-spacing: 1px;
+    }
+
+    .header-forum .office {
+        width: 400px;
+        height: auto;
+    }
+    .forum-header::after {
+        margin-top: -20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-forum{
+        margin-top: 5px;
+    }
+    .header-forum .header-message img{
+        width: 50px;
+        height: auto;
+        margin-bottom: 2px;
+    }
+    
+    .header-forum .header-message h3{
+        font-size: 1.1rem ;
+        margin-left: 35px ;
+    }
+    
+
+    .header-forum .office {
+        width: 150px;
+        height: auto;
+    }
+    .forum-header::after {
+        margin-top: -7px;
+    }
+}
