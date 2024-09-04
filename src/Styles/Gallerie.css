@@ -1,16 +1,137 @@
-/* Gallerie.css */
+/* Feu */
+.pictures-grid-defunt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* Espace entre les photos */
+  padding: 20px;
+}
 
+.pictures-grid-defunt > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 55%; /* Réduit la largeur des photos */
+}
+
+.pictures-grid-defunt img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 10px; /* Espace entre l'image et la description */
+}
+
+.pictures-grid-defunt p {
+  font-size: 16px;
+}
+
+.pictures-grid-defunt > div:first-child p {
+  text-align: left; /* Description de la première photo à gauche */
+}
+
+.pictures-grid-defunt > div:last-child p {
+  text-align: right; /* Description de la deuxième photo à droite */
+}
+
+/* chef */
+/* Responsivité */
+@media (max-width: 768px) {
+  .pictures-grid-chef {
+    flex-direction: column; /* Les photos s'empilent verticalement sur les petits écrans */
+    align-items: center;
+  }
+
+  .pictures-grid-chef img {
+    width: 80%; /* Réduit la taille des photos sur les petits écrans */
+  }
+
+  .pictures-grid-chef p {
+    font-size: 14px;
+  }
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .pictures-grid-defunt {
+    flex-direction: column;
+  }
+
+  .pictures-grid-defunt > div {
+    width: 100%; /* Largeur pleine pour les petits écrans */
+  }
+
+  .pictures-grid-defunt img {
+    width: 80%; /* Réduit encore la largeur des photos sur petits écrans */
+    margin-bottom: 5px;
+  }
+
+  .pictures-grid-defunt p {
+    font-size: 14px;
+  }
+}
+
+/* communaute */
 .gallerie-container {
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    gap: -35px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: -35px;
+  padding: 20px; /* Ajout d'un padding pour plus de confort */
+}
+
+.gallerie-text {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.pictures-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Par défaut, 4 colonnes */
+  gap: 10px; /* Espace entre les sections */
+}
+
+.pictures-grid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pictures-grid img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 5px; /* Espace entre l'image et la description */
+}
+
+.pictures-grid p {
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Responsivité */
+@media (max-width: 1200px) {
+  .pictures-grid {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 3 colonnes pour les écrans moyens */
   }
-  
-  
+}
+
+@media (max-width: 768px) {
+  .pictures-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les tablettes */
+  }
+}
+
+@media (max-width: 480px) {
+  .pictures-grid {
+    grid-template-columns: 1fr; /* 1 colonne pour les petits écrans */
+  }
+
   .gallerie-text {
-    text-align: center;
-    font-size: 34px; 
-    font-weight: 800;
+    font-size: 28px; /* Réduction de la taille du texte pour les petits écrans */
   }
-  
+}

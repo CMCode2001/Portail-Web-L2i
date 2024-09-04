@@ -20,6 +20,7 @@ import Professeur from "./Pages/Professeur";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
 import "./Styles/bootstrap.min.css";
 import ForgetMotDePasse from "./Components/ForgetMotDePasse";
+import ProfileStudent from "./Components/Profile/ProfileStudent";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/confirmation/:idtoken" element={<Confirmation />} />
           <Route path="/password/reset" element={<ForgetMotDePasse />} />
+          <Route path="studentProfile" element={<ProfileStudent />} />
 
           {/* ------------ Professeur -------------- */}
           <Route path="/professeur" element={<Professeur />}>
@@ -52,8 +54,8 @@ function App() {
           {/* ------------ Professeur -------------- */}
 
           {/* ---------------- ADMIN --------------- */}
-          {/* <Route path="/#01admin-4359" element={<PageAdmin />} /> */}
-          <Route path="/admin" element={<PageAdmin />} />
+          <Route path="/adminflksosdjds" element={<PageAdmin />} />
+          {/* <Route path="/admin" element={<PageAdmin />} /> */}
           {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>

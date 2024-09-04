@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
-import { UserOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  CloseOutlined,
+  EditOutlined,
+  LogoutOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
 import "../../../Styles/Navbar-Topbar.css";
 import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
@@ -149,17 +155,31 @@ const Navbar = () => {
                   <Dropdown
                     overlay={
                       <Menu>
-                        <Menu.Item key="logout" onClick={handleLogout}>
+                        <Menu.Item
+                          icon={<LogoutOutlined />}
+                          key="logout"
+                          onClick={handleLogout}
+                        >
                           Déconnexion
                         </Menu.Item>
+                        {currentUser?.role === "student" && (
+                          <Menu.Item icon={<EditOutlined />} key="dashboard">
+                            <NavLink to="/studentProfile">Profile</NavLink>
+                          </Menu.Item>
+                        )}
                         {currentUser?.role === "professor" && (
-                          <Menu.Item key="dashboard">
+                          <Menu.Item
+                            icon={<AppstoreOutlined />}
+                            key="dashboard"
+                          >
                             <NavLink to="/professeur">Dashboard</NavLink>
                           </Menu.Item>
                         )}
                         {currentUser?.role === "admin" && (
-                          <Menu.Item key="espaceAdmin">
-                            <NavLink to="/admin">Espace Admin</NavLink>
+                          <Menu.Item icon={<UserOutlined />} key="espaceAdmin">
+                            <NavLink to="/adminflksosdjds">
+                              Espace Admin
+                            </NavLink>
                           </Menu.Item>
                         )}
                       </Menu>

@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { SERVER_URL } from "../../../../constantURL";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
+import { SERVER_URL } from "../../../../Utils/constantURL";
 
 const CrudProfesseur = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
+  const [addForm] = Form.useForm();
+
+  // const fetchProfessors = () => {
+  //   fetch(SERVER_URL + "/professor")
+  //     .then((response) => response.json())
+  //     .then((data) => setData(data))
+  //     .catch((error) => console.error("Error fetching data professor:", error));
+  // };
 
   const fetchProfessors = () => {
     fetch(SERVER_URL + "/professor")
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => setData(data.reverse())) // Inverser l'ordre des données
       .catch((error) => console.error("Error fetching data professor:", error));
   };
 
@@ -44,7 +53,7 @@ const CrudProfesseur = () => {
     const token = sessionStorage.getItem("jwt");
 
     fetch(SERVER_URL + `/professor/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -63,10 +72,39 @@ const CrudProfesseur = () => {
       .catch((error) => console.error("Error editing item:", error));
   };
 
+  const handleAdd = (newData) => {
+    const token = sessionStorage.getItem("jwt");
+
+    fetch(SERVER_URL + "/professor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setIsAddModalOpen(false);
+        addForm.resetFields();
+        // fetchProfessors();
+        setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
+      })
+      .catch((error) => console.error("Error adding item:", error));
+  };
+
   const showEditModal = (record) => {
     setCurrentRecord(record);
     form.setFieldsValue(record);
     setIsModalOpen(true);
+  };
+
+  const showAddModal = () => {
+    addForm.setFieldsValue({
+      password: generateDefaultPassword(),
+      department: "INFORMATIQUE",
+    });
+    setIsAddModalOpen(true);
   };
 
   const handleOk = () => {
@@ -82,10 +120,49 @@ const CrudProfesseur = () => {
       });
   };
 
+  const handleAddOk = () => {
+    addForm
+      .validateFields()
+      .then((values) => {
+        handleAdd(values);
+        setIsAddModalOpen(false); // Fermez le modal d'ajout ici
+        addForm.resetFields(); // Réinitialisez les champs du formulaire
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
     setCurrentRecord(null);
   };
+
+  const handleAddCancel = () => {
+    setIsAddModalOpen(false);
+    addForm.resetFields(); // Réinitialisez les champs du formulaire en cas d'annulation
+  };
+
+  const generateDefaultPassword = () => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let password = "";
+    for (let i = 0; i < 6; i++) {
+      password += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return password;
+  };
+
+  const classroomOptions = [
+    { label: "Licence 1", value: 1 },
+    { label: "Licence 2", value: 2 },
+    { label: "Licence 3", value: 3 },
+    // { label: "Master 1", value: 4 },
+    // { label: "Master 2", value: 5 },
+    // { label: "None", value: 0 },
+  ];
 
   const columns = [
     {
@@ -118,7 +195,6 @@ const CrudProfesseur = () => {
       key: "action",
       render: (_, record) => (
         <span>
-          {/* <Button onClick={() => showEditModal(record)}>Edit</Button> */}
           <Button
             style={{ backgroundColor: "blue", color: "white" }}
             onClick={() => showEditModal(record)}
@@ -139,6 +215,11 @@ const CrudProfesseur = () => {
   return (
     <>
       <Table columns={columns} dataSource={data} rowKey="id" />
+      <div style={{ textAlign: "center", marginTop: 20 }}>
+        <Button type="primary" onClick={showAddModal}>
+          Add Professor
+        </Button>
+      </div>
       <Modal
         title="Edit Record"
         open={isModalOpen}
@@ -146,9 +227,6 @@ const CrudProfesseur = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="id" label="ID">
-            <Input />
-          </Form.Item>
           <Form.Item name="firstName" label="FirstName">
             <Input />
           </Form.Item>
@@ -163,6 +241,39 @@ const CrudProfesseur = () => {
           </Form.Item>
           <Form.Item name="specialityProfessor" label="Speciality">
             <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title="Add Professor"
+        open={isAddModalOpen}
+        onOk={handleAddOk}
+        onCancel={handleAddCancel}
+      >
+        <Form form={addForm} layout="vertical">
+          <Form.Item name="department" label="Department">
+            <Input defaultValue={"INFORMATIQUE"} />
+          </Form.Item>
+          <Form.Item hidden name="specialityProfessor" label="Speciality">
+            <Input />
+          </Form.Item>
+          <Form.Item required name="classeroom_id" label="Classeroom">
+            <Select options={classroomOptions} />
+          </Form.Item>
+          <Form.Item hidden name="courses" label="Courses">
+            <Input />
+          </Form.Item>
+          <Form.Item name="firstName" label="FirstName">
+            <Input />
+          </Form.Item>
+          <Form.Item name="lastName" label="LastName">
+            <Input />
+          </Form.Item>
+          <Form.Item required name="email" label="Email">
+            <Input />
+          </Form.Item>
+          <Form.Item required name="password" label="Password">
+            <Input defaultValue={generateDefaultPassword()} />
           </Form.Item>
         </Form>
       </Modal>

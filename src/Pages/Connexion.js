@@ -5,7 +5,7 @@ import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
-import { SERVER_URL } from "../constantURL";
+import { SERVER_URL } from "../Utils/constantURL";
 import { Link } from "react-router-dom";
 
 const Connexion = () => {
@@ -55,7 +55,7 @@ const Connexion = () => {
         showModal("error", "Erreur lors de la connexion");
         throw new Error(erreurMsg);
       }
-      
+
       if (response.ok) {
         setAuth(true);
         //const errorData = await response.json();
@@ -72,7 +72,7 @@ const Connexion = () => {
         sessionStorage.setItem("isLoggedIn", true);
         sessionStorage.setItem("user", JSON.stringify(userData.user));
 
-        showModal("success","Connexion Réussie");
+        showModal("success", "Connexion Réussie");
         setTimeout(() => {
           window.location.href = "/";
         });
@@ -156,8 +156,6 @@ const Connexion = () => {
                 <Input.Password placeholder="Password" />
               </Form.Item>
 
-              
-
               <Form.Item>
                 <Button
                   type="primary"
@@ -168,14 +166,14 @@ const Connexion = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Link to="/password/reset" id="MdpForget">Mot de passe oublié ?</Link>
+                <Link to="/password/reset" id="MdpForget">
+                  Mot de passe oublié ?
+                </Link>
               </Form.Item>
             </Form>
           </div>
         </div>
         <FooterBlock />
-
-        
       </div>
     );
   }

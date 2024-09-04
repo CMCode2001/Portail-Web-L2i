@@ -2,7 +2,7 @@ import { Button, Form, Input, notification, Upload, Avatar } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 
-import { SERVER_URL } from "../../../constantURL";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 const UpdateProf = () => {
   const [user, setUser] = useState({

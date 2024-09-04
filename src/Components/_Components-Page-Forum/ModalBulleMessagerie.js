@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import Chat from "../../Assets/img/chat.png";
 import "../../Styles/ModalBulleMessagerie.css";
-import { SERVER_URL } from "../../constantURL";
+import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 
 const { TextArea } = Input;
@@ -29,6 +29,8 @@ const ModalBulleMessagerie = () => {
   const [token, setToken] = useState(null);
   const [reponse, setReponse] = useState("");
   const [forum_id, setForumID] = useState(0);
+  const [isChatIconOpen, setIsChatIconOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const userJson = sessionStorage.getItem("user");
 
@@ -38,6 +40,14 @@ const ModalBulleMessagerie = () => {
   //   setIsModalVisible(true);
 
   // };
+  const handleChatIconToggle = () => {
+    setIsChatIconOpen(!isChatIconOpen);
+  };
+  const cardStyle = {
+    margin: "20px 0",
+    width: windowWidth < 768 ? "100%" : "90%", // 100% width pour les petits écrans
+    height: windowWidth < 768 ? "auto" : "auto", // Auto height pour les petits écrans
+  };
 
   useEffect(() => {
     const user = getUserInfo();
@@ -97,8 +107,8 @@ const ModalBulleMessagerie = () => {
       content: reponse,
       forum_id,
       author_id: currentUser.id,
-      creatAt: new Date().toISOString(), // Current time in ISO format
-      createdBy: currentUser.firstName + " " + currentUser.name, // Remplacez par l'utilisateur actuel si disponible
+      // creatAt: new Date().toISOString(), // Current time in ISO format
+      createdBy: currentUser.firstName + " " + currentUser.lastName, // Remplacez par l'utilisateur actuel si disponible
     };
     // const token = sessionStorage.getItem("jwt");
     console.log(token);
@@ -153,8 +163,9 @@ const ModalBulleMessagerie = () => {
       const newForum = {
         probleme: values.probleme,
         description: values.description,
-        creatAt: new Date().toISOString(),
-        createdBy: currentUser.firstName + " " + currentUser.name,
+        author_id: currentUser.id,
+        // creatAt: new Date().toISOString(),
+        createdBy: currentUser.firstName + " " + currentUser.lastName,
       };
 
       fetch(SERVER_URL + "/forum", {
@@ -236,7 +247,7 @@ const ModalBulleMessagerie = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <Button id="monbtnProMax" onClick={showModal}>
         Posez une question ?
       </Button>
@@ -277,8 +288,10 @@ const ModalBulleMessagerie = () => {
 
       {listeForum.map((forum, index) => (
         <Card
+          className={`${isChatIconOpen ? 'blur-background' : ''}`}
           key={index}
-          style={{ margin: "20px 0", width: "50rem", height: "200px" }}
+          // style={{ margin: "20px 0", width: "50rem", height: "200px" }}
+          style={cardStyle}
         >
           <Card.Meta
             avatar={<Avatar size="large" icon={<UserOutlined />} />}
@@ -371,7 +384,9 @@ const ModalBulleMessagerie = () => {
           </Button>
         </Form>
       </Modal>
-      <ChatIconComponent />
+      {/* <ChatIconComponent  onClick={toggleChatIcon} />
+       */}
+      <ChatIconComponent isLiveChatVisible={isChatIconOpen} onToggle={handleChatIconToggle} />
     </div>
   );
 };
