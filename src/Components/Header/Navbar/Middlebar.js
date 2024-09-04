@@ -24,15 +24,10 @@ const Middlebar = () => {
           </div>
         </div>
         <div className="col-4 col-md-2 text-center text-md-end">
-          <Link to="uasz.sn">
-            <img
-              src={logoUASZ}
-              alt="Logo UASZ"
-              className="middlebar-logo"
-              width={130}
-              height={130}
-            />
-          </Link>
+          {/* BI MOY BOU BAKH BI accepter la*/}
+          <a href ='https://uasz.sn' target='_blank'>
+            <img src={logoUASZ} alt="Logo UASZ" className="middlebar-logo" width={130} height={130} />
+          </a>
         </div>
       </div>
     </div>

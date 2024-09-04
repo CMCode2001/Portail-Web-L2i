@@ -32,6 +32,7 @@ const Licence32i = () => {
   const [descriptionDev, setDescriptionDev] = useState("");
   const [salleDev, setSalleDev] = useState("");
   const [dateDuDevoirDev, setDateDuDevoirDev] = useState("");
+  const [AssignmentDueDate, setAssignmentDueDate] = useState("");
   const [pdfContent, setFichier] = useState(null);
   const [classeroom, setClasse] = useState("");
   const [etudant, setEtudiant] = useState([]);
