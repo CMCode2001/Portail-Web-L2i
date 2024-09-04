@@ -298,20 +298,61 @@ const Licence12i = () => {
       ),
   });
 
+  // const columns = [
+  //   {
+  //     title: "Prénom",
+  //     dataIndex: "firstName",
+  //     key: "firstName",
+  //     width: "30%",
+  //     ...getColumnSearchProps("firstName"),
+  //   },
+  //   {
+  //     title: "Nom",
+  //     dataIndex: "name",
+  //     key: "name",
+  //     width: "20%",
+  //     ...getColumnSearchProps("name"),
+  //   },
+  //   {
+  //     title: "Email",
+  //     dataIndex: "email",
+  //     key: "email",
+  //     width: "20%",
+  //     ...getColumnSearchProps("email"),
+  //   },
+  //   {
+  //     title: "CIN",
+  //     dataIndex: "cin",
+  //     key: "cin",
+  //     ...getColumnSearchProps("cin"),
+  //     sorter: (a, b) => a.address.length - b.address.length,
+  //     sortDirections: ["descend", "ascend"],
+  //   },
+  // ];
+
   const columns = [
+    {
+      title: "INE",
+      dataIndex: "ine",
+      key: "ine",
+      width: "20%",
+      ...getColumnSearchProps("cin"),
+      sorter: (a, b) => a.address.length - b.address.length,
+      sortDirections: ["descend", "ascend"],
+    },
     {
       title: "Prénom",
       dataIndex: "firstName",
       key: "firstName",
-      width: "30%",
+      width: "40%",
       ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
-      dataIndex: "name",
-      key: "name",
-      width: "20%",
-      ...getColumnSearchProps("name"),
+      dataIndex: "lastName",
+      key: "lastName",
+      width: "30%",
+      ...getColumnSearchProps("lastName"),
     },
     {
       title: "Email",
@@ -319,14 +360,6 @@ const Licence12i = () => {
       key: "email",
       width: "20%",
       ...getColumnSearchProps("email"),
-    },
-    {
-      title: "CIN",
-      dataIndex: "cin",
-      key: "cin",
-      ...getColumnSearchProps("cin"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
     },
   ];
 

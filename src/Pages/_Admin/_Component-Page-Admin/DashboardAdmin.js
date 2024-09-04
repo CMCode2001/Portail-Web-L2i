@@ -1,34 +1,32 @@
-import React, { useState } from "react";
-import { Layout, Menu, theme } from "antd";
-import "../_Styles/DashboardAdmin.css";
 import {
-  UserOutlined,
   AppstoreOutlined,
-  HomeOutlined,
-  GoldOutlined,
-  FileTextOutlined,
-  PictureOutlined,
-  MessageOutlined,
-  WechatOutlined,
-  PushpinOutlined,
-  PieChartOutlined,
   EditOutlined,
+  FileTextOutlined,
+  HomeOutlined,
   LogoutOutlined,
+  MessageOutlined,
+  PictureOutlined,
+  PieChartOutlined,
+  PushpinOutlined,
+  UserOutlined,
+  WechatOutlined,
 } from "@ant-design/icons";
+import { Layout, Menu, theme } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import CrudTable from "./CrudTable.tsx";
-import CrudClasse from "./Classes/CrudClasseL1.tsx";
-import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
-import CrudClasseL1 from "./Classes/CrudClasseL1.tsx";
-import CrudClasseL2 from "./Classes/CrudClasseL2.tsx";
-import CrudClasseL3 from "./Classes/CrudClasseL3.tsx";
-import UploadPicture from "./Galleries/UploadPicture.js";
-import ScreenText from "./text/ScreenText.tsx";
-import UserSite from "./user/UserSite.tsx";
+import "../_Styles/DashboardAdmin.css";
+import CrudClasseL1 from "./Classes/CrudClasseL1.jsx";
+import CrudClasseL2 from "./Classes/CrudClasseL2.jsx";
+import CrudClasseL3 from "./Classes/CrudClasseL3.jsx";
 import OldStudent from "./Classes/OldStudent.tsx";
+import CrudTable from "./CrudTable.tsx";
 import CrudForum from "./Forum/CrudForum.tsx";
 import CrudMessageForum from "./Forum/CrudMessageForum.tsx";
+import UploadPicture from "./Galleries/UploadPicture.js";
+import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 import UpdateAdmin from "./Professor/UpdateAdmin.js";
+import ScreenText from "./text/ScreenText.tsx";
+import UserSite from "./user/UserSite.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -53,8 +51,8 @@ const DashboardAdmin = () => {
     switch (selectedCrud) {
       case "etudiants":
         return <CrudTable />;
-      case "professor":
-        return <CrudProfesseur />;
+      // case "professor":
+      //   return <CrudProfesseur />;
       case "utilisateurs":
         return <UserSite />;
       case "student/niveau/1":
@@ -103,11 +101,11 @@ const DashboardAdmin = () => {
               Go to Etudiants
             </Link>
           </Menu.Item>
-          <Menu.Item key="professor" icon={<HomeOutlined />}>
+          {/* <Menu.Item key="professor" icon={<HomeOutlined />}>
             <Link to="/professeur" style={{ textDecoration: "none" }}>
               Go to Professors
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <SubMenu key="classe" icon={<AppstoreOutlined />} title="Classes">
             <Menu.Item key="student/niveau/1">Licence1-2I</Menu.Item>
             <Menu.Item key="student/niveau/2">Licence2-2I</Menu.Item>

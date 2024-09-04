@@ -23,15 +23,18 @@ const LiveChat = () => {
 
         // Send join message
         if (currentUser) {
+
           const joinMessage = {
             type: "JOIN",
-            message: `${currentUser.name} a rejoint le chat.`,
-            authorName: currentUser.name,
+            message: `${currentUser.firstName} ${currentUser.lastName} a rejoint le chat.`,
+            // authorName: currentUser.name,
+            authorName: `${currentUser.firstName} ${currentUser.lastName}`
           };
           client.current.publish({
             destination: "/app/chat.sendMessage",
             body: JSON.stringify(joinMessage),
           });
+          console.log(currentUser.firstName + " "+currentUser.lastName)
         }
 
         client.current.subscribe("/topic/public", (message) => {
@@ -46,8 +49,8 @@ const LiveChat = () => {
         if (currentUser) {
           const leaveMessage = {
             type: "LEAVE",
-            message: `${currentUser.name} a quitté le chat.`,
-            authorName: currentUser.name,
+            message: `${currentUser.firstName} ${currentUser.lastName} a quitté le chat.`,
+            authorName:`${currentUser.firstName} ${currentUser.lastName}`,
           };
           client.current.publish({
             destination: "/app/chat.sendMessage",
@@ -100,7 +103,7 @@ const LiveChat = () => {
       const chatMessage = {
         type: "CHAT",
         message: message,
-        authorName: currentUser?.name,
+        authorName: `${currentUser?.firstName} ${currentUser?.lastName}` ,
       };
       client.current.publish({
         destination: "/app/chat.sendMessage",
@@ -126,7 +129,7 @@ const LiveChat = () => {
           <div className="message-list">
             {messages.map((msg, index) => (
               <div key={index} className={`message ${msg.type.toLowerCase()}`}>
-                <strong>{msg.authorName}: </strong>
+                <strong>{msg.authorName} : </strong>
                 <span
                   style={
                     msg.type === "JOIN"
