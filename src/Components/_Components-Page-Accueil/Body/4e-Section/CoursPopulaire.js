@@ -14,37 +14,37 @@ const cardsData = [
   {
     title: 'Algorithmes',
     image: a,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Explorez les fondements des algorithmes, de la conception à l\'optimisation, en résolvant des problèmes complexes à travers des approches efficaces.',
     borderRadius: '30px 30px 0 90px',
   },
   {
     title: 'Programmation',
     image: b,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Initiez-vous à la programmation en maîtrisant les langages de base et les concepts essentiels pour développer des applications robustes.',
     borderRadius: '30px 20px 0 0',
   },
   {
-    title: 'Bases de Donnees',
+    title: 'Bases de Données',
     image: c,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Apprenez à concevoir, créer et gérer des bases de données pour stocker et organiser efficacement de grandes quantités d\'informations.',
     borderRadius: '30px 30px 90px 0',
   },
   {
-    title: 'Reseaux & Telecom',
+    title: 'Réseaux & Télécom',
     image: d,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Découvrez les architectures et technologies des réseaux modernes ainsi que les principes des télécommunications pour un monde interconnecté.',
     borderRadius: '30px 30px 0 90px',
   },
   {
-    title: 'Securite Informatique',
+    title: 'Sécurité Informatique',
     image: e,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Analysez les menaces numériques et développez des stratégies de défense pour protéger les systèmes d\'information contre les cyberattaques.',
     borderRadius: '30px 20px 0 0',
   },
   {
-    title: 'Systeme Dexploitation',
+    title: 'Système d\'Exploitation',
     image: f,
-    description: 'Tempor erat elitr rebum chez clita. Diamdolor diam ipsum assis. Aliqu diam ametdiam et eos. Clita erat ipsum et lorem et sit,sed stet lorem sit clita duo justo magnadolore erat amet',
+    description: 'Plongez dans les mécanismes des systèmes d\'exploitation, de la gestion des ressources à l\'interaction avec le matériel informatique.',
     borderRadius: '30px 30px 90px',
   },
 ];
@@ -55,8 +55,6 @@ const MyCards = () => {
 
   const handleClick = ()=>{
     navigate('/cours'); 
-    console.log("Parenaathi !!!");
-    
   }
 
     return (
