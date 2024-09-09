@@ -21,8 +21,34 @@ import PageAdmin from "./Pages/_Admin/PageAdmin";
 import "./Styles/bootstrap.min.css";
 import ForgetMotDePasse from "./Components/ForgetMotDePasse";
 import ProfileStudent from "./Components/Profile/ProfileStudent";
+import ActivationMessage from "./Pages/ActivationMessage";
 
 function App() {
+  const getUserInfo = () => {
+    const userJson = sessionStorage.getItem("user");
+
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        return user;
+      } catch (error) {
+        console.error(
+          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+          error
+        );
+      }
+    } else {
+      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+    }
+  };
+
+  const currentUser = getUserInfo();
+
+  // if (currentUser === undefined) {
+  //   // Affiche un loader ou un message de chargement
+  //   return <div>Chargement...</div>;
+  // }
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -40,22 +66,43 @@ function App() {
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/confirmation/:idtoken" element={<Confirmation />} />
           <Route path="/password/reset" element={<ForgetMotDePasse />} />
-          <Route path="studentProfile" element={<ProfileStudent />} />
+          <Route path="/activation-message" element={<ActivationMessage />} />
+          {/* <Route path="studentProfile" element={<ProfileStudent />} /> */}
+          {currentUser?.role === "student" ? (
+            <Route path="studentProfile" element={<ProfileStudent />} />
+          ) : (
+            <Route path="studentProfile" element={<Connexion />} />
+          )}
 
           {/* ------------ Professeur -------------- */}
-          <Route path="/professeur" element={<Professeur />}>
-            {/* <Route path="mes-cours" element={<MesCoursBlock />} /> */}
+          {/* <Route path="mes-cours" element={<MesCoursBlock />} /> */}
+          {/* <Route path="/professeur" element={<Professeur />}>
             <Route path="classes/L1-2i" element={<Licence12i />} />
             <Route path="classes/L2-2i" element={<Licence22i />} />
             <Route path="classes/L3-2i" element={<Licence32i />} />
             <Route path="ajouter-notes" element={<AjouterNotes />} />
             <Route path="update-prof" element={<UpdateProf />} />
-          </Route>
+          </Route> */}
+          {currentUser?.role === "professor" ? (
+            <Route path="/professeur" element={<Professeur />}>
+              <Route path="classes/L1-2i" element={<Licence12i />} />
+              <Route path="classes/L2-2i" element={<Licence22i />} />
+              <Route path="classes/L3-2i" element={<Licence32i />} />
+              <Route path="ajouter-notes" element={<AjouterNotes />} />
+              <Route path="update-prof" element={<UpdateProf />} />
+            </Route>
+          ) : (
+            <Route path="/professeur" element={<Connexion />} />
+          )}
+
           {/* ------------ Professeur -------------- */}
 
           {/* ---------------- ADMIN --------------- */}
-          <Route path="/adminflksosdjds" element={<PageAdmin />} />
-          {/* <Route path="/admin" element={<PageAdmin />} /> */}
+          {currentUser?.role === "admin" ? (
+            <Route path="/adminflksosdjds" element={<PageAdmin />} />
+          ) : (
+            <Route path="/adminflksosdjds" element={<Connexion />} />
+          )}
           {/* ---------------- ADMIN --------------- */}
         </Routes>
       </BrowserRouter>

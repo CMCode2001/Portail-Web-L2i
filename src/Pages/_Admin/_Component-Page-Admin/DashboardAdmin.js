@@ -51,8 +51,8 @@ const DashboardAdmin = () => {
     switch (selectedCrud) {
       case "etudiants":
         return <CrudTable />;
-      // case "professor":
-      //   return <CrudProfesseur />;
+      case "professor":
+        return <CrudProfesseur />;
       case "utilisateurs":
         return <UserSite />;
       case "student/niveau/1":

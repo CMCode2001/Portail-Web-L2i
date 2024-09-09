@@ -80,12 +80,22 @@ const Inscription = () => {
             openMessageReponse();
             setLoading(false);
 
+            // if (!isError) {
+            //   // En cas de succès, rediriger vers la page de connexion après 2 minutes
+            //   setTimeout(() => {
+            //     window.location.href = "/connexion";
+            //     // }, 5000);
+            //   }, 60000);
+            // }
             if (!isError) {
-              // En cas de succès, rediriger vers la page de connexion après 2 minutes
+              setDisable(true);
+              openMessageReponse();
+              setLoading(false);
+
+              // Redirige vers la page de notification d'activation
               setTimeout(() => {
-                window.location.href = "/connexion";
-                // }, 5000);
-              }, 60000);
+                window.location.href = "/activation-message";
+              }, 3000); // 3 secondes avant la redirection
             }
           });
         })
@@ -137,7 +147,7 @@ const Inscription = () => {
             <img src={SvgRegister} alt="Register" id="SvgRsp" />
           </div>
 
-          {messageReponse.message != "" && (
+          {messageReponse.message !== "" && (
             <h2 className="erreur-login">{messageReponse.message}</h2>
           )}
           <Form
@@ -182,7 +192,7 @@ const Inscription = () => {
               <Input placeholder="Email@zig.univ.sn" />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               rules={[
@@ -193,6 +203,25 @@ const Inscription = () => {
               ]}
             >
               <Input.Password placeholder="Mot de passe" />
+            </Form.Item> */}
+
+            <Form.Item
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              rules={[
+                {
+                  required: true,
+                  message: "Veuillez entrer votre mot de passe !",
+                },
+                {
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message:
+                    "Le mot de passe doit comporter au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial !",
+                },
+              ]}
+            >
+              <Input.Password placeholder="Mot de passe sécurisé" />
             </Form.Item>
 
             <Form.Item

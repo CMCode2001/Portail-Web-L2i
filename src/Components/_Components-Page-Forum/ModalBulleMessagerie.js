@@ -154,7 +154,6 @@ const ModalBulleMessagerie = () => {
           createdBy: `${currentUser.firstName} ${currentUser.lastName}`,
         };
 
-
         fetch(SERVER_URL + "/message", {
           method: "POST",
           headers: {
@@ -192,7 +191,8 @@ const ModalBulleMessagerie = () => {
             // Fermeture de la notification de chargement et affichage de la notification d'erreur
             notification.error({
               message: "Erreur lors de l'ajout de la réponse",
-              description: "Une erreur est survenue lors de l'envoi de votre réponse. Veuillez réessayer.",
+              description:
+                "Une erreur est survenue lors de l'envoi de votre réponse. Veuillez réessayer.",
               placement: "topRight",
               showProgress: true,
             });
@@ -203,80 +203,81 @@ const ModalBulleMessagerie = () => {
 
         // Vérification si errorFields est défini avant d'utiliser map()
         const errorMessages = errorInfo.errorFields
-          ? errorInfo.errorFields.map(field => field.errors).flat()
+          ? errorInfo.errorFields.map((field) => field.errors).flat()
           : ["Une erreur est survenue lors de la validation du formulaire."];
 
         notification.error({
           message: "Erreur de validation",
-          description: errorMessages.join(', '),
+          description: errorMessages.join(", "),
           placement: "topRight",
           showProgress: true,
         });
       });
   };
 
-
-
   const handleOk = () => {
-    formQuestion.validateFields().then((values) => {
-      const newForum = {
-        probleme: values.probleme,
-        description: values.description,
-        author_id: currentUser.id,
-        createdBy: currentUser.firstName + " " + currentUser.lastName,
-      };
+    formQuestion
+      .validateFields()
+      .then((values) => {
+        const newForum = {
+          probleme: values.probleme,
+          description: values.description,
+          author_id: currentUser.id,
+          createdBy: currentUser.firstName + " " + currentUser.lastName,
+        };
 
-      fetch(SERVER_URL + "/forum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newForum),
+        fetch(SERVER_URL + "/forum", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(newForum),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setListeForum([data, ...listeForum]);
+            formQuestion.resetFields();
+            setIsModalVisible(false);
+
+            // Notification de succès
+            notification.success({
+              message: "Question soumise",
+              description:
+                "Votre question a été postée avec succès dans le forum.",
+              placement: "topRight",
+              showProgress: true,
+            });
+          })
+          .catch((error) => {
+            console.error("Error in form submission or closing modal:", error);
+
+            // Notification d'erreur
+            notification.error({
+              message: "Erreur lors de la soumission",
+              description:
+                "Une erreur est survenue lors de la soumission de votre question. Veuillez réessayer.",
+              placement: "topRight",
+              showProgress: true,
+            });
+          });
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setListeForum([data, ...listeForum]);
-          formQuestion.resetFields();
-          setIsModalVisible(false);
-
-          // Notification de succès
-          notification.success({
-            message: "Question soumise",
-            description: "Votre question a été postée avec succès dans le forum.",
-            placement: "topRight",
-            showProgress: true
-          });
-        })
-        .catch((error) => {
-          console.error("Error in form submission or closing modal:", error);
-
-          // Notification d'erreur
-          notification.error({
-            message: "Erreur lors de la soumission",
-            description: "Une erreur est survenue lors de la soumission de votre question. Veuillez réessayer.",
-            placement: "topRight",
-            showProgress: true,
-          });
-        });
-    })
       .catch((errorInfo) => {
         // Notification de validation échouée
         notification.error({
           message: "Erreur de validation",
-          description: "Veuillez remplir tous les champs requis avant de soumettre.",
+          description:
+            "Veuillez remplir tous les champs requis avant de soumettre.",
           placement: "topRight",
           showProgress: true,
-
         });
       });
   };
-
 
   // const handleDeleteOwnMessages = (id) => {
   //   const token = sessionStorage.getItem("jwt");
@@ -313,7 +314,7 @@ const ModalBulleMessagerie = () => {
       fetch(SERVER_URL + `/message/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
       })
         .then((response) => {
@@ -336,7 +337,8 @@ const ModalBulleMessagerie = () => {
             // Notification d'échec
             notification.error({
               message: "Échec de la suppression",
-              description: "Une erreur est survenue lors de la suppression de votre message.",
+              description:
+                "Une erreur est survenue lors de la suppression de votre message.",
               placement: "topRight",
               showProgress: true,
             });
@@ -348,7 +350,8 @@ const ModalBulleMessagerie = () => {
           // Notification d'erreur
           notification.error({
             message: "Erreur lors de la suppression",
-            description: "Une erreur est survenue lors de la suppression de votre message. Veuillez réessayer.",
+            description:
+              "Une erreur est survenue lors de la suppression de votre message. Veuillez réessayer.",
             placement: "topRight",
             showProgress: true,
           });
@@ -388,20 +391,21 @@ const ModalBulleMessagerie = () => {
     if (!newData.probleme || !newData.description) {
       notification.error({
         message: "Erreur de validation",
-        description: "Tous les champs doivent être remplis pour modifier le forum.",
+        description:
+          "Tous les champs doivent être remplis pour modifier le forum.",
         placement: "topRight",
-        showProgress: true
+        showProgress: true,
       });
       return; // Ne pas poursuivre si les champs sont vides
     }
-  
+
     const token = sessionStorage.getItem("jwt");
-  
+
     fetch(SERVER_URL + `/forum/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
       },
       body: JSON.stringify(newData),
     })
@@ -412,7 +416,7 @@ const ModalBulleMessagerie = () => {
               item.id === id ? { ...item, ...newData } : item
             )
           );
-  
+
           // Notification de succès
           notification.success({
             message: "Modification réussie",
@@ -424,7 +428,8 @@ const ModalBulleMessagerie = () => {
           // Notification d'échec
           notification.error({
             message: "Échec de la modification",
-            description: "Une erreur est survenue lors de la modification du forum.",
+            description:
+              "Une erreur est survenue lors de la modification du forum.",
             placement: "topRight",
             showProgress: true,
           });
@@ -432,17 +437,17 @@ const ModalBulleMessagerie = () => {
       })
       .catch((error) => {
         console.error("Erreur lors de la modification du forum :", error);
-  
+
         // Notification d'erreur
         notification.error({
           message: "Erreur lors de la modification",
-          description: "Une erreur est survenue lors de la modification du forum. Veuillez réessayer.",
+          description:
+            "Une erreur est survenue lors de la modification du forum. Veuillez réessayer.",
           placement: "topRight",
           showProgress: true,
         });
       });
   };
-  
 
   const showReplyModal = () => {
     if (!currentUser) {
@@ -466,7 +471,7 @@ const ModalBulleMessagerie = () => {
     fetch(`${SERVER_URL}/forum`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `${jwt}`,
       },
     })
       .then((response) => {

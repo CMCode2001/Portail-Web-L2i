@@ -8,7 +8,13 @@ const UserSite = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchUser = () => {
-    fetch(SERVER_URL + "/student")
+    const token = sessionStorage.getItem("jwt");
+    fetch(SERVER_URL + "/student", {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
