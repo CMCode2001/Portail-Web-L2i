@@ -228,7 +228,7 @@ const Licence32i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -255,7 +255,7 @@ const Licence32i = () => {
       width: "20%",
       sorter: (a, b) => a.ine - b.ine,
       sortDirections: ["ascend", "descend"],
-      ...getColumnSearchProps("cin"),
+      ...getColumnSearchProps("ine"),
     },
     {
       title: "Prénom",

@@ -87,11 +87,13 @@ const Licence12i = () => {
   };
 
   const token = sessionStorage.getItem("jwt");
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   useEffect(() => {
     const user = getUserInfo();
     //  setCurrentUser(user);
@@ -279,7 +281,7 @@ const Licence12i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -294,41 +296,9 @@ const Licence12i = () => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : (
-        text
+        text || ''
       ),
   });
-
-  // const columns = [
-  //   {
-  //     title: "Prénom",
-  //     dataIndex: "firstName",
-  //     key: "firstName",
-  //     width: "30%",
-  //     ...getColumnSearchProps("firstName"),
-  //   },
-  //   {
-  //     title: "Nom",
-  //     dataIndex: "name",
-  //     key: "name",
-  //     width: "20%",
-  //     ...getColumnSearchProps("name"),
-  //   },
-  //   {
-  //     title: "Email",
-  //     dataIndex: "email",
-  //     key: "email",
-  //     width: "20%",
-  //     ...getColumnSearchProps("email"),
-  //   },
-  //   {
-  //     title: "CIN",
-  //     dataIndex: "cin",
-  //     key: "cin",
-  //     ...getColumnSearchProps("cin"),
-  //     sorter: (a, b) => a.address.length - b.address.length,
-  //     sortDirections: ["descend", "ascend"],
-  //   },
-  // ];
 
   const columns = [
     {
@@ -338,7 +308,7 @@ const Licence12i = () => {
       width: "20%",
       sorter: (a, b) => a.ine - b.ine,
       sortDirections: ["ascend", "descend"],
-      ...getColumnSearchProps("cin"),
+      ...getColumnSearchProps("ine"),
     },
     {
       title: "Prénom",
