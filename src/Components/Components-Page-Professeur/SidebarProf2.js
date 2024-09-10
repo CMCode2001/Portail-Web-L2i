@@ -1,11 +1,10 @@
 import {
   AppstoreAddOutlined,
-  AppstoreOutlined,
   EditOutlined,
   HomeFilled,
   LogoutOutlined,
   ReadOutlined,
-  UserOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import React from "react";
@@ -107,7 +106,13 @@ const SidebarProf2 = () => {
               Ajouter Notes
             </Link>
           </Menu.Item>
-          <SubMenu key="sub2" icon={<UserOutlined />} title="Mon profile">
+          {/* <SubMenu key="sub2" icon={<UserOutlined />} title=`Pr ${currentUser?.firstName}${" "} ${currentUser?.name}` > */}
+          <SubMenu 
+            key="sub2" 
+            icon={<UserOutlined />} 
+            title={`${currentUser?.firstName?.charAt(0)}.${currentUser.lastName}`} 
+          >
+
             <Menu.Item key="5">
               <Link to="update-prof" style={{ textDecoration: "none" }}>
                 <EditOutlined /> &nbsp; Modifier
@@ -134,20 +139,21 @@ const SidebarProf2 = () => {
             height: "0",
           }}
         />
-        <h3 style={{ textAlign: "center" }}>
+        {/* <h3 style={{ textAlign: "center" }}>
           <br />
           <UserOutlined /> Bonjour, Pr {currentUser?.firstName}{" "}
           {currentUser?.name}
-        </h3>
+        </h3> */}
         <Content
           style={{
             margin: "24px 16px 0",
+            flex: 1,
           }}
         >
           <div
             style={{
               padding: 24,
-              minHeight: 467,
+              minHeight: '100vh',
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

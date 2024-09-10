@@ -94,42 +94,6 @@ const ModalBulleMessagerie = () => {
     return null;
   };
 
-  // const handleAnswerseMessages = () => {
-  //   formResponse.validateFields().then((values) => {
-  //     const newMessage = {
-  //       message: response,
-  //       forum_id: forum_id,
-  //       author_id: currentUser.id,
-  //       createdBy: `${currentUser.firstName} ${currentUser.lastName}`,
-  //     };
-
-  //     fetch(SERVER_URL + "/message", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(newMessage),
-  //     })
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         const updatedForum = {
-  //           ...selectedForum,
-  //           messages: [...selectedForum.messages, data],
-  //         };
-  //         setSelectedForum(updatedForum);
-  //         formResponse.resetFields();
-  //         setIsReplyModalVisible(false);
-  //       })
-  //       .catch((error) => console.error("Error adding message:", error));
-  //   });
-  // };
-
   const handleAnswerseMessages = () => {
     formResponse
       .validateFields()
@@ -279,34 +243,6 @@ const ModalBulleMessagerie = () => {
       });
   };
 
-  // const handleDeleteOwnMessages = (id) => {
-  //   const token = sessionStorage.getItem("jwt");
-
-  //   if (window.confirm("Voulez-vous vraiment supprimer votre message ?")) {
-  //     fetch(SERVER_URL + `/message/${id}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //       .then((response) => {
-  //         if (response.ok) {
-  //           setSelectedForum((prevForum) => ({
-  //             ...prevForum,
-  //             messages: prevForum.messages.filter(
-  //               (message) => message.id !== id
-  //             ),
-  //           }));
-  //         } else {
-  //           console.error("Échec de la suppression du message");
-  //         }
-  //       })
-  //       .catch((error) =>
-  //         console.error("Erreur lors de la suppression :", error)
-
-  //       );
-  //   }
-  // };
   const handleDeleteOwnMessages = (id) => {
     const token = sessionStorage.getItem("jwt");
 
@@ -359,32 +295,6 @@ const ModalBulleMessagerie = () => {
     }
   };
 
-  // const handleEditForum = (id, newData) => {
-  //   const token = sessionStorage.getItem("jwt");
-
-  //   fetch(SERVER_URL + `/forum/${id}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(newData),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         setListeForum((prevData) =>
-  //           prevData.map((item) =>
-  //             item.id === id ? { ...item, ...newData } : item
-  //           )
-  //         );
-  //       } else {
-  //         console.error("Échec de la modification du forum");
-  //       }
-  //     })
-  //     .catch((error) =>
-  //       console.error("Erreur lors de la modification du forum :", error)
-  //     );
-  // };
 
   const handleEditForum = (id, newData) => {
     // Vérifier si les champs ne sont pas vides

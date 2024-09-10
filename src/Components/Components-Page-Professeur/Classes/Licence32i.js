@@ -71,6 +71,7 @@ const Licence32i = () => {
       })
       .then((data) => {
         data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
+        console.log('liste des etudiants \n' ,data)
         setEtudiant(data);
       })
       .catch((error) => console.error("Error fetching forum:", error));
@@ -252,29 +253,34 @@ const Licence32i = () => {
       dataIndex: "ine",
       key: "ine",
       width: "20%",
+      sorter: (a, b) => a.ine - b.ine,
+      sortDirections: ["ascend", "descend"],
       ...getColumnSearchProps("cin"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "Prénom",
       dataIndex: "firstName",
       key: "firstName",
-      width: "40%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.firstName.localeCompare(b.firstName),
       ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
       dataIndex: "lastName",
       key: "lastName",
-      width: "30%",
+      width: "20%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.lastName.localeCompare(b.lastName),
       ...getColumnSearchProps("lastName"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "20%",
+      width: "30%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.email.localeCompare(b.email),
       ...getColumnSearchProps("email"),
     },
   ];

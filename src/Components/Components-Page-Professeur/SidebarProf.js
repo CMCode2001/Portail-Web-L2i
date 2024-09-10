@@ -4,7 +4,7 @@ import '../../Styles/SidebarProf.css';
 
 const SidebarProf = () => (
   <div id='bgRedProf'>
-    <h1 id='nekalNitte'>
+    <h1 id='title-teacher'>
         Espace Professeur Licence Ingénierie Informatique
     </h1>
   </div>
