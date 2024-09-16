@@ -107,16 +107,30 @@ const CoursL2i = () => {
 
   return (
     <Container>
-      <Box textAlign="center" my={4}>
+      <Box 
+        textAlign="center" 
+        my={4}
+        fontWeight="bold" 
+        borderRadius={50} 
+        color="#6B2239"
+        
+        >
+        
         {/* Title and Description */}
         <Typography variant="h4" gutterBottom>
           Catalogue des Cours
         </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          Explorez et téléchargez des documents de cours selon le niveau et le professeur.
+        <Typography variant="subtitle1" color="#6B2239" fontWeight="bold">
+          Explorez et téléchargez vos cours en toute simplicite !
         </Typography>
       </Box>
-
+      <Box mb={4} sx={{ position: 'relative', textAlign: 'center'}}>
+        <Divider 
+          sx={{
+            marginBottom: '24px', // Add margin-bottom
+          }}
+        >===========================</Divider>
+      </Box>
       {/* Search Bar (Moved Outside Filters) */}
       <Box mb={4}>
         <TextField
@@ -131,16 +145,41 @@ const CoursL2i = () => {
                 <SearchIcon />
               </InputAdornment>
             ),
+            sx: {
+              borderRadius: '50px', // Border radius for the input
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '50px', // Border radius for the input field
+                '& fieldset': {
+                  borderColor: '#085867', // Border color
+                },
+                '&:hover fieldset': {
+                  borderColor: '#13798C', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#13798C', // Border color when focused
+                },
+              },
+            },
           }}
         />
       </Box>
 
       {/* Toggle Filters Button */}
-      <Box textAlign="center" mb={2}>
+      <Box textAlign="center" mb={4}>
         <Button
+          mt
           variant="outlined"
           startIcon={<FilterIcon />}
           onClick={toggleFilters}
+          sx={{
+            borderRadius: '50px', // Border radius for the button
+            borderColor: '#085867', // Border color
+            color: '#085867', // Text color
+            '&:hover': {
+              borderColor: '#13798C', // Border color on hover
+              color: '#13798C', // Text color on hover
+            },
+          }}
         >
           {filtersVisible ? 'Cacher les filtres' : 'Afficher les filtres'}
         </Button>
@@ -196,10 +235,19 @@ const CoursL2i = () => {
         {/* Reset Filters Button */}
         <Box textAlign="center" mb={4}>
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={() => handleFilter('', '', '')}
             startIcon={<FilterIcon />}
+            sx={{
+              borderRadius: '50px', // Border radius for the button
+              borderColor: '#085867', // Border color
+              color: '#333', // Text color
+              '&:hover': {
+                borderColor: '#13798C', // Border color on hover
+                color: '#13798C', // Text color on hover
+              },
+            }}
           >
             Réinitialiser les filtres
           </Button>
@@ -241,6 +289,15 @@ const CoursL2i = () => {
                     href={`${SERVER_URL}/course/${course.id}/pdf`}
                     startIcon={<PdfIcon />}
                     fullWidth
+                    sx={{
+                      borderRadius: '50px', // Border radius for the button
+                      borderColor: '#085867', // Border color
+                      color: '#085867', // Text color
+                      '&:hover': {
+                        borderColor: '#13798C', // Border color on hover
+                        color: '#13798C', // Text color on hover
+                      },
+                    }}
                   >
                     Télécharger
                   </Button>
