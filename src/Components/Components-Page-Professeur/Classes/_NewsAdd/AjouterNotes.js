@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
-import { TeamOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Space, Table, Input } from "antd";
+import { SearchOutlined, TeamOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import * as XLSX from "xlsx";
 import ImgExcel from "../../../../Assets/img/office365.png";
@@ -133,7 +133,7 @@ export default function AjouterNotes() {
     },
     {
       title: "Nom",
-      dataIndex: "name",
+      dataIndex: "lastName",
       key: "name",
       width: "30%",
       ...getColumnSearchProps("name"),
@@ -201,9 +201,9 @@ export default function AjouterNotes() {
 
   const downloadExcel = () => {
     const studentData = etudant.map((student) => ({
-      CIN: student.cin,
+      INE: student.ine,
       Prénom: student.firstName,
-      Nom: student.name,
+      Nom: student.lastname,
       Email: student.email,
       CC1: notes[student.id]?.cc1 || "absent",
       CC2: notes[student.id]?.cc2 || "absent",
@@ -217,40 +217,87 @@ export default function AjouterNotes() {
     XLSX.writeFile(wb, `${selectedLicence}_notes.xlsx`);
   };
 
+  // const handleCSVUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       const data = event.target.result;
+  //       const workbook = XLSX.read(data, { type: "binary" });
+  //       const sheetName = workbook.SheetNames[0];
+  //       const sheet = workbook.Sheets[sheetName];
+  //       const parsedData = XLSX.utils.sheet_to_json(sheet);
+
+  //       // Mapping parsed data to the student structure
+  //       const updatedStudents = parsedData.map((row) => ({
+  //         id: row.ID, // Ensure this matches your CSV column header
+  //         ine: row.INE,
+  //         firstName: row.Prenom,
+  //         lastName: row.Nom,
+  //         email: row.Email,
+  //       }));
+
+  //       setEtudiant(updatedStudents);
+
+  //       // Initialize notes for the new students
+  //       const initialNotes = {};
+  //       updatedStudents.forEach((student) => {
+  //         initialNotes[student.id] = {
+  //           cc1: "absent",
+  //           cc2: "absent",
+  //           exam: "absent",
+  //         };
+  //       });
+  //       setNotes(initialNotes);
+  //     };
+  //     reader.readAsBinaryString(file);
+  //   }
+  // };
+
+  
   const handleCSVUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const data = event.target.result;
-        const workbook = XLSX.read(data, { type: "binary" });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const parsedData = XLSX.utils.sheet_to_json(sheet);
-
-        // Mapping parsed data to the student structure
-        const updatedStudents = parsedData.map((row) => ({
-          id: row.ID, // Assuming your CSV contains an 'ID' column
-          cin: row.CIN,
-          firstName: row.Prenom,
-          name: row.Nom,
-          email: row.Email,
-        }));
-
-        setEtudiant(updatedStudents);
-
-        // Initialize notes for the new students
-        const initialNotes = {};
-        updatedStudents.forEach((student) => {
-          initialNotes[student.id] = {
-            cc1: "absent",
-            cc2: "absent",
-            exam: "absent",
+    const fichier = e.target.files[0];
+    if (fichier) {
+      const lecteur = new FileReader();
+      lecteur.onload = (event) => {
+        const contenu = event.target.result;
+        const classeur = XLSX.read(contenu, { type: "binary" });
+        const nomFeuille = classeur.SheetNames[0]; // On prend la première feuille
+        const feuille = classeur.Sheets[nomFeuille];
+        const donneesParsees = XLSX.utils.sheet_to_json(feuille);
+  
+        // Initialiser les tableaux pour les étudiants et les notes
+        const etudiantsMisesAJour = [];
+        const notesInitiales = {};
+  
+        donneesParsees.forEach((ligne) => {
+          console.log(ligne)
+          // Créer l'étudiant
+          const etudiant = {
+            id: ligne.ID, // Assurez-vous que votre CSV contient une colonne 'ID'
+            ine: ligne.INE  || ligne.ine, // Correspond à 'ine' dans le fichier CSV
+            firstName: ligne.Prenom || ligne.prenom || ligne.Péenom, // Correspond à 'prenom' dans le fichier CSV
+            lastName: ligne.Nom || ligne.nom, // Correspond à 'nom' dans le fichier CSV
+            email: ligne.Email || ligne.email, // Correspond à 'email' dans le fichier CSV
+          };
+  
+          // Ajouter l'étudiant à la liste
+          etudiantsMisesAJour.push(etudiant);
+  
+          // Ajouter les notes associées à l'étudiant
+          notesInitiales[etudiant.id] = {
+            cc1: ligne.CC1 || ligne.cc1 || '00', // Assurez-vous que les colonnes cc1, cc2 et exam existent dans le fichier CSV
+            cc2: ligne.CC2 || ligne.cc2 || "absent",
+            exam: ligne.Exam || ligne.exam || "absent",
           };
         });
-        setNotes(initialNotes);
+  
+        // Mise à jour de la liste des étudiants
+        setEtudiant(etudiantsMisesAJour);
+        // Mise à jour des notes
+        setNotes(notesInitiales);
       };
-      reader.readAsBinaryString(file);
+      lecteur.readAsBinaryString(fichier);
     }
   };
 
