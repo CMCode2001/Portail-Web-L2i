@@ -279,7 +279,7 @@ const Licence22i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -298,37 +298,7 @@ const Licence22i = () => {
       ),
   });
 
-  // const columns = [
-  //   {
-  //     title: "Prénom",
-  //     dataIndex: "firstName",
-  //     key: "firstName",
-  //     width: "30%",
-  //     ...getColumnSearchProps("firstName"),
-  //   },
-  //   {
-  //     title: "Nom",
-  //     dataIndex: "name",
-  //     key: "name",
-  //     width: "20%",
-  //     ...getColumnSearchProps("name"),
-  //   },
-  //   {
-  //     title: "Email",
-  //     dataIndex: "email",
-  //     key: "email",
-  //     width: "20%",
-  //     ...getColumnSearchProps("email"),
-  //   },
-  //   {
-  //     title: "CIN",
-  //     dataIndex: "cin",
-  //     key: "cin",
-  //     ...getColumnSearchProps("cin"),
-  //     sorter: (a, b) => a.address.length - b.address.length,
-  //     sortDirections: ["descend", "ascend"],
-  //   },
-  // ];
+
 
   const columns = [
     {
@@ -336,33 +306,37 @@ const Licence22i = () => {
       dataIndex: "ine",
       key: "ine",
       width: "20%",
-      ...getColumnSearchProps("cin"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => a.ine - b.ine,
+      sortDirections: ["ascend", "descend"],
+      ...getColumnSearchProps("ine"),
     },
     {
       title: "Prénom",
       dataIndex: "firstName",
       key: "firstName",
-      width: "40%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.firstName.localeCompare(b.firstName),
       ...getColumnSearchProps("firstName"),
     },
     {
       title: "Nom",
       dataIndex: "lastName",
       key: "lastName",
-      width: "30%",
+      width: "20%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.lastName.localeCompare(b.lastName),
       ...getColumnSearchProps("lastName"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "20%",
+      width: "30%",
+      sortDirections: ["ascend", "descend"],
+      sorter: (a, b) => a.email.localeCompare(b.email),
       ...getColumnSearchProps("email"),
     },
   ];
-
   const showDrawer = () => {
     setOpen(true);
   };

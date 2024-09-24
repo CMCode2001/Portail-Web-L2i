@@ -11,7 +11,13 @@ const CrudClasseL1 = () => {
   const [addForm] = Form.useForm();
 
   const fetchClasseL1 = () => {
-    fetch(SERVER_URL + "/curentListStudent/niveau/licence1")
+    const token = sessionStorage.getItem("jwt");
+    fetch(SERVER_URL + "/curentListStudent/niveau/licence1", {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const sortedData = data.sort((a, b) => {

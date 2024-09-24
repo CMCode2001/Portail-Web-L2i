@@ -12,7 +12,14 @@ const CrudMessageForum = () => {
   // Fetch all forums and create a map of forum_id to probleme
   const fetchForums = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/forum`);
+      const token = sessionStorage.getItem("jwt");
+      const response = await fetch(`${SERVER_URL}/forum`, {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const forumData = await response.json();
       const forumMap = {};
       forumData.forEach((forum) => {

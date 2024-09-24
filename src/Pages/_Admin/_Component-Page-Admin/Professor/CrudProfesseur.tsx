@@ -18,7 +18,14 @@ const CrudProfesseur = () => {
   // };
 
   const fetchProfessors = () => {
-    fetch(SERVER_URL + "/professor")
+    const token = sessionStorage.getItem("jwt");
+
+    fetch(SERVER_URL + "/professor", {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => setData(data.reverse())) // Inverser l'ordre des données
       .catch((error) => console.error("Error fetching data professor:", error));

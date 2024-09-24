@@ -9,7 +9,13 @@ const OldStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const fetchOldStudent = () => {
-    fetch(SERVER_URL + "/curentListStudent/niveau/ancien")
+    const token = sessionStorage.getItem("jwt");
+    fetch(SERVER_URL + "/curentListStudent/niveau/ancien", {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const sortedData = data.sort((a, b) => {

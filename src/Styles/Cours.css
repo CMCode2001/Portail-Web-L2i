@@ -1,80 +1,26 @@
 :root {
   --bgColor1: #13798C;
   --bgColor2: #6B2239;
+  --textColor: #333;
   --bgColorButton: #085867;
 }
 
-.form-control,
-.form-select,
-.btn {
-  margin-top: 25px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+.custom-divider {
+  border-color: #085867 !important; /* Change the color of the divider */
+  border-width: 2px !important; /* Make the divider thicker */
+  border-style: solid !important; /* Ensure the border is solid */
+  margin-bottom: 24px; /* Add margin-bottom */
+  position: relative; /* To position the text in the center */
 }
 
-.loupe {
-  margin-top: 25px;
-}
-
-.btn-primary {
-  background-color: var(--bgColorButton); 
-  /* border: none;  */
-  border-radius: 20px; 
-}
-
-.btn-primary:hover {
-  background-color: var(--bgColor1); 
-  color: #ffffff; 
-}
-
-.btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
-}
-
-.btn-filtre {
-  background-color: var(--bgColor1);
-  color: black;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--bgColorButton);
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
-}
-
-.input-group-text {
-  background-color: #ffffff;
-  border: 1px solid #ced4da;
-  /* border-radius: 0 8px 8px 0;  */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.input-group-text svg {
-  color: var(--bgColorButton);
-}
-
-.card {
-  border-radius: 0 30px 0 30px;
-  border: 1px solid var(--bgColor1);
-}
-
-@media (max-width: 768px) {
-  .filter-section {
-    display: none;
-  }
-
-  .filter-section.show {
-    display: block;
-    animation: fadeIn 0.3s ease-in-out;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.custom-divider::before {
+  content: "CENTER"; /* Add text to the divider */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  background: #fff; /* Background color to make text visible */
+  padding: 0 10px;
+  color: #085867; /* Color of the text */
+  font-weight: bold; /* Make text bold */
 }

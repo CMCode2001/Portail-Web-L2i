@@ -9,7 +9,14 @@ const ScreenText = () => {
   const [form] = Form.useForm();
 
   const fetchText = () => {
-    fetch(SERVER_URL + "/text")
+    const token = sessionStorage.getItem("jwt");
+    fetch(SERVER_URL + "/text", {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setData(data);

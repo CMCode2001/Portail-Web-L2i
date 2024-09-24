@@ -1,47 +1,50 @@
-import { FilePdfOutlined } from "@ant-design/icons";
-import { AiOutlineSearch } from "react-icons/ai";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
-  Col,
-  Row,
-  Form,
-  Button,
   Container,
+  Grid,
   Card,
-  InputGroup,
-} from "react-bootstrap";
-import "../../Styles/Cours.css";
-import { SERVER_URL } from "../../Utils/constantURL";
+  CardContent,
+  CardActions,
+  Typography,
+  TextField,
+  Button,
+  MenuItem,
+  Collapse,
+  Box,
+  Pagination,
+  Divider,
+  InputAdornment,
+} from '@mui/material';
+import {
+  Search as SearchIcon,
+  PictureAsPdf as PdfIcon,
+  FilterList as FilterIcon,
+  Info as InfoIcon,
+} from '@mui/icons-material';
+import { SERVER_URL } from '../../Utils/constantURL';
 
 const CoursL2i = () => {
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedProfessor, setSelectedProfessor] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [showFilters, setShowFilters] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLevel, setSelectedLevel] = useState('');
+  const [selectedProfessor, setSelectedProfessor] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [page, setPage] = useState(1);
+  const [filtersVisible, setFiltersVisible] = useState(true); // State for showing/hiding filters
+  const coursesPerPage = 6;
 
   const fetchCourse = () => {
     fetch(`${SERVER_URL}/course`, {
-      method: "GET",
-      headers: {
-        // Authorization: `${token}`,
-      },
+      method: 'GET',
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
         setCours(data);
+        console.log(data)
         setFilteredCours(data);
-        console.log(data);
       })
-      .catch((error) => console.error("Error fetching courses:", error));
+      .catch((error) => console.error('Error fetching courses:', error));
   };
 
   useEffect(() => {
@@ -78,132 +81,244 @@ const CoursL2i = () => {
       );
     }
     if (date) {
+
       filtered = filtered.filter((c) => {
-        const courseDate = new Date(c.creatAt).toLocaleDateString();
-        const filterDate = new Date(date).toLocaleDateString();
-        return courseDate === filterDate;
+        console.log(c.classeroom.creatAt);
+        const courseDate = new Date(c.classeroom.creatAt).toISOString().split('T')[0];
+        console.log(courseDate +" === "+ date)
+        // const filterDate = new Date(date).toISOString().split('T')[0];
+        return courseDate === date;
       });
     }
-
     setFilteredCours(filtered);
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const toggleFilters = () => {
+    setFiltersVisible(!filtersVisible); // Toggle filters visibility
+  };
+
+  const indexOfLastCourse = page * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCours.slice(indexOfFirstCourse, indexOfLastCourse);
+
   return (
     <Container>
-      <Form>
-        <Row className="mb-3 justify-content-center">
-          <Col md={6} className="centered">
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Recherche par titre"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-              <InputGroup.Text className="loupe">
-                <AiOutlineSearch />
-              </InputGroup.Text>
-            </InputGroup>
-          </Col>
-        </Row>
-        <div className="d-md-none text-center mb-3">
-          <Button onClick={() => setShowFilters(!showFilters)}>
-            {showFilters ? "Masquer les filtres" : "Afficher les filtres"}
-          </Button>
-        </div>
-        <Row className={`mb-3 ${showFilters ? "" : "d-none d-md-flex"}`}>
-          <Col md={2} className="mb-2 mb-md-0">
-            <Form.Select
+      <Box 
+        textAlign="center" 
+        my={4}
+        fontWeight="bold" 
+        borderRadius={50} 
+        color="#6B2239"
+        
+        >
+        
+        {/* Title and Description */}
+        <Typography variant="h4" gutterBottom>
+          Catalogue des Cours
+        </Typography>
+        <Typography variant="subtitle1" color="#6B2239" fontWeight="bold">
+          Explorez et téléchargez vos cours en toute simplicite !
+        </Typography>
+      </Box>
+      <Box mb={4} sx={{ position: 'relative', textAlign: 'center'}}>
+        <Divider 
+          sx={{
+            marginBottom: '24px', // Add margin-bottom
+          }}
+        >===========================</Divider>
+      </Box>
+      {/* Search Bar (Moved Outside Filters) */}
+      <Box mb={4}>
+        <TextField
+          fullWidth
+          label="Recherche par titre"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+            sx: {
+              borderRadius: '50px', // Border radius for the input
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '50px', // Border radius for the input field
+                '& fieldset': {
+                  borderColor: '#085867', // Border color
+                },
+                '&:hover fieldset': {
+                  borderColor: '#13798C', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#13798C', // Border color when focused
+                },
+              },
+            },
+          }}
+        />
+      </Box>
+
+      {/* Toggle Filters Button */}
+      <Box textAlign="center" mb={4}>
+        <Button
+          mt
+          variant="outlined"
+          startIcon={<FilterIcon />}
+          onClick={toggleFilters}
+          sx={{
+            borderRadius: '50px', // Border radius for the button
+            borderColor: '#085867', // Border color
+            color: '#085867', // Text color
+            '&:hover': {
+              borderColor: '#13798C', // Border color on hover
+              color: '#13798C', // Text color on hover
+            },
+          }}
+        >
+          {filtersVisible ? 'Cacher les filtres' : 'Afficher les filtres'}
+        </Button>
+      </Box>
+
+      {/* Filters (collapsible) */}
+      <Collapse in={filtersVisible}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" mb={4}>
+          <Grid item xs={12} md={3}>
+            <TextField
+              fullWidth
+              select
+              label="Niveau"
+              variant="outlined"
               value={selectedLevel}
-              onChange={(e) =>
-                handleFilter(e.target.value, selectedProfessor, selectedDate)
-              }
+              onChange={(e) => handleFilter(e.target.value, selectedProfessor, selectedDate)}
             >
-              <option value="">Tous les niveaux</option>
-              <option value="L1">L1</option>
-              <option value="L2">L2</option>
-              <option value="L3">L3</option>
-            </Form.Select>
-          </Col>
-          <Col md={3} className="mb-2 mb-md-0">
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Professeur"
-                value={selectedProfessor}
-                onChange={(e) =>
-                  handleFilter(selectedLevel, e.target.value, selectedDate)
-                }
-              />
-              <InputGroup.Text className="loupe">
-                <AiOutlineSearch />
-              </InputGroup.Text>
-            </InputGroup>
-          </Col>
-          <Col md={3} className="mb-2 mb-md-0">
-            <InputGroup>
-              <Form.Control
-                type="date"
-                value={selectedDate}
-                onChange={(e) =>
-                  handleFilter(selectedLevel, selectedProfessor, e.target.value)
-                }
-              />
-              <InputGroup.Text className="loupe">
-                <AiOutlineSearch />
-              </InputGroup.Text>
-            </InputGroup>
-          </Col>
-          <Col md={3}>
-            <Button
-              onClick={() => handleFilter("", "", "")}
-              className="w-100"
-              style={{
-                backgroundColor: "#13798C",
-                color: "#ffffff",
-                // border: '5px solid #6B2239'
+              <MenuItem value="">Tous les niveaux</MenuItem>
+              <MenuItem value="L1">L1</MenuItem>
+              <MenuItem value="L2">L2</MenuItem>
+              <MenuItem value="L3">L3</MenuItem>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              fullWidth
+              label="Professeur"
+              variant="outlined"
+              value={selectedProfessor}
+              onChange={(e) => handleFilter(selectedLevel, e.target.value, selectedDate)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
               }}
-            >
-              Réinitialiser les filtres
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-      <Row className="justify-content-center">
-        {filteredCours.map((course) => (
-          <Col
-            xs={12}
-            sm={6}
-            md={4}
-            lg={4}
-            key={course.id}
-            className="custom-col mb-4 d-flex"
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Date"
+              variant="outlined"
+              value={selectedDate}
+              onChange={(e) => handleFilter(selectedLevel, selectedProfessor, e.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+        </Grid>
+
+        {/* Reset Filters Button */}
+        <Box textAlign="center" mb={4}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => handleFilter('', '', '')}
+            startIcon={<FilterIcon />}
+            sx={{
+              borderRadius: '50px', // Border radius for the button
+              borderColor: '#085867', // Border color
+              color: '#333', // Text color
+              '&:hover': {
+                borderColor: '#13798C', // Border color on hover
+                color: '#13798C', // Text color on hover
+              },
+            }}
           >
-            <Card className="card w-100">
-              <Card.Body>
-                <Card.Title>{course.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {course.createdBy}
-                </Card.Subtitle>
-                <Card.Text>
-                  Niveau : {course.classeroom.name}
-                  <br />
-                  Date d'upload :{" "}
-                  {new Date(course.creatAt).toLocaleDateString()}
-                </Card.Text>
-                <Button
-                  variant="primary"
-                  className="btn"
-                  href={SERVER_URL + `/course/${course?.id}/pdf`}
-                  style={{ backgroundColor: "#13798C", color: "#ffffff" }}
-                >
-                  <FilePdfOutlined /> Télécharger
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+            Réinitialiser les filtres
+          </Button>
+        </Box>
+      </Collapse>
+
+      <Divider />
+
+      {/* Courses Display */}
+      {filteredCours.length === 0 ? (
+        <Box textAlign="center" mt={4}>
+          <Typography variant="h6" color="textSecondary">
+            Aucun cours trouvé
+          </Typography>
+          <InfoIcon fontSize="large" color="action" />
+        </Box>
+      ) : (
+        <Grid container spacing={4} mt={4}>
+          {currentCourses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
+              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {course.title}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    {course.createdBy}
+                  </Typography>
+                  <Typography variant="body2">
+                    Niveau : {course.classeroom.name}
+                    <br />
+                    Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    href={`${SERVER_URL}/course/${course.id}/pdf`}
+                    startIcon={<PdfIcon />}
+                    fullWidth
+                    sx={{
+                      borderRadius: '50px', // Border radius for the button
+                      borderColor: '#085867', // Border color
+                      color: '#085867', // Text color
+                      '&:hover': {
+                        borderColor: '#13798C', // Border color on hover
+                        color: '#13798C', // Text color on hover
+                      },
+                    }}
+                  >
+                    Télécharger
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      {/* Pagination */}
+      {filteredCours.length > 0 && (
+        <Box mt={4} display="flex" justifyContent="center">
+          <Pagination
+            count={Math.ceil(filteredCours.length / coursesPerPage)}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
+      )}
     </Container>
   );
 };
