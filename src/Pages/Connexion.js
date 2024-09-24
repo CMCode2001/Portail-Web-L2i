@@ -32,6 +32,56 @@ const Connexion = () => {
     });
   };
 
+  // // Fonction principale pour le login
+  // const login = async () => {
+  //   try {
+  //     const user = { username, password };
+
+  //     const response = await fetch(SERVER_URL + "/login", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(user),
+  //     });
+
+  //     // Si la requête échoue
+  //     if (!response.ok) {
+  //       const errorData = await response.text();
+  //       setMessageReponse(errorData || "Erreur lors de la connexion");
+  //       openErreurNotification(messageReponse);
+  //       return;
+  //     }
+
+  //     // Si la requête réussit
+  //     const jwtToken = response.headers.get("Authorization");
+  //     const userData = await response.json(); // Récupération des données utilisateur
+
+  //     // Vérification si l'utilisateur est actif
+  //     if (userData.user.active) {
+  //       // Stockage du token et des informations utilisateur
+  //       sessionStorage.setItem("jwt", jwtToken);
+  //       sessionStorage.setItem("isLoggedIn", true);
+  //       sessionStorage.setItem("user", JSON.stringify(userData.user));
+
+  //       // Afficher la notification de succès et rediriger
+  //       notification.success({
+  //         message: "Connexion réussie",
+  //         description: `Bienvenue, ${userData.user.firstName} ${userData.user.lastName}!`,
+  //         placement: "top",
+  //       });
+
+  //       setAuth(true); // Marquer comme authentifié
+  //     } else {
+  //       setMessageReponse(
+  //         `Cher ${userData.user.firstName} ${userData.user.lastName}, veuillez vérifier votre email pour activer votre compte.`
+  //       );
+  //       openErreurNotification(messageReponse);
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la requête de connexion:", error);
+  //     openErreurNotification("Erreur lors de la requête de connexion.");
+  //   }
+  // };
+
   // Fonction principale pour le login
   const login = async () => {
     try {
@@ -52,27 +102,27 @@ const Connexion = () => {
       }
 
       // Si la requête réussit
-      const jwtToken = response.headers.get("Authorization");
-      const userData = await response.json(); // Récupération des données utilisateur
+      const data = await response.json(); // Récupération des données utilisateur, access_token et refresh_token
 
       // Vérification si l'utilisateur est actif
-      if (userData.user.active) {
-        // Stockage du token et des informations utilisateur
-        sessionStorage.setItem("jwt", jwtToken);
+      if (data.user.active) {
+        // Stockage des tokens et des informations utilisateur
+        sessionStorage.setItem("access_token", data.access_token);
+        sessionStorage.setItem("refresh_token", data.refresh_token);
         sessionStorage.setItem("isLoggedIn", true);
-        sessionStorage.setItem("user", JSON.stringify(userData.user));
+        sessionStorage.setItem("user", JSON.stringify(data.user));
 
         // Afficher la notification de succès et rediriger
         notification.success({
           message: "Connexion réussie",
-          description: `Bienvenue, ${userData.user.firstName} ${userData.user.lastName}!`,
+          description: `Bienvenue, ${data.user.firstName} ${data.user.lastName}!`,
           placement: "top",
         });
 
         setAuth(true); // Marquer comme authentifié
       } else {
         setMessageReponse(
-          `Cher ${userData.user.firstName} ${userData.user.lastName}, veuillez vérifier votre email pour activer votre compte.`
+          `Cher ${data.user.firstName} ${data.user.lastName}, veuillez vérifier votre email pour activer votre compte.`
         );
         openErreurNotification(messageReponse);
       }

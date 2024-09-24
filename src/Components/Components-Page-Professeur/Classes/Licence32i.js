@@ -72,7 +72,7 @@ const Licence32i = () => {
       })
       .then((data) => {
         data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
-        console.log('liste des etudiants \n' ,data)
+        console.log("liste des etudiants \n", data);
         setEtudiant(data);
       })
       .catch((error) => console.error("Error fetching forum:", error));
@@ -229,7 +229,12 @@ const Licence32i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -254,15 +259,9 @@ const Licence32i = () => {
       dataIndex: "ine",
       key: "ine",
       width: "20%",
-<<<<<<< HEAD
-      ...getColumnSearchProps("ine"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
-=======
       sorter: (a, b) => a.ine - b.ine,
       sortDirections: ["ascend", "descend"],
       ...getColumnSearchProps("ine"),
->>>>>>> e8f4ec2cfe7f79ed52bc5cd8bca85e54171309bd
     },
     {
       title: "Prénom",
