@@ -58,15 +58,58 @@ const ProfileStudent = () => {
     return null;
   };
 
+  // useEffect(() => {
+  //   const currentStudent = getUserInfo();
+
+  //   if (currentStudent) {
+  //     const fetchStudent = async () => {
+  //   const token = sessionStorage.getItem("jwt");
+  //       try {
+  //         const response = await fetch(
+  //           SERVER_URL + `/student/${currentStudent.id}`
+  //         );
+  //         const data = await response.json();
+  //         setStudent(data);
+
+  //         form.setFieldsValue({
+  //           firstName: data.firstName,
+  //           lastName: data.lastName,
+  //           email: data.email,
+  //           specialityStudent: data.specialityStudent,
+  //           classeroom_id: data.classeroom_id,
+  //           ine: data.ine,
+  //         });
+  //       } catch (error) {
+  //         console.error("Error fetching data student:", error);
+  //       }
+  //     };
+
+  //     fetchStudent();
+  //   }
+  // }, [form]);
+
   useEffect(() => {
     const currentStudent = getUserInfo();
 
     if (currentStudent) {
       const fetchStudent = async () => {
+        const token = sessionStorage.getItem("jwt");
         try {
           const response = await fetch(
-            SERVER_URL + `/student/${currentStudent.id}`
+            SERVER_URL + `/student/${currentStudent.id}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `${token}`,
+                "Content-Type": "application/json", // Optionnel, mais utile si besoin de spécifier
+              },
+            }
           );
+
+          if (!response.ok) {
+            throw new Error("Error fetching student data");
+          }
+
           const data = await response.json();
           setStudent(data);
 
@@ -79,7 +122,7 @@ const ProfileStudent = () => {
             ine: data.ine,
           });
         } catch (error) {
-          console.error("Error fetching data student:", error);
+          console.error("Error fetching student data:", error);
         }
       };
 
@@ -139,7 +182,7 @@ const ProfileStudent = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
         body: JSON.stringify(body),
       });
