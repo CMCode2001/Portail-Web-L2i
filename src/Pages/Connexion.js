@@ -199,7 +199,7 @@ const Connexion = () => {
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Link to="/password/reset" id="MdpForget">
+                <Link to="/password/forget" id="MdpForget">
                   Mot de passe oublié ?
                 </Link>
               </Form.Item>

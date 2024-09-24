@@ -1,17 +1,63 @@
+@media (max-width: 991px) {
+    #MonInput{
+        width: 100% !important;    
+    }
+}
 
-.text12{
-    font-weight: bold;
-    color: var(--bgColor2);
+  #MonInput{
+    width: 50%;
+    height: 40px; 
+    font-size: 16px;
+    border: 1px solid var(--bgColor1);
+    border-radius: 8px;
+  }
+  :where(.css-dev-only-do-not-override-11lehqq).ant-form-item .ant-form-item-control-input-content{
+    margin: auto !important;
+  }
+
+ 
+  .text-center {
+        text-align: center;
+
+        .text12{
+            font-weight: bold;
+            color: var(--bgColor2);
+        }
+        .text13{
+            padding-top: 8px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+    }
+  
+  .input-container {
+    margin-right: 12rem !important;
+    margin: 0 auto;
+  }
+  
+  .Btnvalidate{
+    min-width: 25%;
+    background-color: var(--bgColor2) !important;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    height: 50px; 
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
-.text13{
-    padding-top: 8px;
-    font-size: 18px;
-    font-weight: 500;
+.Btnvalidate:hover{
+    color: white !important;
+    background-color: var(--bgColor1) !important;
+    transform: scale(1.05);
 }
-#OuvrirCompte{
-    text-decoration: none;
-}
-#mdpoublie{
+  
+  .text12, .text13 {
+    margin-bottom: 20px;
+  }
+  
+  #mdpoublie{
     background-color: var(--bgColor1);
     border: none;
     border-radius: 30px;
@@ -24,20 +70,6 @@
     cursor:auto;
 
 }
-#AugTaille{
-    height: 50px; 
-    font-size: 16px;
-}
-.Btnvalidate{
-    width: 100%;
-    background-color: var(--bgColor2) !important;
-    color: white;
-    font-size: 24px;
-    font-weight: 600;
-    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-}
-.Btnvalidate:hover{
-    color: white !important;
-    background-color: var(--bgColor1) !important;
-    transform: scale(1.05);
+#OuvrirCompte{
+    text-decoration: none;
 }

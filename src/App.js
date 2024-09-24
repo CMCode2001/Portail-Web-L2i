@@ -21,10 +21,13 @@ import PageAdmin from "./Pages/_Admin/PageAdmin";
 import "./Styles/bootstrap.min.css";
 import ForgetMotDePasse from "./Components/ForgetMotDePasse";
 import ProfileStudent from "./Components/Profile/ProfileStudent";
+import ResetMotDePasse from "./Components/ResetMotDePasse";
+import ScrollToTop from "./Components/ScrollToTop";
 
 function App() {
   return (
     <div className="App">
+      <ScrollToTop/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Accueil />} />
@@ -39,7 +42,8 @@ function App() {
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/confirmation/:idtoken" element={<Confirmation />} />
-          <Route path="/password/reset" element={<ForgetMotDePasse />} />
+          <Route path="/password/reset/:idtoken" element={<ResetMotDePasse />} />
+          <Route path="/password/forget" element={<ForgetMotDePasse />} />
           <Route path="studentProfile" element={<ProfileStudent />} />
 
           {/* ------------ Professeur -------------- */}

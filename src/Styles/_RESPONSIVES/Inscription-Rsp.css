@@ -1,10 +1,17 @@
 @media (max-width: 800px) {
-   
+    .login-page-inscription {
+        background: #ffffff;
+    }
     .login-box{
-        width: 100%;
+        width: 95%;
+        /* padding: 0 !important; */
+
+        margin-top: -0.5rem !important;
+        background: #ffffff;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);    
     }
     #SvgRsp{
-        width: 10rem;
+        width: 10rem !important;
     }
     
 }

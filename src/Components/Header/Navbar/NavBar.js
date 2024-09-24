@@ -147,7 +147,7 @@ const Navbar = () => {
                   className="nav-link"
                   activeClassName="active"
                 >
-                  Gallerie
+                  Galerie
                 </NavLink>
               </li>
               {sessionStorage.getItem("isLoggedIn") ? (

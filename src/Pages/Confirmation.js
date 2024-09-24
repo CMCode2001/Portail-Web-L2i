@@ -175,7 +175,7 @@ const Confirmation = () => {
     return <Spin tip="Confirming your email..." />;
   }
   if (isAuthenticated) {
-    window.location.href = "/";
+    window.location.href = "/connexion";
   } else {
     return (
       <div className="connexion">

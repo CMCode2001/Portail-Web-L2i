@@ -1,4 +1,104 @@
 /* Feu */
+/* =================== */
+.ant-card-meta-description {
+  color: #000000; 
+  font-size: 14px; 
+  font-weight: bold; 
+}
+/* =================== */
+  
+#tofDefunt{
+  width: 2rem;
+}
+#tofDev{
+  width: 2rem;
+}
+#tofAutres{
+  width: 2rem;
+}
+#Deco1{
+  background-color: var(--bgColor2);
+  border: none;
+  border-radius: 30px;
+  padding: 15px 18px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  width: 27rem;
+  height: 3rem;
+  cursor:auto;
+}
+#Deco2{
+  background-color: var(--bgColor1);
+  border: none;
+  border-radius: 30px;
+  padding: 15px 18px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  width: 26rem;
+  height: 3rem;
+  cursor:auto;
+}
+#Deco3{
+  background-color: black;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 18px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+  width: 27rem;
+  height: 3rem;
+  cursor:auto;
+}
+/* ============================================ */
+/* Centrage de la galerie */
+.gallerie-container {
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* Centrage des boutons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+/* Styles des boutons spécifiques */
+#Deco1, #Deco2, #Deco3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+/* Centrage des images dans les sections */
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrage horizontal */
+  margin: 20px 0;
+}
+
+.pictures-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centrer horizontalement */
+  gap: 20px; /* Espacement entre les cartes */
+  margin-top: 20px;
+}
+
+/* Les cartes doivent être centrées aussi */
+.ant-card {
+  margin: 0 auto;
+}
+
+/* ============================================ */
 .pictures-grid-defunt {
   display: flex;
   justify-content: space-between;
@@ -28,10 +128,14 @@
 
 .pictures-grid-defunt > div:first-child p {
   text-align: left; /* Description de la première photo à gauche */
+  color: black;
+  font-size: 4px;
 }
 
 .pictures-grid-defunt > div:last-child p {
   text-align: right; /* Description de la deuxième photo à droite */
+  color: black;
+  font-size: 4px;
 }
 
 /* chef */
@@ -40,6 +144,7 @@
   .pictures-grid-chef {
     flex-direction: column; /* Les photos s'empilent verticalement sur les petits écrans */
     align-items: center;
+    margin: 12px !important;
   }
 
   .pictures-grid-chef img {
@@ -49,6 +154,16 @@
   .pictures-grid-chef p {
     font-size: 14px;
   }
+  #Deco1, #Deco2, #Deco3 {
+    width: 90%;
+    font-size: 13px;
+  }
+  #Deco2{
+    font-weight: 600;
+    font-size: 16px;
+
+  }
+
 }
 
 /* Responsivité */

@@ -1,6 +1,9 @@
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ::-webkit-scrollbar {
+  width: 6px;
+  height: 2px;
+  background-color: #d7d7d7;
+  border-radius: 8 px;
+} */
 
 #MdpForget{
    text-decoration: none;
@@ -21,10 +24,16 @@
   align-items: center;
   flex-direction: row-reverse;
   background-color: white;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0 40px rgba(159, 159, 159, 0.16);
   overflow: hidden;
-  margin: 0 auto;
+  margin: auto;
   border-radius: 12px;
+  width: 65%;
+  height: 30rem;
+  position: relative;
+  padding: 10px 4%;
+
+
 }
 .connexion #login-form {
   flex: 1 0 100%;

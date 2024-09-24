@@ -1,8 +1,10 @@
 @media (max-width: 800px) {
-   
+    
     .login-box{
-        width: 100%;
+        width: 100% !important;
         padding: 0 !important;
+        position: relative;
+        margin: 10px !important;
     }
     #SvgRsp{
         width: 15rem !important;
