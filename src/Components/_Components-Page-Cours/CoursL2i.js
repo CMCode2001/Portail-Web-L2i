@@ -114,7 +114,6 @@ const CoursL2i = () => {
         fontWeight="bold" 
         borderRadius={50} 
         color="#6B2239"
-        
         >
         
         {/* Title and Description */}
@@ -124,12 +123,15 @@ const CoursL2i = () => {
           borderRight:"solid 2px #6B2239",
           borderTop:"solid 2px #6B2239",
           paddingBottom: "20px",
-
           backgroundColor:"rgb(19,121,140, 0.1)",
           borderBottomRightRadius:"25px",
           borderTopLeftRadius:"25px",
         }}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom
+          sx={{
+            fontWeight:"bold",
+          }}
+          >
             Catalogue des Cours
           </Typography>
           <Typography variant="subtitle1" color="#6B2239" fontWeight="bold">
@@ -315,7 +317,9 @@ const CoursL2i = () => {
                 >
                   {course.classeroom.name}
                 </CardMedia>
-                <CardContent>
+                <CardContent sx={{
+                  textAlign:"left"
+                }}>
                   <Typography variant="h6" gutterBottom
                   sx={{
                     fontWeight:"bold"
@@ -323,15 +327,23 @@ const CoursL2i = () => {
                   >
                     {course.title}
                   </Typography>
+                  <Divider component='div' sx={{
+                    border:"solid 1px #6B2239",
+                    width:"100px",
+                    margin:"0 auto"
+                  }}/>
                   <Typography sx={{
-                    fontWeight:"bold"
+                    fontWeight:"bold",
+                    textAlign:"left"
                   }}>
                     Professeur : Mr. {course.classeroom.professors[0].firstName} {course.classeroom.professors[0].lastName.toUpperCase()}
                   </Typography>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{
+                  textAlign:"left"
+                  }}>
                     Niveau : {course.classeroom.name}
                     <br />
-                    Date d'upload : {new Date(course.classeroom.creatAt).toISOString().split('T')[0]}
+                    Date d'upload : {new Date(course.classeroom.creatAt).toLocaleDateString()}
                   </Typography>
                 </CardContent>
                 <CardActions>
