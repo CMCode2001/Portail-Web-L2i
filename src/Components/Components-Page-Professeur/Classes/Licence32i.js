@@ -254,15 +254,9 @@ const Licence32i = () => {
       dataIndex: "ine",
       key: "ine",
       width: "20%",
-<<<<<<< HEAD
-      ...getColumnSearchProps("ine"),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortDirections: ["descend", "ascend"],
-=======
       sorter: (a, b) => a.ine - b.ine,
       sortDirections: ["ascend", "descend"],
       ...getColumnSearchProps("ine"),
->>>>>>> e8f4ec2cfe7f79ed52bc5cd8bca85e54171309bd
     },
     {
       title: "Prénom",

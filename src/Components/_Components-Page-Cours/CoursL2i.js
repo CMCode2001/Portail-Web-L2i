@@ -4,6 +4,7 @@ import {
   Grid,
   Card,
   CardContent,
+  CardMedia,
   CardActions,
   Typography,
   TextField,
@@ -77,7 +78,7 @@ const CoursL2i = () => {
     }
     if (professor) {
       filtered = filtered.filter((c) =>
-        c.createdBy.toLowerCase().includes(professor.toLowerCase())
+        (c.classeroom.professors[0].firstName+" "+c.classeroom.professors[0].firstName).toLowerCase().includes(professor.toLowerCase())
       );
     }
     if (date) {
@@ -117,19 +118,24 @@ const CoursL2i = () => {
         >
         
         {/* Title and Description */}
-        <Typography variant="h4" gutterBottom>
-          Catalogue des Cours
-        </Typography>
-        <Typography variant="subtitle1" color="#6B2239" fontWeight="bold">
-          Explorez et téléchargez vos cours en toute simplicite !
-        </Typography>
-      </Box>
-      <Box mb={4} sx={{ position: 'relative', textAlign: 'center'}}>
-        <Divider 
-          sx={{
-            marginBottom: '24px', // Add margin-bottom
-          }}
-        >===========================</Divider>
+        <Box sx={{
+          borderBottom: "solid 5px rgb(19,121,140)",
+          borderLeft: "solid 5px rgb(19,121,140)",
+          borderRight:"solid 2px #6B2239",
+          borderTop:"solid 2px #6B2239",
+          paddingBottom: "20px",
+
+          backgroundColor:"rgb(19,121,140, 0.1)",
+          borderBottomRightRadius:"25px",
+          borderTopLeftRadius:"25px",
+        }}>
+          <Typography variant="h4" gutterBottom>
+            Catalogue des Cours
+          </Typography>
+          <Typography variant="subtitle1" color="#6B2239" fontWeight="bold">
+            Explorez et téléchargez vos cours en toute simplicite !
+          </Typography>
+        </Box>
       </Box>
       {/* Search Bar (Moved Outside Filters) */}
       <Box mb={4}>
@@ -147,18 +153,7 @@ const CoursL2i = () => {
             ),
             sx: {
               borderRadius: '50px', // Border radius for the input
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '50px', // Border radius for the input field
-                '& fieldset': {
-                  borderColor: '#085867', // Border color
-                },
-                '&:hover fieldset': {
-                  borderColor: '#13798C', // Border color on hover
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#13798C', // Border color when focused
-                },
-              },
+              
             },
           }}
         />
@@ -172,12 +167,22 @@ const CoursL2i = () => {
           startIcon={<FilterIcon />}
           onClick={toggleFilters}
           sx={{
-            borderRadius: '50px', // Border radius for the button
-            borderColor: '#085867', // Border color
-            color: '#085867', // Text color
+            borderBottom: "solid 3px rgb(19,121,140)",
+            borderLeft: "solid 3px rgb(19,121,140)",
+            borderRight:"solid 2px #6B2239",
+            borderTop:"solid 2px #6B2239", 
+            backgroundColor:"white",
+            border: 'solid 2px #6B2239', 
+            width:"235px",
+            borderRadius:"25px",
+            margin:"0 auto",
+            marginBottom:"25px",
+            color: '#085867',
             '&:hover': {
-              borderColor: '#13798C', // Border color on hover
-              color: '#13798C', // Text color on hover
+              borderColor: '#13798C',
+              border: 'solid 2px white',
+              color: 'white',
+              backgroundColor:"#6B2239",
             },
           }}
         >
@@ -198,9 +203,9 @@ const CoursL2i = () => {
               onChange={(e) => handleFilter(e.target.value, selectedProfessor, selectedDate)}
             >
               <MenuItem value="">Tous les niveaux</MenuItem>
-              <MenuItem value="L1">L1</MenuItem>
-              <MenuItem value="L2">L2</MenuItem>
-              <MenuItem value="L3">L3</MenuItem>
+              <MenuItem value="LICENCE1">L1</MenuItem>
+              <MenuItem value="LICENCE2">L2</MenuItem>
+              <MenuItem value="LICENCE3">L3</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} md={3}>
@@ -240,21 +245,35 @@ const CoursL2i = () => {
             onClick={() => handleFilter('', '', '')}
             startIcon={<FilterIcon />}
             sx={{
-              borderRadius: '50px', // Border radius for the button
-              borderColor: '#085867', // Border color
-              color: '#333', // Text color
+              borderBottom: "solid 3px rgb(19,121,140)",
+              borderLeft: "solid 3px rgb(19,121,140)",
+              borderRight:"solid 2px #6B2239",
+              borderTop:"solid 2px #6B2239", 
+              backgroundColor:"white",
+              borderRadius:"25px",
+              border: 'solid 2px #6B2239', 
+              width:"157px",
+              margin:"0 auto",
+              marginBottom:"-15px",
+              color: '#085867',
               '&:hover': {
-                borderColor: '#13798C', // Border color on hover
-                color: '#13798C', // Text color on hover
+                borderColor: '#13798C',
+                border: 'solid 2px white',
+                color: 'white',
+                backgroundColor:"#6B2239",
               },
             }}
           >
-            Réinitialiser les filtres
+            Réinitialiser
           </Button>
         </Box>
       </Collapse>
 
-      <Divider />
+      <Divider component="div" role="presentation" sx={{
+        border:"solid 2px "
+      }}>
+      </Divider>
+
 
       {/* Courses Display */}
       {filteredCours.length === 0 ? (
@@ -268,18 +287,51 @@ const CoursL2i = () => {
         <Grid container spacing={4} mt={4}>
           {currentCourses.map((course) => (
             <Grid item xs={12} sm={6} md={4} key={course.id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <Card sx={{ 
+                  height: '100%', 
+                  width:"300px",
+                  display: 'flex', 
+                  flexDirection: 'column' ,
+                  borderBottom: "solid 5px rgb(19,121,140)",
+                  borderLeft: "solid 5px rgb(19,121,140)",
+                  borderRight:"solid 2px #6B2239",
+                  borderTop:"solid 2px #6B2239",
+                  borderBottomRightRadius:"25px",
+                  borderTopLeftRadius:"20px"
+                  
+                  
+                  }}>
+                <CardMedia
+                  component="div"
+                  sx={{
+                    height: 175,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#085867', // Choisissez une couleur de fond
+                    color: 'white',
+                    fontSize: '2rem',
+                  }}
+                >
+                  {course.classeroom.name}
+                </CardMedia>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom
+                  sx={{
+                    fontWeight:"bold"
+                  }}
+                  >
                     {course.title}
                   </Typography>
-                  <Typography color="textSecondary">
-                    {course.createdBy}
+                  <Typography sx={{
+                    fontWeight:"bold"
+                  }}>
+                    Professeur : Mr. {course.classeroom.professors[0].firstName} {course.classeroom.professors[0].lastName.toUpperCase()}
                   </Typography>
                   <Typography variant="body2">
                     Niveau : {course.classeroom.name}
                     <br />
-                    Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
+                    Date d'upload : {new Date(course.classeroom.creatAt).toISOString().split('T')[0]}
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -290,12 +342,23 @@ const CoursL2i = () => {
                     startIcon={<PdfIcon />}
                     fullWidth
                     sx={{
-                      borderRadius: '50px', // Border radius for the button
-                      borderColor: '#085867', // Border color
-                      color: '#085867', // Text color
+
+                      borderBottom: "solid 5px rgb(19,121,140)",
+                      borderLeft: "solid 5px rgb(19,121,140)",
+                      borderRight:"solid 2px #6B2239",
+                      borderTop:"solid 2px #6B2239",
+                      borderBottomRightRadius:"25px",
+                      borderTopLeftRadius:"20px", 
+                      backgroundColor:"white",
+                      border: 'solid 1px #6B2239', 
+                      width:"150px",
+                      margin:"0 auto",
+                      marginBottom:"25px",
+                      color: '#085867',
                       '&:hover': {
-                        borderColor: '#13798C', // Border color on hover
-                        color: '#13798C', // Text color on hover
+                        borderColor: '#13798C', 
+                        color: 'white',
+                        backgroundColor:"#6B2239",
                       },
                     }}
                   >
