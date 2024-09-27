@@ -9,11 +9,11 @@ import { SERVER_URL } from "../Utils/constantURL";
 
 const Inscription = () => {
   /* Déclaration des variables */
-  const [firstName, setPrenom] = useState("test");
-  const [lastName, setlastName] = useState("test");
-  const [email, setMail] = useState("oriontheroot@gmail.com");
-  const [password, setPassword] = useState("12345678");
-  const [passwordConfirm, setPasswordConfim] = useState("12345678");
+  const [firstName, setPrenom] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setMail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfim] = useState("");
   const [niveau, setNiveau] = useState("3");
   const [emailStatus, setEmailStatus] = useState("");
   const [messageReponse, setMessageReponse] = useState({
@@ -46,70 +46,140 @@ const Inscription = () => {
 
   const [loading, setLoading] = useState(false);
   const [isDesabled, setDisable] = useState(false);
+
+  // const sinscrire = () => {
+  //   if (password === passwordConfirm) {
+  //     setLoading(true);
+  //     const user = {
+  //       specialityStudent: null,
+  //       classeroom_id: parseInt(niveau),
+  //       firstName,
+  //       lastName,
+  //       password,
+  //       email,
+  //       ine: null,
+  //     };
+  //     fetch(SERVER_URL + "/register/student", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
+  //     })
+  //       .then((response) => {
+  //         response.text().then((message) => {
+  //           const isError = !response.ok;
+  //           const errorMessage = isError
+  //             ? message || "Erreur lors de l'inscription."
+  //             : message || "Inscription réussie avec succès.";
+
+  //           setMessageReponse({
+  //             erreur: isError,
+  //             message: errorMessage,
+  //           });
+  //           if (!isError) {
+  //             setDisable(true);
+  //           }
+
+  //           openMessageReponse();
+  //           setLoading(false);
+
+  //           // if (!isError) {
+  //           //   // En cas de succès, rediriger vers la page de connexion après 2 minutes
+  //           //   setTimeout(() => {
+  //           //     window.location.href = "/connexion";
+  //           //     // }, 5000);
+  //           //   }, 60000);
+  //           // }
+  //           if (!isError) {
+  //             setDisable(true);
+  //             openMessageReponse();
+  //             setLoading(false);
+
+  //             // Redirige vers la page de notification d'activation
+  //             setTimeout(() => {
+  //               window.location.href = "/activation-message";
+  //             }, 3000); // 3 secondes avant la redirection
+  //           }
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         setMessageReponse({
+  //           erreur: true,
+  //           message: error.text || "Erreur inattendue lors de l'inscription.",
+  //         });
+  //         console.error("Erreur lors de la requête:", error);
+  //         openMessageReponse();
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     openErrorNotification();
+  //   }
+  // };
+
   const sinscrire = () => {
     if (password === passwordConfirm) {
-      setLoading(true);
+      setLoading(true); // Démarrer le chargement
       const user = {
+        specialityStudent: null,
+        classeroom_id: parseInt(niveau),
         firstName,
         lastName,
-        email,
         password,
-        classeroom_id: parseInt(niveau),
+        email,
+        ine: null,
       };
 
-      fetch(SERVER_URL + "/student", {
+      fetch(SERVER_URL + "/register/student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user), // Envoyer les informations de l'utilisateur
       })
         .then((response) => {
-          response.text().then((message) => {
+          response.json().then((data) => {
             const isError = !response.ok;
             const errorMessage = isError
-              ? message || "Erreur lors de l'inscription."
-              : message || "Inscription réussie avec succès.";
+              ? data.message || "Erreur lors de l'inscription."
+              : data.message || "Inscription réussie avec succès.";
 
             setMessageReponse({
               erreur: isError,
               message: errorMessage,
             });
+
             if (!isError) {
+              // Stocker l'utilisateur dans sessionStorage
+              sessionStorage.setItem("user", JSON.stringify(data.user));
+
+              // Si l'inscription est réussie, afficher une notification de succès
+              notification.success({
+                message: "Inscription Réussie",
+                description: "Redirection dans 3 secondes...",
+                placement: "top",
+              });
+
               setDisable(true);
-            }
 
-            openMessageReponse();
-            setLoading(false);
-
-            // if (!isError) {
-            //   // En cas de succès, rediriger vers la page de connexion après 2 minutes
-            //   setTimeout(() => {
-            //     window.location.href = "/connexion";
-            //     // }, 5000);
-            //   }, 60000);
-            // }
-            if (!isError) {
-              setDisable(true);
-              openMessageReponse();
-              setLoading(false);
-
-              // Redirige vers la page de notification d'activation
+              // Redirige vers la page de notification d'activation après 3 secondes
               setTimeout(() => {
                 window.location.href = "/activation-message";
-              }, 3000); // 3 secondes avant la redirection
+              }, 3000); // Délai de 3 secondes
+            } else {
+              openMessageReponse();
             }
+
+            setLoading(false); // Arrêter le chargement
           });
         })
         .catch((error) => {
           setMessageReponse({
             erreur: true,
-            message: error.text || "Erreur inattendue lors de l'inscription.",
+            message: "Erreur inattendue lors de l'inscription.",
           });
           console.error("Erreur lors de la requête:", error);
           openMessageReponse();
-          setLoading(false);
+          setLoading(false); // Arrêter le chargement
         });
     } else {
-      openErrorNotification();
+      openErrorNotification(); // Notification d'erreur pour les mots de passe
     }
   };
 

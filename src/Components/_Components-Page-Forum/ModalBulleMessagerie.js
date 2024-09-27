@@ -50,7 +50,7 @@ const ModalBulleMessagerie = () => {
   useEffect(() => {
     const user = getUserInfo();
     setCurrentUser(user);
-    const jwt = sessionStorage.getItem("jwt");
+    const jwt = sessionStorage.getItem("access_token");
     setToken(jwt);
     fetchForum(jwt);
   }, []);
@@ -194,7 +194,8 @@ const ModalBulleMessagerie = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `${token}`,
+            // Authorization: `${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(newForum),
         })
@@ -244,13 +245,14 @@ const ModalBulleMessagerie = () => {
   };
 
   const handleDeleteOwnMessages = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer votre message ?")) {
       fetch(SERVER_URL + `/message/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `${token}`,
+          // Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((response) => {
@@ -295,7 +297,6 @@ const ModalBulleMessagerie = () => {
     }
   };
 
-
   const handleEditForum = (id, newData) => {
     // Vérifier si les champs ne sont pas vides
     if (!newData.probleme || !newData.description) {
@@ -309,13 +310,14 @@ const ModalBulleMessagerie = () => {
       return; // Ne pas poursuivre si les champs sont vides
     }
 
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + `/forum/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${token}`,
+        // Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newData),
     })
@@ -381,7 +383,8 @@ const ModalBulleMessagerie = () => {
     fetch(`${SERVER_URL}/forum`, {
       method: "GET",
       headers: {
-        Authorization: `${jwt}`,
+        // Authorization: `${jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
     })
       .then((response) => {

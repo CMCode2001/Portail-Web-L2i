@@ -72,7 +72,7 @@ const Licence32i = () => {
       })
       .then((data) => {
         data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
-        console.log('liste des etudiants \n' ,data)
+        console.log("liste des etudiants \n", data);
         setEtudiant(data);
       })
       .catch((error) => console.error("Error fetching forum:", error));
@@ -229,7 +229,12 @@ const Licence32i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);

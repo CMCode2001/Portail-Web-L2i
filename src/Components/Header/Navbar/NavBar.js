@@ -13,13 +13,48 @@ import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from "../../../Assets/img/hamburger-menu.png";
 import logoL2i from "../../../Assets/img/Logo-L2i.png";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    window.sessionStorage.clear();
-    window.location.href = "/";
+  // const handleLogout = () => {
+  //   window.sessionStorage.clear();
+  //   window.location.href = "/";
+  // };
+
+  const handleLogout = async () => {
+    try {
+      const jwt = sessionStorage.getItem("access_token");
+
+      if (!jwt) {
+        console.error("Aucun token trouvé pour déconnexion.");
+        return;
+      }
+
+      const response = await fetch(SERVER_URL + "/logout", {
+        method: "POST", // Utilisation de POST pour la déconnexion
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`, // Inclusion du token dans le header
+        },
+      });
+
+      // Si la requête échoue
+      if (!response.ok) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
+      }
+
+      // Si la requête réussit
+      console.log("Déconnexion réussie.");
+
+      // Nettoyer le stockage et rediriger l'utilisateur
+      sessionStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erreur lors de la requête de déconnexion:", error);
+    }
   };
 
   const getUserInfo = () => {
