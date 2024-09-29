@@ -27,6 +27,7 @@ import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 import UpdateAdmin from "./Professor/UpdateAdmin.js";
 import ScreenText from "./text/ScreenText.tsx";
 import UserSite from "./user/UserSite.tsx";
+import { SERVER_URL } from "../../../Utils/constantURL.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -42,9 +43,43 @@ const DashboardAdmin = () => {
     setSelectedCrud(key);
   };
 
-  const handleLogout = () => {
-    window.sessionStorage.clear();
-    window.location.href = "/";
+  // const handleLogout = () => {
+  //   window.sessionStorage.clear();
+  //   window.location.href = "/";
+  // };
+
+  const handleLogout = async () => {
+    try {
+      const jwt = sessionStorage.getItem("access_token");
+
+      if (!jwt) {
+        console.error("Aucun token trouvé pour déconnexion.");
+        return;
+      }
+
+      const response = await fetch(SERVER_URL + "/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      // Si la requête échoue
+      if (!response.ok) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
+      }
+
+      // Si la requête réussit
+      console.log("Déconnexion réussie.");
+
+      // Nettoyer le stockage et rediriger l'utilisateur
+      sessionStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erreur lors de la requête de déconnexion:", error);
+    }
   };
 
   const renderContent = () => {

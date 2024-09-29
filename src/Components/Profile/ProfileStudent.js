@@ -58,49 +58,19 @@ const ProfileStudent = () => {
     return null;
   };
 
-  // useEffect(() => {
-  //   const currentStudent = getUserInfo();
-
-  //   if (currentStudent) {
-  //     const fetchStudent = async () => {
-  //   const token = sessionStorage.getItem("jwt");
-  //       try {
-  //         const response = await fetch(
-  //           SERVER_URL + `/student/${currentStudent.id}`
-  //         );
-  //         const data = await response.json();
-  //         setStudent(data);
-
-  //         form.setFieldsValue({
-  //           firstName: data.firstName,
-  //           lastName: data.lastName,
-  //           email: data.email,
-  //           specialityStudent: data.specialityStudent,
-  //           classeroom_id: data.classeroom_id,
-  //           ine: data.ine,
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching data student:", error);
-  //       }
-  //     };
-
-  //     fetchStudent();
-  //   }
-  // }, [form]);
-
   useEffect(() => {
     const currentStudent = getUserInfo();
 
     if (currentStudent) {
       const fetchStudent = async () => {
-        const token = sessionStorage.getItem("jwt");
+        const token = sessionStorage.getItem("access_token");
         try {
           const response = await fetch(
             SERVER_URL + `/student/${currentStudent.id}`,
             {
               method: "GET",
               headers: {
-                Authorization: `${token}`,
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json", // Optionnel, mais utile si besoin de spécifier
               },
             }
@@ -139,40 +109,8 @@ const ProfileStudent = () => {
     }
   };
 
-  // const handleFormSubmit = async () => {
-  //   const token = sessionStorage.getItem("jwt");
-  //   try {
-  //     const body = changePassword
-  //       ? { ...student, ...passwords }
-  //       : { ...student };
-
-  //     const response = await fetch(`${SERVER_URL}/student/${student.id}`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(body),
-  //     });
-
-  //     if (response.ok) {
-  //       const updatedStudent = await response.json();
-  //       sessionStorage.setItem("student", JSON.stringify(updatedStudent));
-  //       openSuccessNotification();
-  //     } else {
-  //       const errorData = await response.json();
-  //       throw new Error(
-  //         errorData.message || "Erreur lors de la mise à jour des informations"
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur lors de la mise à jour des informations:", error);
-  //     openErrorNotification(error.message);
-  //   }
-  // };
-
   const handleFormSubmit = async () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     try {
       const body = changePassword
         ? { ...student, ...passwords }
@@ -182,7 +120,7 @@ const ProfileStudent = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       });
@@ -317,7 +255,7 @@ const ProfileStudent = () => {
             style={{ width: "70%" }}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           className="text-lg-center"
           name="specialityStudent"
           onChange={handleInputChange}
@@ -326,20 +264,32 @@ const ProfileStudent = () => {
           ]}
           style={{ marginBottom: 20 }}
         >
-          {/* <Input
-            placeholder="Spécialité"
-            name="specialityStudent"
-            value={student.specialityStudent}
-            style={{ width: "70%" }}
-          /> */}
           <Select
             name="specialityStudent"
             value={student.specialityStudent}
             style={{ width: "70%" }}
             options={choixOptions}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
+          className="text-lg-center"
+          name="specialityStudent"
+          rules={[
+            { required: true, message: "Veuillez entrer votre spécialité !" },
+          ]}
+          style={{ marginBottom: 20 }}
+        >
+          <Select
+            name="specialityStudent"
+            value={student.specialityStudent}
+            style={{ width: "70%" }}
+            options={choixOptions}
+            onChange={(value) =>
+              setStudent({ ...student, specialityStudent: value })
+            }
+          />
+        </Form.Item>
+        {/* <Form.Item
           className="text-lg-center"
           name="classeroom_id"
           onChange={handleInputChange}
@@ -353,6 +303,24 @@ const ProfileStudent = () => {
             value={student.classeroom_id}
             style={{ width: "70%" }}
             options={classroomOptions}
+          />
+        </Form.Item> */}
+        <Form.Item
+          className="text-lg-center"
+          name="classeroom_id"
+          rules={[
+            { required: true, message: "Veuillez entrer votre classe !" },
+          ]}
+          style={{ marginBottom: 20 }}
+        >
+          <Select
+            name="classeroom_id"
+            value={student.classeroom_id}
+            style={{ width: "70%" }}
+            options={classroomOptions}
+            onChange={(value) =>
+              setStudent({ ...student, classeroom_id: value })
+            }
           />
         </Form.Item>
         <Form.Item
@@ -377,18 +345,6 @@ const ProfileStudent = () => {
         >
           <Switch checked={changePassword} onChange={setChangePassword} />
         </Form.Item>
-        {/* <Form.Item
-          label="Voulez-vous changer votre mot de passe ?"
-          style={{ marginBottom: 20, textAlign: "center" }}
-          labelCol={{ span: 24 }} // Cela permet de centrer le label sur toute la largeur
-        >
-          <Switch
-            style={{ position: "center" }}
-            checked={changePassword}
-            onChange={setChangePassword}
-          />
-        </Form.Item> */}
-
         {changePassword && (
           <>
             <Form.Item

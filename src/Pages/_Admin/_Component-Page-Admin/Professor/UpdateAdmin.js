@@ -80,7 +80,7 @@ const UpdateAdmin = () => {
   };
 
   const handleFormSubmit = async () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     try {
       const response = await fetch(
         `${SERVER_URL}/adminl2Ikfdsjlkjmsd/${user.id}`,
@@ -88,7 +88,7 @@ const UpdateAdmin = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ ...user, ...passwords }),
         }

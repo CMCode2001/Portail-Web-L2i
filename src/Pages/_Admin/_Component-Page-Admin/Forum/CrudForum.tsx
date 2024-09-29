@@ -22,16 +22,57 @@ const CrudForum = () => {
       .catch((error) => console.error("Error fetching data forum:", error));
   };
 
+  // const fetchAuthorName = async (author_id) => {
+  //   try {
+  //     const studentResponse = await fetch(SERVER_URL + `/student/${author_id}`);
+  //     if (studentResponse.ok) {
+  //       const student = await studentResponse.json();
+  //       return student.firstName + " " + student.lastName;
+  //     } else {
+  //       const professorResponse = await fetch(
+  //         SERVER_URL + `/professor/admin/${author_id}`
+  //       );
+  //       if (professorResponse.ok) {
+  //         const professor = await professorResponse.json();
+  //         return professor.firstName + " " + professor.lastName;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching author name:", error);
+  //     return "Unknown Author";
+  //   }
+  // };
+
   const fetchAuthorName = async (author_id) => {
+    const token = sessionStorage.getItem("access_token");
+
     try {
-      const studentResponse = await fetch(SERVER_URL + `/student/${author_id}`);
+      const studentResponse = await fetch(
+        SERVER_URL + `/student/admin/${author_id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (studentResponse.ok) {
         const student = await studentResponse.json();
         return student.firstName + " " + student.lastName;
       } else {
         const professorResponse = await fetch(
-          SERVER_URL + `/professor/${author_id}`
+          SERVER_URL + `/professor/admin/${author_id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
+
         if (professorResponse.ok) {
           const professor = await professorResponse.json();
           return professor.firstName + " " + professor.lastName;
@@ -48,7 +89,7 @@ const CrudForum = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce forum?")) {
       fetch(SERVER_URL + `/forum/${id}`, {
@@ -69,9 +110,9 @@ const CrudForum = () => {
   };
 
   const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
-    fetch(SERVER_URL + `/forum/${id}`, {
+    fetch(SERVER_URL + `/forum/admin/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

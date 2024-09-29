@@ -8,11 +8,11 @@ const UserSite = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchUser = () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     fetch(SERVER_URL + "/student", {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
@@ -30,7 +30,7 @@ const UserSite = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce user?")) {
       fetch(SERVER_URL + `/student/${id}`, {
