@@ -40,7 +40,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && tailwindcss -o src/output.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -64,6 +63,9 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "css-loader": "^7.1.2",
+    "file-loader": "^6.2.0",
+    "style-loader": "^4.0.0",
     "typescript": "^5.5.3"
   }
 }

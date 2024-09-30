@@ -14,8 +14,8 @@
   .scroll-top-btn {
     width: 3rem !important;
     height: 3rem !important;
-    background-color: var(--bgColor1);
-    border-color: var(--bgColor1);
+    background-color: var(--bgColor1) !important;
+    border-color: var(--bgColor1) !important;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out; /* Transition douce pour les hover */
