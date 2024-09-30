@@ -18,12 +18,12 @@ const CrudProfesseur = () => {
   // };
 
   const fetchProfessors = () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + "/professor", {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
@@ -36,7 +36,7 @@ const CrudProfesseur = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce professeur?")) {
       fetch(SERVER_URL + `/professor/${id}`, {
@@ -57,7 +57,7 @@ const CrudProfesseur = () => {
   };
 
   const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + `/professor/${id}`, {
       method: "PATCH",
@@ -80,9 +80,9 @@ const CrudProfesseur = () => {
   };
 
   const handleAdd = (newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
-    fetch(SERVER_URL + "/professor", {
+    fetch(SERVER_URL + "/register/professor", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -202,12 +202,13 @@ const CrudProfesseur = () => {
       key: "action",
       render: (_, record) => (
         <span>
-          <Button
+          {/* Commenter le bouton Edit */}
+          {/* <Button
             style={{ backgroundColor: "blue", color: "white" }}
             onClick={() => showEditModal(record)}
           >
             Edit
-          </Button>
+          </Button> */}
           <Button
             style={{ backgroundColor: "red", color: "white" }}
             onClick={() => handleDelete(record.id)}

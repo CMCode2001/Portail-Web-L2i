@@ -33,10 +33,10 @@ const Navbar = () => {
       }
 
       const response = await fetch(SERVER_URL + "/logout", {
-        method: "POST", // Utilisation de POST pour la déconnexion
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`, // Inclusion du token dans le header
+          Authorization: `Bearer ${jwt}`,
         },
       });
 
@@ -207,7 +207,9 @@ const Navbar = () => {
                             icon={<AppstoreOutlined />}
                             key="dashboard"
                           >
-                            <NavLink to="/professeur">Dashboard</NavLink>
+                            <NavLink to="/professeurlkmsdqkjdslk">
+                              Dashboard
+                            </NavLink>
                           </Menu.Item>
                         )}
                         {currentUser?.role === "admin" && (

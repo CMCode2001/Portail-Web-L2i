@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
   Card,
   CardContent,
+  CardMedia,
   CardActions,
   Typography,
   TextField,
@@ -14,42 +15,82 @@ import {
   Pagination,
   Divider,
   InputAdornment,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Search as SearchIcon,
   PictureAsPdf as PdfIcon,
   FilterList as FilterIcon,
   Info as InfoIcon,
-} from '@mui/icons-material';
-import { SERVER_URL } from '../../Utils/constantURL';
+} from "@mui/icons-material";
+import { SERVER_URL } from "../../Utils/constantURL";
 
 const CoursL2i = () => {
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('');
-  const [selectedProfessor, setSelectedProfessor] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedProfessor, setSelectedProfessor] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [page, setPage] = useState(1);
   const [filtersVisible, setFiltersVisible] = useState(true); // State for showing/hiding filters
   const coursesPerPage = 6;
 
-  const fetchCourse = () => {
-    fetch(`${SERVER_URL}/course`, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCours(data);
-        console.log(data)
-        setFilteredCours(data);
-      })
-      .catch((error) => console.error('Error fetching courses:', error));
-  };
+  // const fetchCourse = () => {
+  //   fetch(`${SERVER_URL}/document`, {
+  //     method: 'GET',
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setCours(data);
+  //       console.log(data)
+  //       setFilteredCours(data);
+  //     })
+  //     .catch((error) => console.error('Error fetching courses:', error));
+  // };
 
   useEffect(() => {
     fetchCourse();
   }, []);
+
+  const fetchCourse = () => {
+    fetch(`${SERVER_URL}/document`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCours(data);
+        console.log(data);
+        setFilteredCours(data);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des cours:", error)
+      );
+  };
+
+  const filterCours = (searchTerm, level, professor, date) => {
+    let filtered = cours;
+
+    if (searchTerm) {
+      filtered = filtered.filter((c) =>
+        c.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    if (level) {
+      filtered = filtered.filter((c) => c.classeroomName === level);
+    }
+    if (professor) {
+      filtered = filtered.filter((c) =>
+        c.professorName.toLowerCase().includes(professor.toLowerCase())
+      );
+    }
+    if (date) {
+      filtered = filtered.filter((c) => {
+        const courseDate = new Date(c.creatAt).toISOString().split("T")[0];
+        return courseDate === date;
+      });
+    }
+    setFilteredCours(filtered);
+  };
 
   const handleSearch = (e) => {
     const term = e.target.value;
@@ -64,34 +105,48 @@ const CoursL2i = () => {
     filterCours(searchTerm, level, professor, date);
   };
 
-  const filterCours = (searchTerm, level, professor, date) => {
-    let filtered = cours;
+  // const filterCours = (searchTerm, level, professor, date) => {
+  //   let filtered = cours;
 
-    if (searchTerm) {
-      filtered = filtered.filter((c) =>
-        c.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (level) {
-      filtered = filtered.filter((c) => c.classeroom.name === level);
-    }
-    if (professor) {
-      filtered = filtered.filter((c) =>
-        c.createdBy.toLowerCase().includes(professor.toLowerCase())
-      );
-    }
-    if (date) {
+  // if (searchTerm) {
+  //   filtered = filtered.filter((c) =>
+  //     c.title.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  // }
+  // if (level) {
+  //   filtered = filtered.filter((c) => c.classeroom.name === level);
+  // }
+  // if (professor) {
+  //   filtered = filtered.filter((c) =>
+  //     (c.classeroom.professors[0].firstName+" "+c.classeroom.professors[0].firstName).toLowerCase().includes(professor.toLowerCase())
+  //   );
+  // }
+  // if (date) {
+  //   if (searchTerm) {
+  //     filtered = filtered.filter((c) =>
+  //       c.title.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   }
+  //   if (level) {
+  //     filtered = filtered.filter((c) => c.classeroom.name === level);
+  //   }
+  //   if (professor) {
+  //     filtered = filtered.filter((c) =>
+  //       c.createdBy.toLowerCase().includes(professor.toLowerCase())
+  //     );
+  //   }
+  //   if (date) {
 
-      filtered = filtered.filter((c) => {
-        console.log(c.classeroom.creatAt);
-        const courseDate = new Date(c.classeroom.creatAt).toISOString().split('T')[0];
-        console.log(courseDate +" === "+ date)
-        // const filterDate = new Date(date).toISOString().split('T')[0];
-        return courseDate === date;
-      });
-    }
-    setFilteredCours(filtered);
-  };
+  //     filtered = filtered.filter((c) => {
+  //       console.log(c.classeroom.creatAt);
+  //       const courseDate = new Date(c.classeroom.creatAt).toISOString().split('T')[0];
+  //       console.log(courseDate +" === "+ date)
+  //       // const filterDate = new Date(date).toISOString().split('T')[0];
+  //       return courseDate === date;
+  //     });
+  //   }
+  //   setFilteredCours(filtered);
+  // };
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -103,19 +158,22 @@ const CoursL2i = () => {
 
   const indexOfLastCourse = page * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = filteredCours.slice(indexOfFirstCourse, indexOfLastCourse);
+  // const currentCourses = filteredCours.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const currentCourses = filteredCours.slice(
+    indexOfFirstCourse,
+    indexOfLastCourse
+  );
 
   return (
     <Container>
-      <Box 
-        textAlign="center" 
+      <Box
+        textAlign="center"
         my={4}
-        fontWeight="bold" 
-        borderRadius={50} 
+        fontWeight="bold"
+        borderRadius={50}
         color="#6B2239"
-        
-        >
-        
+      >
         {/* Title and Description */}
         <Typography variant="h4" gutterBottom>
           Catalogue des Cours
@@ -124,12 +182,14 @@ const CoursL2i = () => {
           Explorez et téléchargez vos cours en toute simplicite !
         </Typography>
       </Box>
-      <Box mb={4} sx={{ position: 'relative', textAlign: 'center'}}>
-        <Divider 
+      <Box mb={4} sx={{ position: "relative", textAlign: "center" }}>
+        <Divider
           sx={{
-            marginBottom: '24px', // Add margin-bottom
+            marginBottom: "24px", // Add margin-bottom
           }}
-        >===========================</Divider>
+        >
+          ===========================
+        </Divider>
       </Box>
       {/* Search Bar (Moved Outside Filters) */}
       <Box mb={4}>
@@ -146,17 +206,17 @@ const CoursL2i = () => {
               </InputAdornment>
             ),
             sx: {
-              borderRadius: '50px', // Border radius for the input
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '50px', // Border radius for the input field
-                '& fieldset': {
-                  borderColor: '#085867', // Border color
+              borderRadius: "50px", // Border radius for the input
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "50px", // Border radius for the input field
+                "& fieldset": {
+                  borderColor: "#085867", // Border color
                 },
-                '&:hover fieldset': {
-                  borderColor: '#13798C', // Border color on hover
+                "&:hover fieldset": {
+                  borderColor: "#13798C", // Border color on hover
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#13798C', // Border color when focused
+                "&.Mui-focused fieldset": {
+                  borderColor: "#13798C", // Border color when focused
                 },
               },
             },
@@ -172,22 +232,28 @@ const CoursL2i = () => {
           startIcon={<FilterIcon />}
           onClick={toggleFilters}
           sx={{
-            borderRadius: '50px', // Border radius for the button
-            borderColor: '#085867', // Border color
-            color: '#085867', // Text color
-            '&:hover': {
-              borderColor: '#13798C', // Border color on hover
-              color: '#13798C', // Text color on hover
+            borderRadius: "50px", // Border radius for the button
+            borderColor: "#085867", // Border color
+            color: "#085867", // Text color
+            "&:hover": {
+              borderColor: "#13798C", // Border color on hover
+              color: "#13798C", // Text color on hover
             },
           }}
         >
-          {filtersVisible ? 'Cacher les filtres' : 'Afficher les filtres'}
+          {filtersVisible ? "Cacher les filtres" : "Afficher les filtres"}
         </Button>
       </Box>
 
       {/* Filters (collapsible) */}
       <Collapse in={filtersVisible}>
-        <Grid container spacing={2} alignItems="center" justifyContent="center" mb={4}>
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+          mb={4}
+        >
           <Grid item xs={12} md={3}>
             <TextField
               fullWidth
@@ -195,12 +261,14 @@ const CoursL2i = () => {
               label="Niveau"
               variant="outlined"
               value={selectedLevel}
-              onChange={(e) => handleFilter(e.target.value, selectedProfessor, selectedDate)}
+              onChange={(e) =>
+                handleFilter(e.target.value, selectedProfessor, selectedDate)
+              }
             >
               <MenuItem value="">Tous les niveaux</MenuItem>
-              <MenuItem value="L1">L1</MenuItem>
-              <MenuItem value="L2">L2</MenuItem>
-              <MenuItem value="L3">L3</MenuItem>
+              <MenuItem value="LICENCE1">L1</MenuItem>
+              <MenuItem value="LICENCE2">L2</MenuItem>
+              <MenuItem value="LICENCE3">L3</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} md={3}>
@@ -209,7 +277,9 @@ const CoursL2i = () => {
               label="Professeur"
               variant="outlined"
               value={selectedProfessor}
-              onChange={(e) => handleFilter(selectedLevel, e.target.value, selectedDate)}
+              onChange={(e) =>
+                handleFilter(selectedLevel, e.target.value, selectedDate)
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -226,7 +296,9 @@ const CoursL2i = () => {
               label="Date"
               variant="outlined"
               value={selectedDate}
-              onChange={(e) => handleFilter(selectedLevel, selectedProfessor, e.target.value)}
+              onChange={(e) =>
+                handleFilter(selectedLevel, selectedProfessor, e.target.value)
+              }
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -237,24 +309,30 @@ const CoursL2i = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleFilter('', '', '')}
+            onClick={() => handleFilter("", "", "")}
             startIcon={<FilterIcon />}
             sx={{
-              borderRadius: '50px', // Border radius for the button
-              borderColor: '#085867', // Border color
-              color: '#333', // Text color
-              '&:hover': {
-                borderColor: '#13798C', // Border color on hover
-                color: '#13798C', // Text color on hover
+              borderRadius: "50px", // Border radius for the button
+              borderColor: "#085867", // Border color
+              color: "#333", // Text color
+              "&:hover": {
+                borderColor: "#13798C", // Border color on hover
+                color: "#13798C", // Text color on hover
               },
             }}
           >
-            Réinitialiser les filtres
+            Réinitialiser
           </Button>
         </Box>
       </Collapse>
 
-      <Divider />
+      <Divider
+        component="div"
+        role="presentation"
+        sx={{
+          border: "solid 2px ",
+        }}
+      ></Divider>
 
       {/* Courses Display */}
       {filteredCours.length === 0 ? (
@@ -265,39 +343,78 @@ const CoursL2i = () => {
           <InfoIcon fontSize="large" color="action" />
         </Box>
       ) : (
+        // <Grid container spacing={4} mt={4}>
+        //   {currentCourses.map((course) => (
+        //     <Grid item xs={12} sm={6} md={4} key={course.id}>
+        //       <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        //         <CardContent>
+        //           <Typography variant="h6" gutterBottom>
+        //             {course.title}
+        //           </Typography>
+        //           <Typography color="textSecondary">
+        //             {course.createdBy}
+        //           </Typography>
+        //           <Typography variant="body2">
+        //             Niveau : {course.classeroom.name}
+        //             <br />
+        //             Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
+        //           </Typography>
+        //         </CardContent>
+        //         <CardActions>
+        //           <Button
+        //             variant="contained"
+        //             color="primary"
+        //             href={`${SERVER_URL}/course/${course.id}/pdf`}
+        //             startIcon={<PdfIcon />}
+        //             fullWidth
+        //             sx={{
+        //               borderRadius: '50px', // Border radius for the button
+        //               borderColor: '#085867', // Border color
+        //               color: '#085867', // Text color
+        //               '&:hover': {
+        //                 borderColor: '#13798C', // Border color on hover
+        //                 color: '#13798C', // Text color on hover
+        //               },
+        //             }}
+        //           >
+        //             Télécharger
+        //           </Button>
+        //         </CardActions>
+        //       </Card>
+        //     </Grid>
+        //   ))}
+        // </Grid>
         <Grid container spacing={4} mt={4}>
           {currentCourses.map((course) => (
             <Grid item xs={12} sm={6} md={4} key={course.id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    {course.title}
+                    {course.description}
                   </Typography>
                   <Typography color="textSecondary">
-                    {course.createdBy}
+                    {course.professorName}
                   </Typography>
                   <Typography variant="body2">
-                    Niveau : {course.classeroom.name}
+                    Niveau : {course.classeroomName}
                     <br />
-                    Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
+                    Date d'upload :{" "}
+                    {new Date(course.creatAt).toLocaleDateString()}
                   </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
                     variant="contained"
                     color="primary"
-                    href={`${SERVER_URL}/course/${course.id}/pdf`}
+                    href={`${SERVER_URL}/cours/${course.url}`}
                     startIcon={<PdfIcon />}
                     fullWidth
-                    sx={{
-                      borderRadius: '50px', // Border radius for the button
-                      borderColor: '#085867', // Border color
-                      color: '#085867', // Text color
-                      '&:hover': {
-                        borderColor: '#13798C', // Border color on hover
-                        color: '#13798C', // Text color on hover
-                      },
-                    }}
                   >
                     Télécharger
                   </Button>

@@ -4,13 +4,14 @@ import {
   HomeFilled,
   LogoutOutlined,
   ReadOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import logoL2i from "../../Assets/img/Logo-L2i.png";
 import "../../Styles/SidebarProf2.css";
+import { SERVER_URL } from "../../Utils/constantURL";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -21,9 +22,38 @@ const SidebarProf2 = () => {
   } = theme.useToken();
 
   // Fonction pour gérer la déconnexion
-  const handleLogout = () => {
-    window.sessionStorage.clear();
-    window.location.href = "/";
+  const handleLogout = async () => {
+    try {
+      const jwt = sessionStorage.getItem("access_token");
+
+      if (!jwt) {
+        console.error("Aucun token trouvé pour déconnexion.");
+        return;
+      }
+
+      const response = await fetch(SERVER_URL + "/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      // Si la requête échoue
+      if (!response.ok) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
+      }
+
+      // Si la requête réussit
+      console.log("Déconnexion réussie.");
+
+      // Nettoyer le stockage et rediriger l'utilisateur
+      sessionStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erreur lors de la requête de déconnexion:", error);
+    }
   };
 
   // Fonction pour récupérer et utiliser les informations de l'utilisateur
@@ -67,7 +97,7 @@ const SidebarProf2 = () => {
           alignItems: "center",
         }}
       >
-        <Link to="/professeur">
+        <Link to="/">
           <img
             src={logoL2i}
             alt="LogoL2i"
@@ -79,7 +109,10 @@ const SidebarProf2 = () => {
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
           <Menu.Item icon={<HomeFilled />}>
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link
+              to="/professeurlkmsdqkjdslk"
+              style={{ textDecoration: "none" }}
+            >
               Accueil
             </Link>
           </Menu.Item>
@@ -107,12 +140,13 @@ const SidebarProf2 = () => {
             </Link>
           </Menu.Item>
           {/* <SubMenu key="sub2" icon={<UserOutlined />} title=`Pr ${currentUser?.firstName}${" "} ${currentUser?.name}` > */}
-          <SubMenu 
-            key="sub2" 
-            icon={<UserOutlined />} 
-            title={`${currentUser?.firstName?.charAt(0)}.${currentUser.lastName}`} 
+          <SubMenu
+            key="sub2"
+            icon={<UserOutlined />}
+            title={`${currentUser?.firstName?.charAt(0)}.${
+              currentUser.lastName
+            }`}
           >
-
             <Menu.Item key="5">
               <Link to="update-prof" style={{ textDecoration: "none" }}>
                 <EditOutlined /> &nbsp; Modifier
@@ -153,7 +187,7 @@ const SidebarProf2 = () => {
           <div
             style={{
               padding: 24,
-              minHeight: '100vh',
+              minHeight: "100vh",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

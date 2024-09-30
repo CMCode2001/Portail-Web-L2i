@@ -9,11 +9,11 @@ const OldStudent = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const fetchOldStudent = () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     fetch(SERVER_URL + "/curentListStudent/niveau/ancien", {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())

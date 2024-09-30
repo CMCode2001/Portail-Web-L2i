@@ -9,11 +9,11 @@ const ScreenText = () => {
   const [form] = Form.useForm();
 
   const fetchText = () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     fetch(SERVER_URL + "/text", {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -29,7 +29,7 @@ const ScreenText = () => {
   }, []);
 
   const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + `/text/1`, {
       method: "PATCH",

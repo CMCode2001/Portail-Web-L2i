@@ -12,11 +12,11 @@ const CrudMessageForum = () => {
   // Fetch all forums and create a map of forum_id to probleme
   const fetchForums = async () => {
     try {
-      const token = sessionStorage.getItem("jwt");
+      const token = sessionStorage.getItem("access_token");
       const response = await fetch(`${SERVER_URL}/forum`, {
         method: "GET",
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -31,24 +31,34 @@ const CrudMessageForum = () => {
     }
   };
 
-  // Fetch all messages and enrich them with the forum name
+  // Récupérer tous les messages et les enrichir avec le nom du forum
   const fetchMessages = async () => {
+    const token = sessionStorage.getItem("access_token");
+
     try {
-      const response = await fetch(`${SERVER_URL}/message`);
+      const response = await fetch(`${SERVER_URL}/message`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
       const messageData = await response.json();
 
-      // Enrich each message with its corresponding forum name
+      // Enrichir chaque message avec son nom de forum correspondant
       const enrichedMessages = messageData.map((message) => ({
         ...message,
         forumName: forums[message.forum_id] || "Forum inconnu",
       }));
 
-      // Sort messages by forum name
+      // Trier les messages par nom de forum
       enrichedMessages.sort((a, b) => a.forumName.localeCompare(b.forumName));
 
+      // Inverser l'ordre des messages pour afficher les plus récents en premier
       setMessages(enrichedMessages.reverse());
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error("Erreur lors de la récupération des messages :", error);
     }
   };
 
@@ -65,10 +75,10 @@ const CrudMessageForum = () => {
 
   // Handle deletion of a message
   const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce message?")) {
-      fetch(`${SERVER_URL}/message/${id}`, {
+      fetch(`${SERVER_URL}/message/admin/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -89,9 +99,9 @@ const CrudMessageForum = () => {
 
   // Handle editing of a message
   const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
-    fetch(`${SERVER_URL}/message/${id}`, {
+    fetch(`${SERVER_URL}/message/admin/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

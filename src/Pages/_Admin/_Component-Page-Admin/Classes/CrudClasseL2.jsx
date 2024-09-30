@@ -12,11 +12,11 @@ const CrudClasseL2 = () => {
   const [addForm] = Form.useForm();
 
   const fetchClasseL1 = () => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
     fetch(SERVER_URL + "/curentListStudent/niveau/licence2", {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
@@ -41,7 +41,7 @@ const CrudClasseL2 = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
       fetch(SERVER_URL + `/curentListStudent/${id}`, {
@@ -62,7 +62,7 @@ const CrudClasseL2 = () => {
   };
 
   const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + `/curentListStudent/${id}`, {
       method: "PATCH",
@@ -85,7 +85,7 @@ const CrudClasseL2 = () => {
   };
 
   const handleAdd = (newData) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = sessionStorage.getItem("access_token");
 
     fetch(SERVER_URL + "/curentListStudent", {
       method: "POST",
