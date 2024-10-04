@@ -13,12 +13,7 @@ const Connexion = () => {
   const [password, setPassword] = useState("");
   const [messageReponse, setMessageReponse] = useState("");
   const [isAuthenticated, setAuth] = useState(false);
-  // const [token, setToken] = useState()
-  // const [erreurMsg, setErreurMsg] = useState("");
   const navigate = useNavigate(); // Hook pour rediriger après login réussi
-  // const jwt = sessionStorage.getItem("access_token");
-  // setToken(jwt);
-  // Redirection après login si l'utilisateur est authentifié
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/"); // Redirection vers la page d'accueil
@@ -49,7 +44,7 @@ const Connexion = () => {
       // Si la requête échoue
       if (!response.ok) {
         const errorData = await response.text();
-        console.log(response)
+        console.log(response);
         setMessageReponse(errorData || "Erreur lors de la connexion");
         openErreurNotification(messageReponse);
         return;

@@ -52,7 +52,7 @@ const ModalBulleMessagerie = () => {
     setCurrentUser(user);
     const jwt = sessionStorage.getItem("access_token");
     setToken(jwt);
-    fetchForum(jwt);
+    fetchForum();
   }, []);
 
   const showModal = () => {
@@ -316,7 +316,6 @@ const ModalBulleMessagerie = () => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `${token}`,
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newData),
@@ -379,12 +378,11 @@ const ModalBulleMessagerie = () => {
     setSelectedForum(null);
   };
 
-  const fetchForum = (jwt) => {
+  const fetchForum = () => {
     fetch(`${SERVER_URL}/forum`, {
       method: "GET",
       headers: {
-        // Authorization: `${jwt}`,
-        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
       },
     })
       .then((response) => {
