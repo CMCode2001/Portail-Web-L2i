@@ -4,14 +4,19 @@ import React, { useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
 import "../../Styles/LiveChat.css";
 import { SERVER_URL } from "../../Utils/constantURL";
+import { useAuth } from "../../Utils/AuthContext";
 
 const LiveChat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [connected, setConnected] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
   const client = useRef(null);
   const messageEndRef = useRef(null);
+  const { authData } = useAuth();
+
+  const currentUser = authData.user;
+  const isLoggedIn = authData.isLoggedIn;
 
   // useEffect(() => {
   //   const socketUrl = SERVER_URL + "/ws";
@@ -189,29 +194,29 @@ const LiveChat = () => {
     };
   }, [currentUser]);
 
-  useEffect(() => {
-    const getUserInfo = () => {
-      const userJson = sessionStorage.getItem("user");
+  // useEffect(() => {
+  //   const getUserInfo = () => {
+  //     const userJson = sessionStorage.getItem("user");
 
-      if (userJson) {
-        try {
-          const user = JSON.parse(userJson);
-          return user;
-        } catch (error) {
-          console.error(
-            "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-            error
-          );
-        }
-      } else {
-        console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      }
-      return null;
-    };
+  //     if (userJson) {
+  //       try {
+  //         const user = JSON.parse(userJson);
+  //         return user;
+  //       } catch (error) {
+  //         console.error(
+  //           "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //           error
+  //         );
+  //       }
+  //     } else {
+  //       console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //     }
+  //     return null;
+  //   };
 
-    const user = getUserInfo();
-    setCurrentUser(user);
-  }, []);
+  //   const user = getUserInfo();
+  //   setCurrentUser(user);
+  // }, []);
 
   useEffect(() => {
     // Scroll to bottom whenever messages change
@@ -295,7 +300,7 @@ const LiveChat = () => {
     }
   };
 
-  return sessionStorage.getItem("isLoggedIn") ? (
+  return isLoggedIn ? (
     <div className="live-chat">
       <div className="chat-header">Live Chat</div>
       <div className="chat-box">
