@@ -263,9 +263,7 @@ const SidebarProf2 = () => {
                           Professeur: {course.professorName}
                         </p>
                         <iframe
-                          src={`${SERVER_URL}/document/${encodeURIComponent(
-                            course.url
-                          )}`}
+                          src={`${SERVER_URL}/cours/${course.url}`}
                           style={{
                             width: "100%",
                             height: "300px",
