@@ -1,29 +1,30 @@
 import React from "react";
 import DashboardAdmin from "./_Component-Page-Admin/DashboardAdmin";
+import { useAuth } from "../../Utils/AuthContext";
 
 export default function PageAdmin() {
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
+  // const getUserInfo = () => {
+  //   const userJson = sessionStorage.getItem("user");
 
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-  };
+  //   if (userJson) {
+  //     try {
+  //       const user = JSON.parse(userJson);
+  //       return user;
+  //     } catch (error) {
+  //       console.error(
+  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //         error
+  //       );
+  //     }
+  //   } else {
+  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //   }
+  // };
 
-  const currentUser = getUserInfo();
+  const { authData } = useAuth();
+  const currentUser = authData?.user;
 
-  return sessionStorage.getItem("isLoggedIn") &&
-    currentUser?.role === "admin" ? (
+  return authData?.isLoggedIn && currentUser?.role === "admin" ? (
     <div>
       <div id="bgRedProf">
         <h1 style={{ textAlign: "center", color: "white" }}>

@@ -1,136 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Form, Input, message, Spin } from 'antd';
-import PasswordIcon from '@mui/icons-material/Password';
-import '../Styles/ResetMotDePasse.css';
-import { SERVER_URL } from '../Utils/constantURL';  
-import Topbar from './Header/Navbar/Topbar';
-import Middlebar from './Header/Navbar/Middlebar';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { notification } from "antd";
+import "../Styles/ResetMotDePasse.css";
+import { SERVER_URL } from "../Utils/constantURL";
 
-export default function ResetMotDePasse() {
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false); // État pour l'indicateur de chargement
-  const location = useLocation(); 
+const ResetMotDePasse = () => {
   const navigate = useNavigate();
+  const [resetCode, setResetCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Fonction pour extraire le token de l'URL
-  useEffect(() => {
-    const pathSegments = location.pathname.split('/');
-    const tokenFromUrl = pathSegments[pathSegments.length - 1];
-    console.log("Token récupéré :", tokenFromUrl);
-    setToken(tokenFromUrl);
-  }, [location]);
-
-  const onFinish = async () => {
-    if (!token) {
-      message.error("Token de réinitialisation introuvable !");
+  const handleResetPassword = async () => {
+    if (!resetCode || !newPassword || !confirmPassword) {
+      notification.error({
+        message: "Erreur",
+        description: "Tous les champs sont obligatoires.",
+      });
       return;
     }
 
-    setLoading(true); // Activer l'indicateur de chargement
-
-    try {
-      const response = await 
-      fetch(`${SERVER_URL}/password-reset/reset?token=${token}&newPassword=${password}`, 
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    if (newPassword !== confirmPassword) {
+      notification.error({
+        message: "Erreur de confirmation",
+        description: "Les mots de passe ne correspondent pas.",
       });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${SERVER_URL}/password-reset/reset?resetCode=${resetCode}&newPassword=${newPassword}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resetCode,
+            newPassword,
+          }),
+        }
+      );
 
       const result = await response.text();
-      if (response.ok) {
-        message.success("Mot de passe réinitialisé avec succès !");
-        
-        setTimeout(() => {
-          navigate('/connexion');
-        }, 2000);
-      } else {
-        message.error(result);
+
+      if (response.status !== 200) {
+        throw new Error(result || "Erreur de réinitialisation.");
       }
+
+      notification.success({
+        message: "Succès",
+        description: "Votre mot de passe a été réinitialisé avec succès.",
+      });
+      navigate("/connexion");
     } catch (error) {
-      message.error("Une erreur est survenue lors de la réinitialisation du mot de passe.");
+      notification.error({
+        message: "Erreur",
+        description:
+          error.message ||
+          "Une erreur s'est produite lors de la réinitialisation.",
+      });
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <Topbar />
-      <Middlebar />
-      <div className="container text-center mt-4">
-        <Button id="mdpoublie">
-          CHANGEMENT MOT DE PASSE
-        </Button>
-        <div id="loginPageReset">
-          <div id="loginBoxReset">
-            <Form onFinish={onFinish}>
-              <Form.Item
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer votre mot de passe !",
-                  },
-                ]}
-              >
-                <Input.Password placeholder="Nouveau Mot de passe" id="MonInput2" />
-              </Form.Item>
+    <div className="reset-password">
+      <h1>Réinitialiser le mot de passe</h1>
+      <p>
+        Veuillez entrer le code de réinitialisation reçu par email, puis choisir
+        un nouveau mot de passe.
+      </p>
 
-              <Form.Item
-                name="confirm"
-                dependencies={["password"]}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez confirmer votre mot de passe !",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(new Error("Les mots de passe ne sont pas identiques !"));
-                    },
-                  }),
-                ]}
-              >
-                <Input.Password placeholder="Confirmer Mot de passe" id="MonInput2" />
-              </Form.Item>
-              <br />
+      <input
+        type="text"
+        placeholder="Code de réinitialisation"
+        value={resetCode}
+        onChange={(e) => setResetCode(e.target.value)}
+        className="inputField"
+      />
+      <input
+        type="password"
+        placeholder="Nouveau mot de passe"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+        className="inputField"
+      />
+      <input
+        type="password"
+        placeholder="Confirmer le mot de passe"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        className="inputField"
+      />
 
-              <Form.Item style={{ margin: 'auto' }}>
-              <Spin spinning={loading}>
-                {loading ? (
-                  <div>
-                    <h1>
-                      <p>Réinitialisation en cours...</p>
-                    </h1>
-                  </div>
-                ) : (
-                <Button 
-                  type="primary" 
-                  htmlType="submit" 
-                  className="BtnvalidateReset" 
-                
-                >
-                  Réinitialiser Mot de Passe
-                  <PasswordIcon />
-                </Button>
-                )}
-                </Spin>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      </div>
-    </>
+      <button
+        className="buttonValider"
+        onClick={handleResetPassword}
+        disabled={loading || !resetCode || !newPassword || !confirmPassword}
+      >
+        {loading
+          ? "Réinitialisation en cours..."
+          : "Réinitialiser le mot de passe"}
+      </button>
+      <br />
+      <br />
+      <p>
+        Je ne dispose pas de compte ?{" "}
+        <Link to="/inscription" id="OuvrirCompte">
+          Ouvrir un compte
+        </Link>
+      </p>
+    </div>
   );
-}
+};
+
+export default ResetMotDePasse;

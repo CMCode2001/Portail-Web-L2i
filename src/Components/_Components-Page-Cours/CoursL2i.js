@@ -4,7 +4,6 @@ import {
   Grid,
   Card,
   CardContent,
-  CardMedia,
   CardActions,
   Typography,
   TextField,
@@ -35,32 +34,37 @@ const CoursL2i = () => {
   const [filtersVisible, setFiltersVisible] = useState(true); // State for showing/hiding filters
   const coursesPerPage = 6;
 
-  // const fetchCourse = () => {
-  //   fetch(`${SERVER_URL}/document`, {
-  //     method: 'GET',
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCours(data);
-  //       console.log(data)
-  //       setFilteredCours(data);
-  //     })
-  //     .catch((error) => console.error('Error fetching courses:', error));
-  // };
-
   useEffect(() => {
     fetchCourse();
   }, []);
 
+  // const fetchCourse = () => {
+  //   fetch(`${SERVER_URL}/document`, {
+  //     method: "GET",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setCours(data);
+  //       console.log(data);
+  //       setFilteredCours(data);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Erreur lors de la récupération des cours:", error)
+  //     );
+  // };
   const fetchCourse = () => {
     fetch(`${SERVER_URL}/document`, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
-        setCours(data);
-        console.log(data);
-        setFilteredCours(data);
+        // Trier les cours par date décroissante
+        const sortedData = data.sort(
+          (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
+        );
+        setCours(sortedData);
+        console.log(sortedData);
+        setFilteredCours(sortedData);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des cours:", error)
@@ -104,49 +108,6 @@ const CoursL2i = () => {
     setSelectedDate(date);
     filterCours(searchTerm, level, professor, date);
   };
-
-  // const filterCours = (searchTerm, level, professor, date) => {
-  //   let filtered = cours;
-
-  // if (searchTerm) {
-  //   filtered = filtered.filter((c) =>
-  //     c.title.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-  // }
-  // if (level) {
-  //   filtered = filtered.filter((c) => c.classeroom.name === level);
-  // }
-  // if (professor) {
-  //   filtered = filtered.filter((c) =>
-  //     (c.classeroom.professors[0].firstName+" "+c.classeroom.professors[0].firstName).toLowerCase().includes(professor.toLowerCase())
-  //   );
-  // }
-  // if (date) {
-  //   if (searchTerm) {
-  //     filtered = filtered.filter((c) =>
-  //       c.title.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
-  //   }
-  //   if (level) {
-  //     filtered = filtered.filter((c) => c.classeroom.name === level);
-  //   }
-  //   if (professor) {
-  //     filtered = filtered.filter((c) =>
-  //       c.createdBy.toLowerCase().includes(professor.toLowerCase())
-  //     );
-  //   }
-  //   if (date) {
-
-  //     filtered = filtered.filter((c) => {
-  //       console.log(c.classeroom.creatAt);
-  //       const courseDate = new Date(c.classeroom.creatAt).toISOString().split('T')[0];
-  //       console.log(courseDate +" === "+ date)
-  //       // const filterDate = new Date(date).toISOString().split('T')[0];
-  //       return courseDate === date;
-  //     });
-  //   }
-  //   setFilteredCours(filtered);
-  // };
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -343,47 +304,6 @@ const CoursL2i = () => {
           <InfoIcon fontSize="large" color="action" />
         </Box>
       ) : (
-        // <Grid container spacing={4} mt={4}>
-        //   {currentCourses.map((course) => (
-        //     <Grid item xs={12} sm={6} md={4} key={course.id}>
-        //       <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        //         <CardContent>
-        //           <Typography variant="h6" gutterBottom>
-        //             {course.title}
-        //           </Typography>
-        //           <Typography color="textSecondary">
-        //             {course.createdBy}
-        //           </Typography>
-        //           <Typography variant="body2">
-        //             Niveau : {course.classeroom.name}
-        //             <br />
-        //             Date d'upload : {new Date(course.creatAt).toLocaleDateString()}
-        //           </Typography>
-        //         </CardContent>
-        //         <CardActions>
-        //           <Button
-        //             variant="contained"
-        //             color="primary"
-        //             href={`${SERVER_URL}/course/${course.id}/pdf`}
-        //             startIcon={<PdfIcon />}
-        //             fullWidth
-        //             sx={{
-        //               borderRadius: '50px', // Border radius for the button
-        //               borderColor: '#085867', // Border color
-        //               color: '#085867', // Text color
-        //               '&:hover': {
-        //                 borderColor: '#13798C', // Border color on hover
-        //                 color: '#13798C', // Text color on hover
-        //               },
-        //             }}
-        //           >
-        //             Télécharger
-        //           </Button>
-        //         </CardActions>
-        //       </Card>
-        //     </Grid>
-        //   ))}
-        // </Grid>
         <Grid container spacing={4} mt={4}>
           {currentCourses.map((course) => (
             <Grid item xs={12} sm={6} md={4} key={course.id}>
@@ -396,13 +316,15 @@ const CoursL2i = () => {
               >
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    {course.description}
+                    {course.description.substring(
+                      course.description.indexOf("_") + 1
+                    ) || course.description}
                   </Typography>
                   <Typography color="textSecondary">
                     {course.professorName}
                   </Typography>
                   <Typography variant="body2">
-                    Niveau : {course.classeroomName}
+                    Niveau : {course.classroomName}
                     <br />
                     Date d'upload :{" "}
                     {new Date(course.creatAt).toLocaleDateString()}

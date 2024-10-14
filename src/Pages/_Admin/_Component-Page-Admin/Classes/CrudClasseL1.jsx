@@ -1,8 +1,9 @@
 import { Button, Form, Input, Modal, Select, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import { SERVER_URL } from "../../../../Utils/constantURL";
+import React, { useCallback, useEffect, useState } from "react";
+import { useApi } from "../../../../Utils/Api";
 
 const CrudClasseL1 = () => {
+  const api = useApi();
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -10,98 +11,112 @@ const CrudClasseL1 = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
 
-  const fetchClasseL1 = () => {
-    const token = sessionStorage.getItem("access_token");
-    fetch(SERVER_URL + "/curentListStudent/niveau/licence1", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const sortedData = data.sort((a, b) => {
-          if (a.lastName < b.lastName) return -1;
-          if (a.lastName > b.lastName) return 1;
-          if (a.firstName < b.firstName) return -1;
-          if (a.firstName > b.firstName) return 1;
-          return 0;
-        });
-        // setData(sortedData.reverse()); // Inverser l'ordre des données
-        setData(sortedData);
-      })
-      .catch((error) =>
-        console.error("Error fetching data student level 1:", error)
+  // const fetchClasseL1 = async () => {
+  //   try {
+  //     const response = await api.get("/curentListStudent/niveau/licence1");
+  //     const data = response.data;
+
+  //     const sortedData = data.sort((a, b) => {
+  //       if (a.lastName < b.lastName) return -1;
+  //       if (a.lastName > b.lastName) return 1;
+  //       if (a.firstName < b.firstName) return -1;
+  //       if (a.firstName > b.firstName) return 1;
+  //       return 0;
+  //     });
+
+  //     setData(sortedData); // Mettre à jour l'état avec les données triées
+  //   } catch (error) {
+  //     console.error(
+  //       "Error fetching data student level 1:",
+  //       error.response?.data || error.message
+  //     );
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchClasseL1();
+  // }, []);
+
+  const fetchClasseL1 = useCallback(async () => {
+    try {
+      const response = await api.get("/curentListStudent/niveau/licence1");
+      const data = response.data;
+
+      const sortedData = data.sort((a, b) => {
+        if (a.lastName < b.lastName) return -1;
+        if (a.lastName > b.lastName) return 1;
+        if (a.firstName < b.firstName) return -1;
+        if (a.firstName > b.firstName) return 1;
+        return 0;
+      });
+
+      setData(sortedData); // Mettre à jour l'état avec les données triées
+    } catch (error) {
+      console.error(
+        "Error fetching data student level 1:",
+        error.response?.data || error.message
       );
-  };
+    }
+  }, [api]);
 
   useEffect(() => {
     fetchClasseL1();
-  }, []);
+  }, [fetchClasseL1]);
 
-  const handleDelete = (id) => {
-    const token = sessionStorage.getItem("access_token");
-
-    if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
-      fetch(SERVER_URL + `/curentListStudent/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setData((prevData) => prevData.filter((item) => item.id !== id));
-          } else {
-            console.error("Failed to delete item student");
-          }
-        })
-        .catch((error) => console.error("Error deleting item:", error));
+  const handleDelete = async (id) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cet étudiant ?")) {
+      try {
+        const response = await api.delete(`/curentListStudent/${id}`);
+        if (response.status === 200) {
+          setData((prevData) => prevData.filter((item) => item.id !== id));
+        } else {
+          console.error("Failed to delete item student");
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting item:",
+          error.response?.data || error.message
+        );
+      }
     }
   };
 
-  const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("access_token");
-
-    fetch(SERVER_URL + `/curentListStudent/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData((prevData) =>
-            prevData.map((item) => (item.id === id ? newData : item))
-          );
-        } else {
-          console.error("Failed to edit item student");
-        }
-      })
-      .catch((error) => console.error("Error editing item:", error));
+  const handleEdit = async (id, newData) => {
+    try {
+      const response = await api.patch(`/curentListStudent/${id}`, newData);
+      if (response.status === 200) {
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === id ? { ...item, ...newData } : item
+          )
+        );
+      } else {
+        console.error("Failed to edit item student");
+      }
+    } catch (error) {
+      console.error(
+        "Error editing item:",
+        error.response?.data || error.message
+      );
+    }
   };
 
-  const handleAdd = (newData) => {
-    const token = sessionStorage.getItem("access_token");
-
-    fetch(SERVER_URL + "/curentListStudent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+  const handleAdd = async (newData) => {
+    try {
+      const response = await api.post("/curentListStudent", newData);
+      if (response.status === 201) {
         setIsAddModalOpen(false);
         addForm.resetFields();
-        // fetchClasseL1();
-        setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
-      })
-      .catch((error) => console.error("Error adding item:", error));
+        setData((prevData) => [response.data, ...prevData]); // Ajouter le nouvel élément au début
+      } else {
+        console.error("Failed to add item student");
+      }
+    } catch (error) {
+      console.error(
+        "Error adding item:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   const showEditModal = (record) => {
@@ -112,8 +127,8 @@ const CrudClasseL1 = () => {
 
   const showAddModal = () => {
     addForm.setFieldsValue({
-      classeroom: "LICENCE1",
-      // classeroom_id: 1,
+      classroom: "LICENCE1",
+      // classroom_id: 1,
     });
     setIsAddModalOpen(true);
   };
@@ -232,7 +247,7 @@ const CrudClasseL1 = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="classeroom" label="Classeroom">
+          <Form.Item name="classroom" label="Classroom">
             <Select options={classroomOptions} />
           </Form.Item>
           <Form.Item name="ine" label="INE">
@@ -259,7 +274,7 @@ const CrudClasseL1 = () => {
         onCancel={handleAddCancel}
       >
         <Form form={addForm} layout="vertical">
-          <Form.Item hidden required name="classeroom" label="Classeroom">
+          <Form.Item hidden required name="classroom" label="Classroom">
             <Input value={"LICENCE1"} />
           </Form.Item>
           <Form.Item required name="ine" label="INE">

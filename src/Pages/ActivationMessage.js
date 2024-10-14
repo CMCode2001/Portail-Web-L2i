@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import { notification } from "antd";
 import "../Styles/ActivationMessage.css";
-import { SERVER_URL } from "../Utils/constantURL";
-import { ArrowBack, PasswordOutlined, PinOutlined, RefreshOutlined } from "@mui/icons-material";
+import { ArrowBack, PinOutlined, RefreshOutlined } from "@mui/icons-material";
+import { useAuth } from "../Utils/AuthContext";
+import { useApi } from "../Utils/Api";
 
 const ActivationMessage = () => {
   const navigate = useNavigate();
@@ -12,12 +13,14 @@ const ActivationMessage = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [isActivated, setIsActivated] = useState(false);
+  const { authData } = useAuth();
+  const api = useApi();
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = authData.user;
 
-    if (user && user.email) {
-      setEmail(user.email);
+    if (user && user?.email) {
+      setEmail(user?.email);
     } else {
       notification.error({
         message: "Erreur",
@@ -26,69 +29,65 @@ const ActivationMessage = () => {
     }
   }, []);
 
-  const handleCodeSubmit = () => {
+  const handleCodeSubmit = async () => {
     if (!email) return;
     setLoading(true);
-    fetch(SERVER_URL + "/confirm", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, verificationCode }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(text);
-          });
-        }
-        return response.text();
-      })
-      .then((message) => {
-        setLoading(false);
-        setIsActivated(true);
-        notification.success({
-          message: "Activation réussie",
-          description: message,
-        });
-        navigate("/connexion");
-      })
-      .catch((error) => {
-        setLoading(false);
-        notification.error({
-          message: "Erreur d'activation",
-          description:
-            error.message || "Une erreur s'est produite lors de l'activation.",
-        });
+
+    try {
+      const response = await api.post("/confirm", {
+        email,
+        verificationCode,
       });
+
+      // Vérifier si la réponse est valide
+      if (response.status !== 200) {
+        throw new Error(response.data);
+      }
+
+      setLoading(false);
+      setIsActivated(true);
+      notification.success({
+        message: "Activation réussie",
+        description: response.data, // Message de succès venant de l'API
+      });
+
+      navigate("/connexion");
+    } catch (error) {
+      setLoading(false);
+      notification.error({
+        message: "Erreur d'activation",
+        description:
+          error.response?.data ||
+          "Une erreur s'est produite lors de l'activation.",
+      });
+    }
   };
 
-  const handleResendEmail = () => {
+  const handleResendEmail = async () => {
     if (!email) return;
-    fetch(SERVER_URL + "/reSendConfirmation", {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: email,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(text);
-          });
-        }
-        return response.text();
-      })
-      .then((message) => {
-        notification.success({
-          message: "Email envoyé",
-          description: message,
-        });
-      })
-      .catch((error) => {
-        notification.error({
-          message: "Erreur",
-          description:
-            error.message || "Une erreur s'est produite lors de l'envoi de l'email.",
-        });
+
+    try {
+      const response = await api.post("/reSendConfirmation", email, {
+        headers: { "Content-Type": "text/plain" },
       });
+
+      // Vérifier si la réponse est valide
+      if (response.status !== 200) {
+        throw new Error(response.data);
+      }
+
+      notification.success({
+        message: "Email envoyé",
+        description: response.data, // Message de succès venant de l'API
+      });
+    } catch (error) {
+      notification.error({
+        message: "Erreur",
+        description:
+          error.response?.data ||
+          "Une erreur s'est produite lors de l'envoi de l'email.",
+      });
+    }
   };
 
   return (
@@ -124,34 +123,38 @@ const ActivationMessage = () => {
         }}
         renderInput={(props) => <input {...props} />}
       />
-      <br/>
+      <br />
       <button
-        className='buttonValider'
+        className="buttonValider"
         onClick={handleCodeSubmit}
         disabled={loading || !verificationCode}
       >
         {loading ? "Vérification en cours..." : "Valider le code"} &nbsp;
         {/* <PasswordOutlined/> */}
-        <PinOutlined/>
+        <PinOutlined />
       </button>
-        <br/>
+      <br />
       <p>
-          Vous n'avez pas reçu le code  ?{" "}
-          <br/>
-          <Link className="Refresh" onClick={handleResendEmail} disabled={loading}>
-          <RefreshOutlined/>
-            Renvoyer l'email de confirmation
-          </Link>
+        Vous n'avez pas reçu le code ? <br />
+        <Link
+          className="Refresh"
+          onClick={handleResendEmail}
+          disabled={loading}
+        >
+          <RefreshOutlined />
+          Renvoyer l'email de confirmation
+        </Link>
       </p>
 
       <Link className="back-to-login" to="/inscription">
-        <ArrowBack/>
+        <ArrowBack />
         Retour à la Page d'inscription
       </Link>
 
       {isActivated && (
         <p className="success-message">
-          Votre compte a été activé avec succès ! Vous allez être redirigé vers la page de connexion.
+          Votre compte a été activé avec succès ! Vous allez être redirigé vers
+          la page de connexion.
         </p>
       )}
     </div>

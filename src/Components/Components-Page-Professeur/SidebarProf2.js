@@ -11,53 +11,78 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import logoL2i from "../../Assets/img/Logo-L2i.png";
 import "../../Styles/SidebarProf2.css";
-import { SERVER_URL } from "../../Utils/constantURL";
 import { useAuth } from "../../Utils/AuthContext";
+import { useApi } from "../../Utils/Api";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const SidebarProf2 = () => {
-  const { authData } = useAuth();
+  const api = useApi();
+  const { authData, logout } = useAuth();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   // Fonction pour gérer la déconnexion
+  // const handleLogout = async () => {
+  //   try {
+  //     // const jwt = sessionStorage.getItem("access_token");
+  //     const jwt = authData?.accessToken;
+
+  //     if (!jwt) {
+  //       console.error("Aucun token trouvé pour déconnexion.");
+  //       return;
+  //     }
+
+  //     const response = await fetch(SERVER_URL + "/logout", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${jwt}`,
+  //       },
+  //     });
+
+  //     // Si la requête échoue
+  //     if (!response.ok) {
+  //       console.error("Erreur lors de la déconnexion.");
+  //       return;
+  //     }
+
+  //     // Si la requête réussit
+  //     console.log("Déconnexion réussie.");
+
+  //     // Nettoyer le stockage et rediriger l'utilisateur
+  //     sessionStorage.clear();
+  //     window.location.href = "/";
+  //   } catch (error) {
+  //     console.error("Erreur lors de la requête de déconnexion:", error);
+  //   }
+  // };
+
+  // Fonction pour gérer la déconnexion
   const handleLogout = async () => {
     try {
-      // const jwt = sessionStorage.getItem("access_token");
-      const jwt = authData?.accessToken;
-
-      if (!jwt) {
-        console.error("Aucun token trouvé pour déconnexion.");
-        return;
-      }
-
-      const response = await fetch(SERVER_URL + "/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
+      // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
+      const response = await api.post("/logout", null, {
+        withCredentials: true,
       });
 
-      // Si la requête échoue
-      if (!response.ok) {
+      if (response.status !== 200) {
         console.error("Erreur lors de la déconnexion.");
         return;
       }
 
-      // Si la requête réussit
       console.log("Déconnexion réussie.");
-
-      // Nettoyer le stockage et rediriger l'utilisateur
-      sessionStorage.clear();
-      window.location.href = "/";
+      logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
+      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
     } catch (error) {
+      logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
+      window.location.href = "/";
       console.error("Erreur lors de la requête de déconnexion:", error);
     }
   };
+
   const currentUser = authData.user; // Récupérer l'utilisateur depuis le contexte
 
   return (

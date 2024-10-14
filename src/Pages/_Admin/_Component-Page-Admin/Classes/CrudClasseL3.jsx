@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
-import { SERVER_URL } from "../../../../Utils/constantURL";
 import { Select } from "antd";
+import { useApi } from "../../../../Utils/Api";
 
 const CrudClasseL3 = () => {
+  const api = useApi();
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -11,16 +12,33 @@ const CrudClasseL3 = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
 
-  const fetchClasseL1 = () => {
-    const token = sessionStorage.getItem("access_token");
-    fetch(SERVER_URL + "/curentListStudent/niveau/licence3", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+  // const fetchClasseL1 = () => {
+  //   fetch(SERVER_URL + "/curentListStudent/niveau/licence3", {
+  //     method: "GET",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const sortedData = data.sort((a, b) => {
+  //         if (a.lastName < b.lastName) return -1;
+  //         if (a.lastName > b.lastName) return 1;
+  //         if (a.firstName < b.firstName) return -1;
+  //         if (a.firstName > b.firstName) return 1;
+  //         return 0;
+  //       });
+  //       // setData(sortedData.reverse()); // Inverser l'ordre des données
+  //       setData(sortedData);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Error fetching data student level 1:", error)
+  //     );
+  // };
+
+  const fetchClasseL1 = useCallback(async () => {
+    try {
+      const response = await api.get("/curentListStudent/niveau/licence3");
+
+      if (response.status === 200) {
+        const data = response.data;
         const sortedData = data.sort((a, b) => {
           if (a.lastName < b.lastName) return -1;
           if (a.lastName > b.lastName) return 1;
@@ -28,81 +46,124 @@ const CrudClasseL3 = () => {
           if (a.firstName > b.firstName) return 1;
           return 0;
         });
-        // setData(sortedData.reverse()); // Inverser l'ordre des données
+        // setData(sortedData.reverse()); // Inverser l'ordre des données si nécessaire
         setData(sortedData);
-      })
-      .catch((error) =>
-        console.error("Error fetching data student level 1:", error)
+      } else {
+        console.error(
+          "Échec du chargement des données des étudiants niveau L1"
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des données des étudiants niveau L1 :",
+        error
       );
-  };
+    }
+  }, [api]);
 
   useEffect(() => {
     fetchClasseL1();
-  }, []);
+  }, [fetchClasseL1]);
 
-  const handleDelete = (id) => {
-    const token = sessionStorage.getItem("access_token");
+  // const handleDelete = (id) => {
+  //   if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
+  //     fetch(SERVER_URL + `/curentListStudent/${id}`, {
+  //       method: "DELETE",
+  //     })
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           setData((prevData) => prevData.filter((item) => item.id !== id));
+  //         } else {
+  //           console.error("Failed to delete item student");
+  //         }
+  //       })
+  //       .catch((error) => console.error("Error deleting item:", error));
+  //   }
+  // };
 
-    if (window.confirm("Voulez-vous vraiment supprimer ce etudiant?")) {
-      fetch(SERVER_URL + `/curentListStudent/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setData((prevData) => prevData.filter((item) => item.id !== id));
-          } else {
-            console.error("Failed to delete item student");
-          }
-        })
-        .catch((error) => console.error("Error deleting item:", error));
+  const handleDelete = async (id) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cet étudiant ?")) {
+      try {
+        const response = await api.delete(`/curentListStudent/${id}`);
+
+        if (response.status === 200) {
+          setData((prevData) => prevData.filter((item) => item.id !== id));
+        } else {
+          console.error("Échec de la suppression de l'étudiant");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'étudiant :", error);
+      }
     }
   };
 
-  const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("access_token");
+  // const handleEdit = (id, newData) => {
+  //   fetch(SERVER_URL + `/curentListStudent/${id}`, {
+  //     method: "PATCH",
+  //     body: JSON.stringify(newData),
+  //   })
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         setData((prevData) =>
+  //           prevData.map((item) => (item.id === id ? newData : item))
+  //         );
+  //       } else {
+  //         console.error("Failed to edit item student");
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error editing item:", error));
+  // };
 
-    fetch(SERVER_URL + `/curentListStudent/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData((prevData) =>
-            prevData.map((item) => (item.id === id ? newData : item))
-          );
-        } else {
-          console.error("Failed to edit item student");
-        }
-      })
-      .catch((error) => console.error("Error editing item:", error));
+  const handleEdit = async (id, newData) => {
+    try {
+      const response = await api.patch(`/curentListStudent/${id}`, newData);
+
+      if (response.status === 200) {
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === id ? { ...item, ...newData } : item
+          )
+        );
+      } else {
+        console.error("Échec de la modification de l'étudiant");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la modification de l'étudiant :", error);
+    }
   };
 
-  const handleAdd = (newData) => {
-    const token = sessionStorage.getItem("access_token");
+  // const handleAdd = (newData) => {
+  //   fetch(SERVER_URL + "/curentListStudent", {
+  //     method: "POST",
+  //     body: JSON.stringify(newData),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setIsAddModalOpen(false);
+  //       addForm.resetFields();
+  //       // fetchClasseL1();
+  //       setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
+  //     })
+  //     .catch((error) => console.error("Error adding item:", error));
+  // };
 
-    fetch(SERVER_URL + "/curentListStudent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+  const handleAdd = async (newData) => {
+    try {
+      const response = await api.post("/curentListStudent", newData);
+
+      if (response.status === 201) {
+        // 201 pour la création réussie
+        const data = response.data;
         setIsAddModalOpen(false);
         addForm.resetFields();
-        // fetchClasseL1();
+        // fetchClasseL1(); // Si nécessaire pour rafraîchir la liste
         setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
-      })
-      .catch((error) => console.error("Error adding item:", error));
+      } else {
+        console.error("Échec de l'ajout de l'étudiant");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de l'étudiant :", error);
+    }
   };
 
   const showEditModal = (record) => {
@@ -113,8 +174,8 @@ const CrudClasseL3 = () => {
 
   const showAddModal = () => {
     addForm.setFieldsValue({
-      classeroom: "LICENCE3",
-      // classeroom_id: 1,
+      classroom: "LICENCE3",
+      // classroom_id: 1,
     });
     setIsAddModalOpen(true);
   };
@@ -234,7 +295,7 @@ const CrudClasseL3 = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="classeroom" label="Classeroom">
+          <Form.Item name="classroom" label="Classroom">
             <Select options={classroomOptions} />
           </Form.Item>
           <Form.Item name="ine" label="INE">
@@ -261,7 +322,7 @@ const CrudClasseL3 = () => {
         onCancel={handleAddCancel}
       >
         <Form form={addForm} layout="vertical">
-          <Form.Item hidden required name="classeroom" label="Classeroom">
+          <Form.Item hidden required name="classroom" label="Classroom">
             <Input value={"LICENCE3"} />
           </Form.Item>
           <Form.Item required name="ine" label="INE">

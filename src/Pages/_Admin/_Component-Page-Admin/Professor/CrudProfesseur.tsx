@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button, Modal, Form, Input, Select } from "antd";
-import { SERVER_URL } from "../../../../Utils/constantURL";
+import { useApi } from "../../../../Utils/Api";
 
 const CrudProfesseur = () => {
+  const api = useApi();
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -10,101 +11,103 @@ const CrudProfesseur = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
 
-  // const fetchProfessors = () => {
-  //   fetch(SERVER_URL + "/professor")
-  //     .then((response) => response.json())
-  //     .then((data) => setData(data))
-  //     .catch((error) => console.error("Error fetching data professor:", error));
-  // };
+  const fetchProfessors = useCallback(async () => {
+    try {
+      const response = await api.get("/professor");
 
-  const fetchProfessors = () => {
-    const token = sessionStorage.getItem("access_token");
-
-    fetch(SERVER_URL + "/professor", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setData(data.reverse())) // Inverser l'ordre des données
-      .catch((error) => console.error("Error fetching data professor:", error));
-  };
+      // Traiter les données si la requête est réussie
+      setData(response.data.reverse()); // Inverser l'ordre des données
+    } catch (error) {
+      console.error(
+        "Error fetching data professor:",
+        error.response?.data || error.message
+      );
+    }
+  }, [api]);
 
   useEffect(() => {
     fetchProfessors();
-  }, []);
+  }, [fetchProfessors]);
 
-  const handleDelete = (id) => {
-    const token = sessionStorage.getItem("access_token");
-
+  const handleDelete = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce professeur?")) {
-      fetch(SERVER_URL + `/professor/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setData((prevData) => prevData.filter((item) => item.id !== id));
-          } else {
-            console.error("Failed to delete item professor");
-          }
-        })
-        .catch((error) => console.error("Error deleting item:", error));
+      try {
+        const response = await api.delete(`/professor/${id}`);
+
+        if (response.status === 200) {
+          setData((prevData) => prevData.filter((item) => item.id !== id));
+        } else {
+          console.error("Failed to delete item professor");
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting item:",
+          error.response?.data || error.message
+        );
+      }
     }
   };
 
-  const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("access_token");
+  const handleEdit = async (id, newData) => {
+    try {
+      const response = await api.patch(`/professor/${id}`, newData);
 
-    fetch(SERVER_URL + `/professor/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData((prevData) =>
-            prevData.map((item) => (item.id === id ? newData : item))
-          );
-        } else {
-          console.error("Failed to edit item professor");
-        }
-      })
-      .catch((error) => console.error("Error editing item:", error));
+      if (response.status === 200) {
+        setData((prevData) =>
+          prevData.map((item) => (item.id === id ? newData : item))
+        );
+      } else {
+        console.error("Failed to edit item professor");
+      }
+    } catch (error) {
+      console.error(
+        "Error editing item:",
+        error.response?.data || error.message
+      );
+    }
   };
 
-  const handleAdd = (newData) => {
-    const token = sessionStorage.getItem("access_token");
+  // const handleAdd = (newData) => {
 
-    fetch(SERVER_URL + "/register/professor", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+  //   fetch(SERVER_URL + "/register/professor", {
+  //     method: "POST",
+  //     body: JSON.stringify(newData),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setIsAddModalOpen(false);
+  //       addForm.resetFields();
+  //       // fetchProfessors();
+  //       setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
+  //     })
+  //     .catch((error) => console.error("Error adding item:", error));
+  // };
+
+  const handleAdd = async (newData) => {
+    try {
+      const response = await api.post("/register/professor", newData);
+
+      if (response.status === 200) {
+        const data = response.data;
         setIsAddModalOpen(false);
         addForm.resetFields();
-        // fetchProfessors();
         setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
-      })
-      .catch((error) => console.error("Error adding item:", error));
+      } else {
+        console.error("Failed to add item professor");
+      }
+    } catch (error) {
+      console.error(
+        "Error adding item:",
+        error.response?.data || error.message
+      );
+    }
   };
 
-  const showEditModal = (record) => {
-    setCurrentRecord(record);
-    form.setFieldsValue(record);
-    setIsModalOpen(true);
-  };
+  // const showEditModal = (record) => {
+  //   setCurrentRecord(record);
+  //   form.setFieldsValue(record);
+  //   setIsModalOpen(true);
+  // };
 
   const showAddModal = () => {
     addForm.setFieldsValue({
@@ -265,7 +268,7 @@ const CrudProfesseur = () => {
           <Form.Item hidden name="specialityProfessor" label="Speciality">
             <Input />
           </Form.Item>
-          <Form.Item required name="classeroom_id" label="Classeroom">
+          <Form.Item required name="classroom_id" label="Classroom">
             <Select options={classroomOptions} />
           </Form.Item>
           <Form.Item hidden name="courses" label="Courses">

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { SERVER_URL } from "../../../../Utils/constantURL";
 import { Button, Image, notification } from "antd";
+import { useApi } from "../../../../Utils/Api";
 
 const UploadPicture = () => {
+  const api = useApi();
   const [pictures, setPictures] = useState([]);
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
@@ -23,27 +25,21 @@ const UploadPicture = () => {
     });
   };
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("access_token");
-
-    fetch(SERVER_URL + "/picture", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des images");
-        }
-        return response.json();
-      })
-      .then((data) => setPictures(data))
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des images", error)
-      );
-  }, []);
+  // useEffect(() => {
+  //   fetch(SERVER_URL + "/picture", {
+  //     method: "GET",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Erreur lors de la récupération des images");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => setPictures(data))
+  //     .catch((error) =>
+  //       console.error("Erreur lors de la récupération des images", error)
+  //     );
+  // }, []);
 
   // const handleDelete = (id) => {
   //   const token = sessionStorage.getItem("access_token");
@@ -68,30 +64,64 @@ const UploadPicture = () => {
   //   }
   // };
 
-  const handleDelete = (id) => {
-    const token = sessionStorage.getItem("access_token");
+  useEffect(() => {
+    const fetchPictures = async () => {
+      try {
+        const response = await api.get("/picture");
 
+        if (response.status === 200) {
+          setPictures(response.data);
+        } else {
+          throw new Error("Erreur lors de la récupération des images");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des images", error);
+      }
+    };
+
+    fetchPictures();
+  }, [api]);
+
+  // const handleDelete = (id) => {
+  //   if (window.confirm("Voulez-vous vraiment supprimer cette photo?")) {
+  //     fetch(`${SERVER_URL}/picture/${id}`, {
+  //       method: "DELETE",
+  //     })
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           setPictures((prevPictures) =>
+  //             prevPictures.filter((picture) => picture.id !== id)
+  //           );
+  //           openSuccessNotification("Photo supprimée avec succès!");
+  //         } else {
+  //           openErrorNotification("Échec de la suppression de la photo.");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         openErrorNotification("Erreur lors de la suppression de la photo.");
+  //         console.error("Erreur lors de la suppression de la photo:", error);
+  //       });
+  //   }
+  // };
+
+  const handleDelete = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer cette photo?")) {
-      fetch(`${SERVER_URL}/picture/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setPictures((prevPictures) =>
-              prevPictures.filter((picture) => picture.id !== id)
-            );
-            openSuccessNotification("Photo supprimée avec succès!");
-          } else {
-            openErrorNotification("Échec de la suppression de la photo.");
-          }
-        })
-        .catch((error) => {
-          openErrorNotification("Erreur lors de la suppression de la photo.");
-          console.error("Erreur lors de la suppression de la photo:", error);
-        });
+      try {
+        const response = await api.delete(`/picture/${id}`);
+
+        if (response.status === 204) {
+          // 204 No Content pour une suppression réussie
+          setPictures((prevPictures) =>
+            prevPictures.filter((picture) => picture.id !== id)
+          );
+          openSuccessNotification("Photo supprimée avec succès!");
+        } else {
+          openErrorNotification("Échec de la suppression de la photo.");
+        }
+      } catch (error) {
+        openErrorNotification("Erreur lors de la suppression de la photo.");
+        console.error("Erreur lors de la suppression de la photo:", error);
+      }
     }
   };
 
@@ -133,6 +163,34 @@ const UploadPicture = () => {
   //   }
   // };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("description", description);
+
+  //   try {
+  //     const response = await fetch(SERVER_URL + "/picture/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Erreur lors du téléchargement du fichier!");
+  //     }
+
+  //     // const data = await response.json();
+  //     const data = await response.text(); // Si le backend renvoie une simple chaîne de caractères
+  //     setPictures([...pictures, data]);
+
+  //     openSuccessNotification("Fichier téléchargé avec succès!");
+  //   } catch (error) {
+  //     openErrorNotification("Erreur lors du téléchargement du fichier!");
+  //     console.error("Erreur lors du téléchargement du fichier!", error);
+  //   }
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -140,23 +198,19 @@ const UploadPicture = () => {
     formData.append("file", file);
     formData.append("description", description);
 
-    const token = sessionStorage.getItem("access_token");
-
     try {
-      const response = await fetch(SERVER_URL + "/picture/upload", {
-        method: "POST",
-        body: formData,
+      const response = await api.post("/picture/upload", formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Spécifiez le type de contenu pour le téléchargement de fichiers
         },
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
+        // Vérifiez si la réponse est réussie
         throw new Error("Erreur lors du téléchargement du fichier!");
       }
 
-      // const data = await response.json();
-      const data = await response.text(); // Si le backend renvoie une simple chaîne de caractères
+      const data = await response.data; // Récupérez les données retournées
       setPictures([...pictures, data]);
 
       openSuccessNotification("Fichier téléchargé avec succès!");
