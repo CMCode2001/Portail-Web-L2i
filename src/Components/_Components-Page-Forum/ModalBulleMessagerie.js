@@ -17,7 +17,6 @@ import Chat from "../../Assets/img/chat.png";
 import "../../Styles/ModalBulleMessagerie.css";
 import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
-// import api from "../../Utils/Api";
 import { useAuth } from "../../Utils/AuthContext";
 import { useApi } from "../../Utils/Api";
 
@@ -33,8 +32,6 @@ const ModalBulleMessagerie = () => {
   const [form] = Form.useForm(); // Ajoutez cette ligne pour définir le formulaire form
   const [listeForum, setListeForum] = useState([]);
   const [selectedForum, setSelectedForum] = useState(null);
-  // const [currentUser, setCurrentUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [response, setResponse] = useState("");
   const [forum_id, setForumID] = useState(0);
   const [isChatIconOpen, setIsChatIconOpen] = useState(false);

@@ -281,12 +281,14 @@ import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from "../../../Assets/img/hamburger-menu.png";
 import logoL2i from "../../../Assets/img/Logo-L2i.png";
-import api from "../../../Utils/Api";
+import { useApi } from "../../../Utils/Api";
 import { useAuth } from "../../../Utils/AuthContext";
+import { SERVER_URL } from "../../../Utils/constantURL";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { authData, logout } = useAuth(); // Utiliser le contexte
+  const api = useApi();
 
   // const handleLogout = async () => {
   //   try {
@@ -294,7 +296,7 @@ const Navbar = () => {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${authData.accessToken}`, // Utiliser le token du contexte
+  //         Authorization: `Bearer ${authData?.accessToken}`,
   //       },
   //     });
 
@@ -313,16 +315,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await api.post(
-        "/logout"
-        // {},
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${authData.accessToken}`, // Utiliser le token du contexte
-        //   },
-        //   // withCredentials: true, // Si le serveur utilise des cookies HttpOnly pour le refresh token
-        // }
-      );
+      const response = await api.post("/logout");
 
       if (response.status !== 200) {
         console.error("Erreur lors de la déconnexion.");
@@ -333,6 +326,8 @@ const Navbar = () => {
       logout(); // Appeler la fonction de déconnexion du contexte
       window.location.href = "/";
     } catch (error) {
+      logout();
+      window.location.href = "/";
       console.error("Erreur lors de la requête de déconnexion:", error);
     }
   };
@@ -459,6 +454,11 @@ const Navbar = () => {
                         >
                           Déconnexion
                         </Menu.Item>
+                        {/* <Menu>
+                          <Menu.Item icon={<LogoutOutlined />} key="logout">
+                            <a href="/logout">Déconnexion</a>
+                          </Menu.Item>
+                        </Menu> */}
                         {currentUser?.role === "student" && (
                           <Menu.Item icon={<EditOutlined />} key="dashboard">
                             <NavLink to="/studentProfile">Profile</NavLink>
@@ -469,9 +469,7 @@ const Navbar = () => {
                             icon={<AppstoreOutlined />}
                             key="dashboard"
                           >
-                            <NavLink to="/professeurlkmsdqkjdslk">
-                              Dashboard
-                            </NavLink>
+                            <NavLink to="/professeur">Dashboard</NavLink>
                           </Menu.Item>
                         )}
                         {currentUser?.role === "admin" && (

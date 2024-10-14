@@ -1,6 +1,6 @@
 import { Button, Form, Input, notification } from "antd";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
@@ -16,6 +16,8 @@ const Connexion = () => {
   const [messageReponse, setMessageReponse] = useState("");
   const { login } = useAuth(); // Utiliser la fonction login du contexte
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const openErreurNotification = (message) => {
     notification.error({
@@ -45,7 +47,8 @@ const Connexion = () => {
             description: `Bienvenue, ${user.firstName} ${user.lastName}!`,
             placement: "top",
           });
-          navigate("/"); // Redirection vers la page d'accueil
+          // navigate("/"); // Redirection vers la page d'accueil
+          navigate(from, { replace: true });
         } else {
           setMessageReponse("Veuillez activer votre compte via votre email.");
           openErreurNotification(messageReponse);
@@ -55,7 +58,10 @@ const Connexion = () => {
         openErreurNotification(messageReponse);
       }
     } catch (error) {
-      openErreurNotification("Erreur lors de la requête.");
+      // openErreurNotification("Erreur lors de la requête.");
+      const errorMessage =
+        error.response?.data?.message || "Erreur lors de la requête.";
+      openErreurNotification(errorMessage);
     }
   };
 
