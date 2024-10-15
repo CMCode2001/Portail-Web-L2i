@@ -1,11 +1,12 @@
 // import React, { useState } from "react";
-// import { Form, Input, Button, Upload, message } from "antd";
+// import { Form, Input, Button, Upload, Select, message } from "antd";
 // import { UploadOutlined } from "@ant-design/icons";
 // import { useApi } from "../../../Utils/Api";
 
 // const { TextArea } = Input;
+// const { Option } = Select;
 
-// const SendEmail = () => {
+// const SendEmailClasse = () => {
 //   const api = useApi();
 //   const [loading, setLoading] = useState(false);
 //   const [file, setFile] = useState(null);
@@ -17,6 +18,7 @@
 //     const formData = new FormData();
 //     formData.append("message", values.message);
 //     formData.append("subject", values.subject);
+//     formData.append("classroom", values.classroom); // Ajoute la classe sélectionnée
 
 //     // Ajouter le fichier s'il est disponible
 //     if (file) {
@@ -24,13 +26,15 @@
 //     }
 
 //     try {
-//       const response = await api.post("/course/envoyerEmailGroupe", formData, {
+//       await api.post("/course/envoyerEmailClasse", formData, {
 //         headers: {
 //           "Content-Type": "multipart/form-data",
 //         },
 //       });
 
-//       message.success("Email envoyé avec succès à tous les étudiants!");
+//       message.success(
+//         `Email envoyé avec succès à la classe ${values.classroom}!`
+//       );
 //     } catch (error) {
 //       message.error("Erreur lors de l'envoi de l'email. Veuillez réessayer.");
 //     } finally {
@@ -48,8 +52,26 @@
 
 //   return (
 //     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-//       <h2>Envoyer un email groupé aux étudiants</h2>
+//       <h2>Envoyer un email groupé à une classe spécifique</h2>
 //       <Form layout="vertical" onFinish={handleFinish}>
+//         {/* Sélection de la classe */}
+//         <Form.Item
+//           label="Choisir la classe"
+//           name="classroom"
+//           rules={[
+//             {
+//               required: true,
+//               message: "La sélection d'une classe est obligatoire.",
+//             },
+//           ]}
+//         >
+//           <Select placeholder="Sélectionnez une classe">
+//             <Option value="LICENCE1">Licence 1</Option>
+//             <Option value="LICENCE2">Licence 2</Option>
+//             <Option value="LICENCE3">Licence 3</Option>
+//           </Select>
+//         </Form.Item>
+
 //         <Form.Item
 //           label="Sujet de l'email"
 //           name="subject"
@@ -87,19 +109,24 @@
 //   );
 // };
 
-// export default SendEmail;
+// export default SendEmailClasse;
 
 import React, { useState } from "react";
-import { Form, Input, Button, Upload, message } from "antd";
+import { Form, Input, Button, Upload, Select, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useApi } from "../../../Utils/Api";
+import { useAuth } from "../../../Utils/AuthContext";
 
 const { TextArea } = Input;
+const { Option } = Select;
 
-const SendEmail = () => {
+const SendEmailClasse = () => {
   const api = useApi();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const { authData } = useAuth();
+
+  const currentUser = authData?.user;
 
   // Fonction pour gérer l'envoi du formulaire
   const handleFinish = async (values) => {
@@ -107,7 +134,11 @@ const SendEmail = () => {
 
     const formData = new FormData();
     formData.append("message", values.message);
-    formData.append("subject", values.subject);
+    formData.append(
+      "subject",
+      `${values.subject} : ${currentUser?.firstName} ${currentUser?.lastName}`
+    );
+    formData.append("classroom", values.classroom);
 
     // Ajouter le fichier s'il est disponible
     if (file) {
@@ -115,13 +146,15 @@ const SendEmail = () => {
     }
 
     try {
-      await api.post("/course/envoyerEmailGroupe", formData, {
+      await api.post("/course/envoyerEmailClasse", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      message.success("Email envoyé avec succès à tous les étudiants!");
+      message.success(
+        `Email envoyé avec succès à la classe ${values.classroom}!`
+      );
     } catch (error) {
       message.error("Erreur lors de l'envoi de l'email. Veuillez réessayer.");
     } finally {
@@ -134,14 +167,32 @@ const SendEmail = () => {
     if (info.file.status !== "removed") {
       setFile(info.file); // Utilise `info.file` directement
     } else {
-      setFile(null); // Remet à null si le fichier est supprimé
+      setFile(null);
     }
   };
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Envoyer un email groupé aux étudiants</h2>
+      <h2>Envoyer un email groupé à une classe spécifique</h2>
       <Form layout="vertical" onFinish={handleFinish}>
+        {/* Sélection de la classe */}
+        <Form.Item
+          label="Choisir la classe"
+          name="classroom"
+          rules={[
+            {
+              required: true,
+              message: "La sélection d'une classe est obligatoire.",
+            },
+          ]}
+        >
+          <Select placeholder="Sélectionnez une classe">
+            <Option value="LICENCE1">Licence 1</Option>
+            <Option value="LICENCE2">Licence 2</Option>
+            <Option value="LICENCE3">Licence 3</Option>
+          </Select>
+        </Form.Item>
+
         <Form.Item
           label="Sujet de l'email"
           name="subject"
@@ -179,4 +230,4 @@ const SendEmail = () => {
   );
 };
 
-export default SendEmail;
+export default SendEmailClasse;

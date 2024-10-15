@@ -239,7 +239,7 @@ const Navbar = () => {
                         />
                         <p>
                           <b>
-                            {currentUser?.firstName} {currentUser?.name} ▼
+                            {currentUser?.firstName} {currentUser?.lastName} ▼
                           </b>
                         </p>
                       </Button>

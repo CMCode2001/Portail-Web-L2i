@@ -3,6 +3,7 @@ import {
   EditOutlined,
   HomeFilled,
   LogoutOutlined,
+  MailOutlined,
   ReadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -23,42 +24,6 @@ const SidebarProf2 = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
-  // Fonction pour gérer la déconnexion
-  // const handleLogout = async () => {
-  //   try {
-  //     // const jwt = sessionStorage.getItem("access_token");
-  //     const jwt = authData?.accessToken;
-
-  //     if (!jwt) {
-  //       console.error("Aucun token trouvé pour déconnexion.");
-  //       return;
-  //     }
-
-  //     const response = await fetch(SERVER_URL + "/logout", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${jwt}`,
-  //       },
-  //     });
-
-  //     // Si la requête échoue
-  //     if (!response.ok) {
-  //       console.error("Erreur lors de la déconnexion.");
-  //       return;
-  //     }
-
-  //     // Si la requête réussit
-  //     console.log("Déconnexion réussie.");
-
-  //     // Nettoyer le stockage et rediriger l'utilisateur
-  //     sessionStorage.clear();
-  //     window.location.href = "/";
-  //   } catch (error) {
-  //     console.error("Erreur lors de la requête de déconnexion:", error);
-  //   }
-  // };
 
   // Fonction pour gérer la déconnexion
   const handleLogout = async () => {
@@ -146,6 +111,11 @@ const SidebarProf2 = () => {
           <Menu.Item key="2" icon={<AppstoreAddOutlined />}>
             <Link to="ajouter-notes" style={{ textDecoration: "none" }}>
               Ajouter Notes
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="4" icon={<MailOutlined />}>
+            <Link to="enoyerEmailClasse" style={{ textDecoration: "none" }}>
+              Envoyer Email
             </Link>
           </Menu.Item>
           {/* <SubMenu key="sub2" icon={<UserOutlined />} title=`Pr ${currentUser?.firstName}${" "} ${currentUser?.name}` > */}

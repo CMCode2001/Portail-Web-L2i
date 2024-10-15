@@ -26,6 +26,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import PersistLogin from "./Utils/PersistLogin";
 import RequireAuth from "./Utils/RequireAuth";
 import Logout from "./Pages/Logout";
+import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
 
 const ROLES = {
   Student: "student",
@@ -71,6 +72,7 @@ function App() {
               <Route path="classes/L2-2i" element={<Licence22i />} />
               <Route path="classes/L3-2i" element={<Licence32i />} />
               <Route path="ajouter-notes" element={<AjouterNotes />} />
+              <Route path="enoyerEmailClasse" element={<SendEmailClasse />} />
               <Route path="update-prof" element={<UpdateProf />} />
             </Route>
           </Route>

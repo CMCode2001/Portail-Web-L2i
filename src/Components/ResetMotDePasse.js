@@ -1,24 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { notification } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import "../Styles/ResetMotDePasse.css";
 import { SERVER_URL } from "../Utils/constantURL";
 
 const ResetMotDePasse = () => {
   const navigate = useNavigate();
-  const [resetCode, setResetCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordStatus, setPasswordStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleResetPassword = async () => {
-    if (!resetCode || !newPassword || !confirmPassword) {
-      notification.error({
-        message: "Erreur",
-        description: "Tous les champs sont obligatoires.",
-      });
-      return;
-    }
+  const handleResetPassword = async (values) => {
+    const { resetCode, newPassword, confirmPassword } = values;
 
     if (newPassword !== confirmPassword) {
       notification.error({
@@ -67,6 +59,27 @@ const ResetMotDePasse = () => {
     }
   };
 
+  const validatePassword = (_, value) => {
+    if (!value) {
+      setPasswordStatus("error");
+      return Promise.reject(new Error("Veuillez entrer votre mot de passe!"));
+    }
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        value
+      )
+    ) {
+      setPasswordStatus("error");
+      return Promise.reject(
+        new Error(
+          "Le mot de passe doit comporter au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial !"
+        )
+      );
+    }
+    setPasswordStatus("success");
+    return Promise.resolve();
+  };
+
   return (
     <div className="reset-password">
       <h1>Réinitialiser le mot de passe</h1>
@@ -75,40 +88,84 @@ const ResetMotDePasse = () => {
         un nouveau mot de passe.
       </p>
 
-      <input
-        type="text"
-        placeholder="Code de réinitialisation"
-        value={resetCode}
-        onChange={(e) => setResetCode(e.target.value)}
-        className="inputField"
-      />
-      <input
-        type="password"
-        placeholder="Nouveau mot de passe"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="inputField"
-      />
-      <input
-        type="password"
-        placeholder="Confirmer le mot de passe"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        className="inputField"
-      />
-
-      <button
-        className="buttonValider"
-        onClick={handleResetPassword}
-        disabled={loading || !resetCode || !newPassword || !confirmPassword}
+      <Form
+        layout="vertical"
+        onFinish={handleResetPassword}
+        className="reset-password-form"
+        style={{ maxWidth: "400px", margin: "0 auto" }}
       >
-        {loading
-          ? "Réinitialisation en cours..."
-          : "Réinitialiser le mot de passe"}
-      </button>
-      <br />
-      <br />
-      <p>
+        <Form.Item
+          label="Code de réinitialisation"
+          name="resetCode"
+          rules={[
+            {
+              required: true,
+              message: "Veuillez entrer le code de réinitialisation !",
+            },
+          ]}
+        >
+          <Input placeholder="Code de réinitialisation" size="large" />
+        </Form.Item>
+
+        <Form.Item
+          label="Nouveau mot de passe"
+          name="newPassword"
+          validateStatus={passwordStatus}
+          rules={[
+            {
+              // required: true,
+              // message: "Veuillez entrer votre nouveau mot de passe !",
+              validator: validatePassword,
+            },
+          ]}
+        >
+          <Input.Password placeholder="Nouveau mot de passe" size="large" />
+        </Form.Item>
+
+        <Form.Item
+          label="Confirmer le mot de passe"
+          name="confirmPassword"
+          dependencies={["newPassword"]}
+          rules={[
+            {
+              required: true,
+              message: "Veuillez confirmer votre mot de passe !",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("newPassword") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("Les mots de passe ne correspondent pas !")
+                );
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            placeholder="Confirmer le mot de passe"
+            size="large"
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="Btnvalidate"
+            loading={loading}
+            size="large"
+            style={{ width: "100%" }}
+          >
+            {loading
+              ? "Réinitialisation en cours..."
+              : "Réinitialiser le mot de passe"}
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <p style={{ textAlign: "center" }}>
         Je ne dispose pas de compte ?{" "}
         <Link to="/inscription" id="OuvrirCompte">
           Ouvrir un compte
