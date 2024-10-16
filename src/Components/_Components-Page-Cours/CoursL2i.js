@@ -39,20 +39,6 @@ const CoursL2i = () => {
     fetchCourse();
   }, []);
 
-  // const fetchCourse = () => {
-  //   fetch(`${SERVER_URL}/document`, {
-  //     method: "GET",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCours(data);
-  //       console.log(data);
-  //       setFilteredCours(data);
-  //     })
-  //     .catch((error) =>
-  //       console.error("Erreur lors de la récupération des cours:", error)
-  //     );
-  // };
   const fetchCourse = () => {
     fetch(`${SERVER_URL}/document`, {
       method: "GET",
@@ -64,7 +50,6 @@ const CoursL2i = () => {
           (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
         );
         setCours(sortedData);
-        console.log(sortedData);
         setFilteredCours(sortedData);
       })
       .catch((error) =>
@@ -76,12 +61,14 @@ const CoursL2i = () => {
     let filtered = cours;
 
     if (searchTerm) {
-      filtered = filtered.filter((c) =>
-        c.description.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (c) =>
+          c?.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          c?.url.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     if (level) {
-      filtered = filtered.filter((c) => c.classeroomName === level);
+      filtered = filtered.filter((c) => c.classroomName === level);
     }
     if (professor) {
       filtered = filtered.filter((c) =>
@@ -135,23 +122,26 @@ const CoursL2i = () => {
         fontWeight="bold"
         borderRadius={50}
         color="#6B2239"
-        >
-        
+      >
         {/* Title and Description */}
-        <Box sx={{
-          borderBottom: "solid 5px rgb(19,121,140)",
-          borderLeft: "solid 5px rgb(19,121,140)",
-          borderRight:"solid 2px #6B2239",
-          borderTop:"solid 2px #6B2239",
-          paddingBottom: "20px",
-          backgroundColor:"rgb(19,121,140, 0.1)",
-          borderBottomRightRadius:"25px",
-          borderTopLeftRadius:"25px",
-        }}>
-          <Typography variant="h4" gutterBottom
+        <Box
           sx={{
-            fontWeight:"bold",
+            borderBottom: "solid 5px rgb(19,121,140)",
+            borderLeft: "solid 5px rgb(19,121,140)",
+            borderRight: "solid 2px #6B2239",
+            borderTop: "solid 2px #6B2239",
+            paddingBottom: "20px",
+            backgroundColor: "rgb(19,121,140, 0.1)",
+            borderBottomRightRadius: "25px",
+            borderTopLeftRadius: "25px",
           }}
+        >
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{
+              fontWeight: "bold",
+            }}
           >
             Catalogue des Cours
           </Typography>
@@ -203,21 +193,21 @@ const CoursL2i = () => {
           sx={{
             borderBottom: "solid 3px rgb(19,121,140)",
             borderLeft: "solid 3px rgb(19,121,140)",
-            borderRight:"solid 2px #6B2239",
-            borderTop:"solid 2px #6B2239", 
-            backgroundColor:"white",
-            border: 'solid 2px #6B2239', 
-            width:"235px",
-            borderRadius:"25px",
-            margin:"0 auto",
-            transition:"0.5s",
-            marginBottom:"25px",
-            color: '#085867',
-            '&:hover': {
-              borderColor: '#13798C',
-              border: 'solid 2px white',
-              color: 'white',
-              backgroundColor:"#6B2239",
+            borderRight: "solid 2px #6B2239",
+            borderTop: "solid 2px #6B2239",
+            backgroundColor: "white",
+            border: "solid 2px #6B2239",
+            width: "235px",
+            borderRadius: "25px",
+            margin: "0 auto",
+            transition: "0.5s",
+            marginBottom: "25px",
+            color: "#085867",
+            "&:hover": {
+              borderColor: "#13798C",
+              border: "solid 2px white",
+              color: "white",
+              backgroundColor: "#6B2239",
             },
           }}
         >
@@ -294,21 +284,21 @@ const CoursL2i = () => {
             sx={{
               borderBottom: "solid 3px rgb(19,121,140)",
               borderLeft: "solid 3px rgb(19,121,140)",
-              borderRight:"solid 2px #6B2239",
-              borderTop:"solid 2px #6B2239", 
-              backgroundColor:"white",
-              borderRadius:"25px",
-              border: 'solid 2px #6B2239', 
-              width:"157px",
-              margin:"0 auto",
-              marginBottom:"-15px",
-              color: '#085867',
-              transition:"0.5s",
-              '&:hover': {
-                borderColor: '#13798C',
-                border: 'solid 2px white',
-                color: 'white',
-                backgroundColor:"#6B2239",
+              borderRight: "solid 2px #6B2239",
+              borderTop: "solid 2px #6B2239",
+              backgroundColor: "white",
+              borderRadius: "25px",
+              border: "solid 2px #6B2239",
+              width: "157px",
+              margin: "0 auto",
+              marginBottom: "-15px",
+              color: "#085867",
+              transition: "0.5s",
+              "&:hover": {
+                borderColor: "#13798C",
+                border: "solid 2px white",
+                color: "white",
+                backgroundColor: "#6B2239",
               },
             }}
           >
@@ -317,17 +307,19 @@ const CoursL2i = () => {
         </Box>
       </Collapse>
 
-      <Divider component="div" role="presentation" sx={{
-        border:"solid 5px rgb(19,121,140)",
-        borderRadius:"25px",
-        width:"350px",
-        margin:"0 auto"
-      }}>
-      </Divider>
-
+      <Divider
+        component="div"
+        role="presentation"
+        sx={{
+          border: "solid 5px rgb(19,121,140)",
+          borderRadius: "25px",
+          width: "350px",
+          margin: "0 auto",
+        }}
+      ></Divider>
 
       {/* Courses Display */}
-      {filteredCours.length === 0 ? (
+      {/* {filteredCours.length === 0 ? (
         <Box textAlign="center" mt={4}>
           <Typography variant="h6" color="textSecondary">
             Aucun cours trouvé
@@ -375,6 +367,17 @@ const CoursL2i = () => {
                   }}
                   >
                     {course.title}
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {course?.url.substring(course?.url.indexOf("_") + 1) ||
+                      course?.url}
                   </Typography>
                   <Divider component='div' sx={{
                     border:"solid 1px rgb(19,121,140)",
@@ -399,6 +402,7 @@ const CoursL2i = () => {
                   <Button
                     variant="contained"
                     color="primary"
+                    target="blank"
                     href={`${SERVER_URL}/cours/${course.url}`}
                     startIcon={<PdfIcon />}
                     fullWidth
@@ -406,6 +410,120 @@ const CoursL2i = () => {
                     Télécharger
                   </Button>
                 </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )} */}
+
+      {/* Courses Display */}
+      {filteredCours.length === 0 ? (
+        <Box textAlign="center" mt={4}>
+          <Typography variant="h6" color="textSecondary">
+            Aucun cours trouvé
+          </Typography>
+          <InfoIcon fontSize="large" color="action" />
+        </Box>
+      ) : (
+        <Grid container spacing={4} mt={4}>
+          {currentCourses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
+              <Card
+                sx={{
+                  height: "100%",
+                  width: "300px",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderBottom: "solid 5px rgb(19,121,140)",
+                  borderLeft: "solid 5px rgb(19,121,140)",
+                  borderRight: "solid 2px #6B2239",
+                  borderTop: "solid 2px #6B2239",
+                  borderBottomRightRadius: "25px",
+                  borderTopLeftRadius: "20px",
+                }}
+              >
+                <CardMedia
+                  component="div"
+                  sx={{
+                    height: 175,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#085867", // Choisissez une couleur de fond
+                    color: "white",
+                    fontSize: "2rem",
+                  }}
+                >
+                  {course.classeroom.name}
+                </CardMedia>
+                <CardContent sx={{ textAlign: "left" }}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {course.title}
+                  </Typography>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        {course?.url.substring(course?.url.indexOf("_") + 1) ||
+                          course?.url}
+                      </Typography>
+                      <Divider
+                        component="div"
+                        sx={{
+                          border: "solid 1px rgb(19,121,140)",
+                          width: "100px",
+                          margin: "0 auto",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontWeight: "bold",
+                          textAlign: "left",
+                        }}
+                      >
+                        Professeur : Mr.{" "}
+                        {course.classeroom.professors[0].firstName}{" "}
+                        {course.classeroom.professors[0].lastName.toUpperCase()}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          textAlign: "left",
+                        }}
+                      >
+                        Niveau : {course.classeroom.name}
+                        <br />
+                        Date d'upload :{" "}
+                        {new Date(
+                          course.classeroom.creatAt
+                        ).toLocaleDateString()}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        target="blank"
+                        href={`${SERVER_URL}/cours/${course.url}`}
+                        startIcon={<PdfIcon />}
+                        fullWidth
+                      >
+                        Télécharger
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </CardContent>
               </Card>
             </Grid>
           ))}

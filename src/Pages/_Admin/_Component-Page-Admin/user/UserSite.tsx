@@ -8,20 +8,6 @@ const UserSite = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // const fetchUser = () => {
-  //   fetch(SERVER_URL + "/student", {
-  //     method: "GET",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setData(data);
-  //       setFilteredData(data); // Initialize filteredData with all data
-  //     })
-  //     .catch((error) =>
-  //       console.error("Error fetching data student level 1:", error)
-  //     );
-  // };
-
   const fetchUser = useCallback(async () => {
     try {
       const response = await api.get("/student");
@@ -45,25 +31,6 @@ const UserSite = () => {
     fetchUser();
   }, [fetchUser]);
 
-  // const handleDelete = (id) => {
-  //   if (window.confirm("Voulez-vous vraiment supprimer ce user?")) {
-  //     fetch(SERVER_URL + `/student/${id}`, {
-  //       method: "DELETE",
-  //     })
-  //       .then((response) => {
-  //         if (response.ok) {
-  //           setData((prevData) => prevData.filter((item) => item.id !== id));
-  //           setFilteredData((prevData) =>
-  //             prevData.filter((item) => item.id !== id)
-  //           );
-  //         } else {
-  //           console.error("Failed to delete item student");
-  //         }
-  //       })
-  //       .catch((error) => console.error("Error deleting item:", error));
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce user?")) {
       try {
@@ -83,6 +50,35 @@ const UserSite = () => {
           error.response?.data || error.message
         );
       }
+    }
+  };
+
+  const handleBlock = async (id, isBlocked) => {
+    try {
+      const endpoint = isBlocked
+        ? `/student/unblocked/${id}`
+        : `/student/blocked/${id}`;
+      const response = await api.post(endpoint);
+
+      if (response.status === 200) {
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === id ? { ...item, blocked: !isBlocked } : item
+          )
+        );
+        setFilteredData((prevData) =>
+          prevData.map((item) =>
+            item.id === id ? { ...item, blocked: !isBlocked } : item
+          )
+        );
+      } else {
+        console.error("Failed to block/unblock the student");
+      }
+    } catch (error) {
+      console.error(
+        "Error blocking/unblocking student:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -120,10 +116,19 @@ const UserSite = () => {
       render: (_, record) => (
         <span>
           <Button
-            style={{ backgroundColor: "red", color: "white" }}
+            style={{ backgroundColor: "red", color: "white", marginRight: 8 }}
             onClick={() => handleDelete(record.id)}
           >
             Delete
+          </Button>
+          <Button
+            style={{
+              backgroundColor: record.blocked ? "yellow" : "green",
+              color: "white",
+            }}
+            onClick={() => handleBlock(record.id, record.blocked)}
+          >
+            {record.blocked ? "Débloquer" : "Bloquer"}
           </Button>
         </span>
       ),
