@@ -1,44 +1,105 @@
-#loginPageReset{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#loginPageReset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-#loginBoxReset{
-    background: rgba(255, 255, 255, 0.9);
-    /* padding: 60px; */
-    width: 45%;
-    margin-top: 3rem;
-    border-radius: 8px;
-    box-shadow: 0 #fff;
+#loginBoxReset {
+  background: rgba(255, 255, 255, 0.9);
+  /* padding: 60px; */
+  width: 45%;
+  margin-top: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 #fff;
 }
 
 @media (max-width: 991px) {
-    #MonInput2{
-        width: 100% !important;    
-    }
-    #loginBoxReset{
-        width: 95% !important;    
-    }
-    .BtnvalidateReset{
+  #MonInput2 {
+    width: 100% !important;
+  }
+  #loginBoxReset {
+    width: 95% !important;
+  }
+  .BtnvalidateReset {
     width: 90% !important;
     padding: 0 !important;
-    }
+  }
 }
 
-.BtnvalidateReset{
-    width: 53%;
-    padding: 5px 5px;
-    background-color: var(--bgColor2) !important;
-    border: none;
-    border-radius: 30px;
-    color: white;
-    height: 50px; 
-    font-size: 16px;
-    font-weight: 600;
-    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+.BtnvalidateReset {
+  width: 53%;
+  padding: 5px 5px;
+  background-color: var(--bgColor2) !important;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
-.BtnvalidateReset:hover{
-    color: white !important;
-    background-color: var(--bgColor1) !important;
-    transform: scale(1.05);
+.BtnvalidateReset:hover {
+  color: white !important;
+  background-color: var(--bgColor1) !important;
+  transform: scale(1.05);
+}
+
+/* -------------------------------------------- */
+.reset-password {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 50px auto;
+  font-family: "Poppins";
+  color: #000000;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.inputField {
+  margin-bottom: 15px;
+  width: 80%;
+  padding: 12px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.buttonValider {
+  width: 80%;
+  height: 3rem;
+  background-color: var(--bgColor2) !important;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+  font-family: "Poppins";
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.buttonValider:hover {
+  color: white !important;
+  background-color: var(--bgColor1) !important;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

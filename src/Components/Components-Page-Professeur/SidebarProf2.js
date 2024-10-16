@@ -3,48 +3,52 @@ import {
   EditOutlined,
   HomeFilled,
   LogoutOutlined,
+  MailOutlined,
   ReadOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import logoL2i from "../../Assets/img/Logo-L2i.png";
 import "../../Styles/SidebarProf2.css";
+import { useAuth } from "../../Utils/AuthContext";
+import { useApi } from "../../Utils/Api";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const SidebarProf2 = () => {
+  const api = useApi();
+  const { authData, logout } = useAuth();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   // Fonction pour gérer la déconnexion
-  const handleLogout = () => {
-    window.sessionStorage.clear();
-    window.location.href = "/";
-  };
+  const handleLogout = async () => {
+    try {
+      // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
+      const response = await api.post("/logout", null, {
+        withCredentials: true,
+      });
 
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
+      if (response.status !== 200) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
       }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+
+      console.log("Déconnexion réussie.");
+      logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
+      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
+    } catch (error) {
+      logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
+      window.location.href = "/";
+      console.error("Erreur lors de la requête de déconnexion:", error);
     }
   };
 
-  const currentUser = getUserInfo();
+  const currentUser = authData.user; // Récupérer l'utilisateur depuis le contexte
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -67,7 +71,7 @@ const SidebarProf2 = () => {
           alignItems: "center",
         }}
       >
-        <Link to="/professeur">
+        <Link to="/">
           <img
             src={logoL2i}
             alt="LogoL2i"
@@ -79,7 +83,10 @@ const SidebarProf2 = () => {
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
           <Menu.Item icon={<HomeFilled />}>
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link
+              to="/professeurlkmsdqkjdslk"
+              style={{ textDecoration: "none" }}
+            >
               Accueil
             </Link>
           </Menu.Item>
@@ -106,13 +113,19 @@ const SidebarProf2 = () => {
               Ajouter Notes
             </Link>
           </Menu.Item>
+          <Menu.Item key="4" icon={<MailOutlined />}>
+            <Link to="enoyerEmailClasse" style={{ textDecoration: "none" }}>
+              Envoyer Email
+            </Link>
+          </Menu.Item>
           {/* <SubMenu key="sub2" icon={<UserOutlined />} title=`Pr ${currentUser?.firstName}${" "} ${currentUser?.name}` > */}
-          <SubMenu 
-            key="sub2" 
-            icon={<UserOutlined />} 
-            title={`${currentUser?.firstName?.charAt(0)}.${currentUser.lastName}`} 
+          <SubMenu
+            key="sub2"
+            icon={<UserOutlined />}
+            title={`${currentUser?.firstName?.charAt(0)}.${
+              currentUser.lastName
+            }`}
           >
-
             <Menu.Item key="5">
               <Link to="update-prof" style={{ textDecoration: "none" }}>
                 <EditOutlined /> &nbsp; Modifier
@@ -153,7 +166,7 @@ const SidebarProf2 = () => {
           <div
             style={{
               padding: 24,
-              minHeight: '100vh',
+              minHeight: "100vh",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

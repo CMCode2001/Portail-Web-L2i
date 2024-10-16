@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
 import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
 import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
@@ -9,7 +9,6 @@ import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import Accueil from "./Pages/Accueil";
 import Apropos from "./Pages/Apropos";
-import Confirmation from "./Pages/Confirmation";
 import Connexion from "./Pages/Connexion";
 import Cours from "./Pages/Cours";
 import Forum from "./Pages/Forum";
@@ -24,38 +23,27 @@ import ProfileStudent from "./Components/Profile/ProfileStudent";
 import ActivationMessage from "./Pages/ActivationMessage";
 import ResetMotDePasse from "./Components/ResetMotDePasse";
 import ScrollToTop from "./Components/ScrollToTop";
+import PersistLogin from "./Utils/PersistLogin";
+import RequireAuth from "./Utils/RequireAuth";
+import Logout from "./Pages/Logout";
+import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
+
+const ROLES = {
+  Student: "student",
+  Professor: "professor",
+  Admin: "admin",
+};
 
 function App() {
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-  };
-
-  const currentUser = getUserInfo();
-
-  // if (currentUser === undefined) {
-  //   // Affiche un loader ou un message de chargement
-  //   return <div>Chargement...</div>;
-  // }
-
   return (
     <div className="App">
-      <ScrollToTop/>
-      <BrowserRouter>
-        <Routes>
+      <ScrollToTop />
+      <Routes>
+        {/* public routes */}
+        {/* <Route path="/logout" element={<Logout />} /> */}
+        <Route path="/password/reset" element={<ResetMotDePasse />} />
+        <Route path="/password/forget" element={<ForgetMotDePasse />} />
+        <Route element={<PersistLogin />}>
           <Route path="/" element={<Accueil />} />
           <Route path="/cours" element={<Cours />} />
           <Route path="/forum" element={<Forum />} />
@@ -67,49 +55,33 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
-          <Route path="/confirmation/:idtoken" element={<Confirmation />} />
-          <Route path="/password/reset/:idtoken" element={<ResetMotDePasse />} />
-          <Route path="/password/forget" element={<ForgetMotDePasse />} />
+          {/* <Route path="/confirmation/:idtoken" element={<Confirmation />} /> */}
           <Route path="/activation-message" element={<ActivationMessage />} />
-          {/* <Route path="studentProfile" element={<ProfileStudent />} /> */}
-          {currentUser?.role === "student" ? (
-            <Route path="studentProfile" element={<ProfileStudent />} />
-          ) : (
-            <Route path="studentProfile" element={<Connexion />} />
-          )}
 
-          {/* ------------ Professeur -------------- */}
-          {/* <Route path="mes-cours" element={<MesCoursBlock />} /> */}
-          {/* <Route path="/professeur" element={<Professeur />}>
-            <Route path="classes/L1-2i" element={<Licence12i />} />
-            <Route path="classes/L2-2i" element={<Licence22i />} />
-            <Route path="classes/L3-2i" element={<Licence32i />} />
-            <Route path="ajouter-notes" element={<AjouterNotes />} />
-            <Route path="update-prof" element={<UpdateProf />} />
-          </Route> */}
-          {currentUser?.role === "professor" ? (
+          {/* Protected routes */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
+            <Route path="studentProfile" element={<ProfileStudent />} />
+          </Route>
+          <Route
+            element={
+              <RequireAuth allowedRoles={[ROLES.Professor, ROLES.Admin]} />
+            }
+          >
             <Route path="/professeur" element={<Professeur />}>
               <Route path="classes/L1-2i" element={<Licence12i />} />
               <Route path="classes/L2-2i" element={<Licence22i />} />
               <Route path="classes/L3-2i" element={<Licence32i />} />
               <Route path="ajouter-notes" element={<AjouterNotes />} />
+              <Route path="enoyerEmailClasse" element={<SendEmailClasse />} />
               <Route path="update-prof" element={<UpdateProf />} />
             </Route>
-          ) : (
-            <Route path="/professeur" element={<Connexion />} />
-          )}
-
-          {/* ------------ Professeur -------------- */}
-
-          {/* ---------------- ADMIN --------------- */}
-          {currentUser?.role === "admin" ? (
+          </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route path="/adminflksosdjds" element={<PageAdmin />} />
-          ) : (
-            <Route path="/adminflksosdjds" element={<Connexion />} />
-          )}
-          {/* ---------------- ADMIN --------------- */}
-        </Routes>
-      </BrowserRouter>
+          </Route>
+        </Route>
+        <Route path="*" element={<Accueil />} />
+      </Routes>
     </div>
   );
 }

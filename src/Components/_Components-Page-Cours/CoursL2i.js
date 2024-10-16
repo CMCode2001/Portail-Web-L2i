@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
   Card,
   CardContent,
-  CardMedia,
   CardActions,
+  CardMedia,
   Typography,
   TextField,
   Button,
@@ -15,42 +15,87 @@ import {
   Pagination,
   Divider,
   InputAdornment,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Search as SearchIcon,
   PictureAsPdf as PdfIcon,
   FilterList as FilterIcon,
   Info as InfoIcon,
-} from '@mui/icons-material';
-import { SERVER_URL } from '../../Utils/constantURL';
+} from "@mui/icons-material";
+import { SERVER_URL } from "../../Utils/constantURL";
 
 const CoursL2i = () => {
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('');
-  const [selectedProfessor, setSelectedProfessor] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedProfessor, setSelectedProfessor] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [page, setPage] = useState(1);
   const [filtersVisible, setFiltersVisible] = useState(true); // State for showing/hiding filters
   const coursesPerPage = 6;
 
-  const fetchCourse = () => {
-    fetch(`${SERVER_URL}/course`, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCours(data);
-        console.log(data)
-        setFilteredCours(data);
-      })
-      .catch((error) => console.error('Error fetching courses:', error));
-  };
-
   useEffect(() => {
     fetchCourse();
   }, []);
+
+  // const fetchCourse = () => {
+  //   fetch(`${SERVER_URL}/document`, {
+  //     method: "GET",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setCours(data);
+  //       console.log(data);
+  //       setFilteredCours(data);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Erreur lors de la récupération des cours:", error)
+  //     );
+  // };
+  const fetchCourse = () => {
+    fetch(`${SERVER_URL}/document`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Trier les cours par date décroissante
+        const sortedData = data.sort(
+          (a, b) => new Date(b.creatAt) - new Date(a.creatAt)
+        );
+        setCours(sortedData);
+        console.log(sortedData);
+        setFilteredCours(sortedData);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des cours:", error)
+      );
+  };
+
+  const filterCours = (searchTerm, level, professor, date) => {
+    let filtered = cours;
+
+    if (searchTerm) {
+      filtered = filtered.filter((c) =>
+        c.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    if (level) {
+      filtered = filtered.filter((c) => c.classeroomName === level);
+    }
+    if (professor) {
+      filtered = filtered.filter((c) =>
+        c.professorName.toLowerCase().includes(professor.toLowerCase())
+      );
+    }
+    if (date) {
+      filtered = filtered.filter((c) => {
+        const courseDate = new Date(c.creatAt).toISOString().split("T")[0];
+        return courseDate === date;
+      });
+    }
+    setFilteredCours(filtered);
+  };
 
   const handleSearch = (e) => {
     const term = e.target.value;
@@ -65,35 +110,6 @@ const CoursL2i = () => {
     filterCours(searchTerm, level, professor, date);
   };
 
-  const filterCours = (searchTerm, level, professor, date) => {
-    let filtered = cours;
-
-    if (searchTerm) {
-      filtered = filtered.filter((c) =>
-        c.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (level) {
-      filtered = filtered.filter((c) => c.classeroom.name === level);
-    }
-    if (professor) {
-      filtered = filtered.filter((c) =>
-        (c.classeroom.professors[0].firstName+" "+c.classeroom.professors[0].firstName).toLowerCase().includes(professor.toLowerCase())
-      );
-    }
-    if (date) {
-
-      filtered = filtered.filter((c) => {
-        console.log(c.classeroom.creatAt);
-        const courseDate = new Date(c.classeroom.creatAt).toISOString().split('T')[0];
-        console.log(courseDate +" === "+ date)
-        // const filterDate = new Date(date).toISOString().split('T')[0];
-        return courseDate === date;
-      });
-    }
-    setFilteredCours(filtered);
-  };
-
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -104,15 +120,20 @@ const CoursL2i = () => {
 
   const indexOfLastCourse = page * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = filteredCours.slice(indexOfFirstCourse, indexOfLastCourse);
+  // const currentCourses = filteredCours.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const currentCourses = filteredCours.slice(
+    indexOfFirstCourse,
+    indexOfLastCourse
+  );
 
   return (
     <Container>
-      <Box 
-        textAlign="center" 
+      <Box
+        textAlign="center"
         my={4}
-        fontWeight="bold" 
-        borderRadius={50} 
+        fontWeight="bold"
+        borderRadius={50}
         color="#6B2239"
         >
         
@@ -154,8 +175,19 @@ const CoursL2i = () => {
               </InputAdornment>
             ),
             sx: {
-              borderRadius: '50px', // Border radius for the input
-              
+              borderRadius: "50px", // Border radius for the input
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "50px", // Border radius for the input field
+                "& fieldset": {
+                  borderColor: "#085867", // Border color
+                },
+                "&:hover fieldset": {
+                  borderColor: "#13798C", // Border color on hover
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#13798C", // Border color when focused
+                },
+              },
             },
           }}
         />
@@ -189,13 +221,19 @@ const CoursL2i = () => {
             },
           }}
         >
-          {filtersVisible ? 'Cacher les filtres' : 'Afficher les filtres'}
+          {filtersVisible ? "Cacher les filtres" : "Afficher les filtres"}
         </Button>
       </Box>
 
       {/* Filters (collapsible) */}
       <Collapse in={filtersVisible}>
-        <Grid container spacing={2} alignItems="center" justifyContent="center" mb={4}>
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+          mb={4}
+        >
           <Grid item xs={12} md={3}>
             <TextField
               fullWidth
@@ -203,7 +241,9 @@ const CoursL2i = () => {
               label="Niveau"
               variant="outlined"
               value={selectedLevel}
-              onChange={(e) => handleFilter(e.target.value, selectedProfessor, selectedDate)}
+              onChange={(e) =>
+                handleFilter(e.target.value, selectedProfessor, selectedDate)
+              }
             >
               <MenuItem value="">Tous les niveaux</MenuItem>
               <MenuItem value="LICENCE1">L1</MenuItem>
@@ -217,7 +257,9 @@ const CoursL2i = () => {
               label="Professeur"
               variant="outlined"
               value={selectedProfessor}
-              onChange={(e) => handleFilter(selectedLevel, e.target.value, selectedDate)}
+              onChange={(e) =>
+                handleFilter(selectedLevel, e.target.value, selectedDate)
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -234,7 +276,9 @@ const CoursL2i = () => {
               label="Date"
               variant="outlined"
               value={selectedDate}
-              onChange={(e) => handleFilter(selectedLevel, selectedProfessor, e.target.value)}
+              onChange={(e) =>
+                handleFilter(selectedLevel, selectedProfessor, e.target.value)
+              }
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -245,7 +289,7 @@ const CoursL2i = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleFilter('', '', '')}
+            onClick={() => handleFilter("", "", "")}
             startIcon={<FilterIcon />}
             sx={{
               borderBottom: "solid 3px rgb(19,121,140)",
@@ -355,29 +399,9 @@ const CoursL2i = () => {
                   <Button
                     variant="contained"
                     color="primary"
-                    href={`${SERVER_URL}/course/${course.id}/pdf`}
+                    href={`${SERVER_URL}/cours/${course.url}`}
                     startIcon={<PdfIcon />}
                     fullWidth
-                    sx={{
-
-                      borderBottom: "solid 5px rgb(19,121,140)",
-                      borderLeft: "solid 5px rgb(19,121,140)",
-                      borderRight:"solid 2px #6B2239",
-                      borderTop:"solid 2px #6B2239",
-                      borderBottomRightRadius:"25px",
-                      borderTopLeftRadius:"20px", 
-                      backgroundColor:"white",
-                      border: 'solid 1px #6B2239', 
-                      width:"150px",
-                      margin:"0 auto",
-                      marginBottom:"25px",
-                      color: '#085867',
-                      '&:hover': {
-                        borderColor: '#13798C', 
-                        color: 'white',
-                        backgroundColor:"#6B2239",
-                      },
-                    }}
                   >
                     Télécharger
                   </Button>

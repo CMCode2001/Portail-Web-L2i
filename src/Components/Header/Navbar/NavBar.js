@@ -13,69 +13,75 @@ import "../../../Styles/_RESPONSIVES/Navbar-Topbar-Rsp.css";
 import "../../../Styles/generalCSS.css";
 import MenuHamburger from "../../../Assets/img/hamburger-menu.png";
 import logoL2i from "../../../Assets/img/Logo-L2i.png";
-import { SERVER_URL } from "../../../Utils/constantURL";
+import { useApi } from "../../../Utils/Api";
+import { useAuth } from "../../../Utils/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { authData, logout } = useAuth(); // Utiliser le contexte
+  const api = useApi();
 
-  // const handleLogout = () => {
-  //   window.sessionStorage.clear();
-  //   window.location.href = "/";
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await api.post("/logout");
+
+  //     if (response.status !== 200) {
+  //       console.error("Erreur lors de la déconnexion.");
+  //       return;
+  //     }
+
+  //     console.log("Déconnexion réussie.");
+  //     logout(); // Appeler la fonction de déconnexion du contexte
+  //     window.location.href = "/";
+  //   } catch (error) {
+  //     logout();
+  //     window.location.href = "/";
+  //     console.error("Erreur lors de la requête de déconnexion:", error);
+  //   }
+  // };
+
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await api.post("/logout");
+
+  //     if (response.status !== 200) {
+  //       console.error("Erreur lors de la déconnexion.");
+  //       return;
+  //     }
+
+  //     console.log("Déconnexion réussie.");
+  //     logout(); // Appeler la fonction de déconnexion du contexte
+  //     window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
+  //   } catch (error) {
+  //     logout(); // En cas d'erreur, on déconnecte quand même l'utilisateur
+  //     window.location.href = "/";
+  //     console.error("Erreur lors de la requête de déconnexion:", error);
+  //   }
   // };
 
   const handleLogout = async () => {
     try {
-      const jwt = sessionStorage.getItem("access_token");
-
-      if (!jwt) {
-        console.error("Aucun token trouvé pour déconnexion.");
-        return;
-      }
-
-      const response = await fetch(SERVER_URL + "/logout", {
-        method: "POST", // Utilisation de POST pour la déconnexion
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`, // Inclusion du token dans le header
-        },
+      // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
+      const response = await api.post("/logout", null, {
+        withCredentials: true,
       });
 
-      // Si la requête échoue
-      if (!response.ok) {
+      if (response.status !== 200) {
         console.error("Erreur lors de la déconnexion.");
         return;
       }
 
-      // Si la requête réussit
       console.log("Déconnexion réussie.");
-
-      // Nettoyer le stockage et rediriger l'utilisateur
-      sessionStorage.clear();
-      window.location.href = "/";
+      logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
+      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
     } catch (error) {
+      logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
+      window.location.href = "/";
       console.error("Erreur lors de la requête de déconnexion:", error);
     }
   };
 
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-  };
-
-  const currentUser = getUserInfo();
+  const currentUser = authData?.user; // Récupérer l'utilisateur depuis le contexte
 
   return (
     <div className="  container-fluid bgCouleur2" id="KayFi">
@@ -185,7 +191,7 @@ const Navbar = () => {
                   Galerie
                 </NavLink>
               </li>
-              {sessionStorage.getItem("isLoggedIn") ? (
+              {authData.isLoggedIn ? (
                 <>
                   <Dropdown
                     overlay={
@@ -197,6 +203,11 @@ const Navbar = () => {
                         >
                           Déconnexion
                         </Menu.Item>
+                        {/* <Menu>
+                          <Menu.Item icon={<LogoutOutlined />} key="logout">
+                            <a href="/logout">Déconnexion</a>
+                          </Menu.Item>
+                        </Menu> */}
                         {currentUser?.role === "student" && (
                           <Menu.Item icon={<EditOutlined />} key="dashboard">
                             <NavLink to="/studentProfile">Profile</NavLink>
@@ -228,7 +239,7 @@ const Navbar = () => {
                         />
                         <p>
                           <b>
-                            {currentUser?.firstName} {currentUser?.name} ▼
+                            {currentUser?.firstName} {currentUser?.lastName} ▼
                           </b>
                         </p>
                       </Button>

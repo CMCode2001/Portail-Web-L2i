@@ -2,8 +2,12 @@ import { Button, Form, Input, notification, Upload, Avatar } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import { SERVER_URL } from "../../../../Utils/constantURL";
+import { useAuth } from "../../../../Utils/AuthContext";
+import { useApi } from "../../../../Utils/Api";
 
 const UpdateAdmin = () => {
+  const api = useApi();
+  const { authData, setuser } = useAuth();
   const [user, setUser] = useState({
     id: "",
     firstName: "",
@@ -35,21 +39,49 @@ const UpdateAdmin = () => {
     });
   };
 
+  // const getUserInfo = () => {
+  //   // const userJson = sessionStorage.getItem("user");
+  //   const userJson = authData?.user;
+  //   if (userJson) {
+  //     try {
+  //       const user = JSON.parse(userJson);
+  //       return user;
+  //     } catch (error) {
+  //       console.error(
+  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //         error
+  //       );
+  //     }
+  //   } else {
+  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //   }
+  //   return null;
+  // };
+
   const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
+    // const userJson = sessionStorage.getItem("user");
+    const userJson = authData?.user;
+
     if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
+      // Vérifie si userJson est une chaîne de caractères à analyser
+      if (typeof userJson === "string") {
+        try {
+          const user = JSON.parse(userJson);
+          return user;
+        } catch (error) {
+          console.error(
+            "Erreur lors de l'analyse de l'utilisateur depuis authData :",
+            error
+          );
+        }
+      } else {
+        // Si c'est déjà un objet, il suffit de le retourner
+        return userJson;
       }
     } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+      console.warn("Aucun utilisateur trouvé dans authData");
     }
+
     return null;
   };
 
@@ -79,34 +111,50 @@ const UpdateAdmin = () => {
     }
   };
 
-  const handleFormSubmit = async () => {
-    const token = sessionStorage.getItem("jwt");
-    try {
-      const response = await fetch(
-        `${SERVER_URL}/adminl2Ikfdsjlkjmsd/${user.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-          body: JSON.stringify({ ...user, ...passwords }),
-        }
-      );
+  // const handleFormSubmit = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${SERVER_URL}/adminl2Ikfdsjlkjmsd/${user.id}`,
+  //       {
+  //         method: "PATCH",
+  //         body: JSON.stringify({ ...user, ...passwords }),
+  //       }
+  //     );
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        sessionStorage.setItem("user", JSON.stringify(updatedUser));
+  //     if (response.ok) {
+  //       const updatedUser = await response.json();
+  //       sessionStorage.setItem("user", JSON.stringify(updatedUser));
+  //       openSuccessNotification();
+  //     } else {
+  //       const errorData = await response.json();
+  //       throw new Error(
+  //         errorData.message || "Erreur lors de la mise à jour des informations"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la mise à jour des informations:", error);
+  //     openErrorNotification(error.message);
+  //   }
+  // };
+
+  const handleFormSubmit = async () => {
+    try {
+      const response = await api.patch(`/adminl2Ikfdsjlkjmsd/${user.id}`, {
+        ...user,
+        ...passwords,
+      });
+
+      if (response.status === 200) {
+        const updatedUser = response.data; // Axios renvoie les données directement
+        // sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        setuser(updatedUser);
         openSuccessNotification();
       } else {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Erreur lors de la mise à jour des informations"
-        );
+        throw new Error("Erreur lors de la mise à jour des informations");
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour des informations:", error);
-      openErrorNotification(error.message);
+      openErrorNotification(error.response?.data?.message || error.message);
     }
   };
 

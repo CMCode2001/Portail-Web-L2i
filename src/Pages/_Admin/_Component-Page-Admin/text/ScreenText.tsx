@@ -1,54 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
-import { SERVER_URL } from "../../../../Utils/constantURL";
+import { useApi } from "../../../../Utils/Api";
 
 const ScreenText = () => {
+  const api = useApi();
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
 
-  const fetchText = () => {
-    const token = sessionStorage.getItem("jwt");
-    fetch(SERVER_URL + "/text", {
-      method: "GET",
-      headers: {
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => console.error("Error fetching data text:", error));
-  };
+  const fetchText = useCallback(async () => {
+    try {
+      const response = await api.get("/text");
+
+      if (response.status === 200) {
+        // Vérifiez si la réponse est réussie
+        setData(response.data);
+      } else {
+        console.error("Failed to fetch data text");
+      }
+    } catch (error) {
+      console.error("Error fetching data text:", error);
+    }
+  }, [api]);
 
   useEffect(() => {
     fetchText();
-  }, []);
+  }, [fetchText]);
 
-  const handleEdit = (id, newData) => {
-    const token = sessionStorage.getItem("jwt");
+  const handleEdit = async (id, newData) => {
+    try {
+      const response = await api.patch(`/text/${id}`, newData);
 
-    fetch(SERVER_URL + `/text/1`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setData((prevData) =>
-            prevData.map((item) => (item.id === id ? newData : item))
-          );
-        } else {
-          console.error("Failed to edit item text");
-        }
-      })
-      .catch((error) => console.error("Error editing item:", error));
+      if (response.status === 200) {
+        // Vérifiez si la réponse est réussie
+        setData(
+          (prevData) =>
+            prevData.map((item) =>
+              item.id === id ? { ...item, ...newData } : item
+            ) // Mise à jour de l'élément modifié
+        );
+      } else {
+        console.error("Failed to edit item text");
+      }
+    } catch (error) {
+      console.error("Error editing item:", error);
+    }
   };
 
   const showEditModal = (record) => {

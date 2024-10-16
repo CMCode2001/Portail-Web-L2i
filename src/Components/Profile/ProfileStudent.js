@@ -1,27 +1,31 @@
 import { Button, Form, Input, notification, Select, Switch } from "antd";
 import React, { useState, useEffect } from "react";
-import { SERVER_URL } from "../../Utils/constantURL";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useAuth } from "../../Utils/AuthContext";
+import { useApi } from "../../Utils/Api";
 
 const ProfileStudent = () => {
+  const api = useApi();
+  const { authData, setuser, logout } = useAuth();
   const [student, setStudent] = useState({
     id: "",
     firstName: "",
     lastName: "",
     email: "",
     specialityStudent: "",
-    classeroom_id: "",
+    classroom_id: "",
     active: false,
     ine: "",
   });
 
   const [passwords, setPasswords] = useState({
-    oldPassword: "",
+    currentPassword: "",
     newPassword: "",
   });
 
   const [changePassword, setChangePassword] = useState(false);
-  const [emailStatus, setEmailStatus] = useState("");
+  // const [emailStatus, setEmailStatus] = useState("");
+  const [passwordStatus, setPasswordStatus] = useState("");
   const [form] = Form.useForm();
 
   const openSuccessNotification = () => {
@@ -40,77 +44,40 @@ const ProfileStudent = () => {
     });
   };
 
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-    if (userJson) {
-      try {
-        const student = JSON.parse(userJson);
-        return student;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'étudiant depuis le sessionStorage:",
-          error
-        );
+  const handleLogout = async () => {
+    try {
+      // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
+      const response = await api.post("/logout", null, {
+        withCredentials: true,
+      });
+
+      if (response.status !== 200) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
       }
-    } else {
-      console.warn("Aucun étudiant trouvé dans le sessionStorage");
+
+      console.log("Déconnexion réussie.");
+      logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
+      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
+    } catch (error) {
+      logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
+      window.location.href = "/";
+      console.error("Erreur lors de la requête de déconnexion:", error);
     }
-    return null;
   };
 
-  // useEffect(() => {
-  //   const currentStudent = getUserInfo();
-
-  //   if (currentStudent) {
-  //     const fetchStudent = async () => {
-  //   const token = sessionStorage.getItem("jwt");
-  //       try {
-  //         const response = await fetch(
-  //           SERVER_URL + `/student/${currentStudent.id}`
-  //         );
-  //         const data = await response.json();
-  //         setStudent(data);
-
-  //         form.setFieldsValue({
-  //           firstName: data.firstName,
-  //           lastName: data.lastName,
-  //           email: data.email,
-  //           specialityStudent: data.specialityStudent,
-  //           classeroom_id: data.classeroom_id,
-  //           ine: data.ine,
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching data student:", error);
-  //       }
-  //     };
-
-  //     fetchStudent();
-  //   }
-  // }, [form]);
-
   useEffect(() => {
-    const currentStudent = getUserInfo();
-
+    const currentStudent = authData?.user;
     if (currentStudent) {
       const fetchStudent = async () => {
-        const token = sessionStorage.getItem("jwt");
         try {
-          const response = await fetch(
-            SERVER_URL + `/student/${currentStudent.id}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `${token}`,
-                "Content-Type": "application/json", // Optionnel, mais utile si besoin de spécifier
-              },
-            }
-          );
+          const response = await api.get(`/student/${currentStudent.id}`);
 
-          if (!response.ok) {
+          if (response.status !== 200) {
             throw new Error("Error fetching student data");
           }
 
-          const data = await response.json();
+          const data = response.data; // Axios renvoie les données directement
           setStudent(data);
 
           form.setFieldsValue({
@@ -118,7 +85,7 @@ const ProfileStudent = () => {
             lastName: data.lastName,
             email: data.email,
             specialityStudent: data.specialityStudent,
-            classeroom_id: data.classeroom_id,
+            classroom_id: data.classroom_id,
             ine: data.ine,
           });
         } catch (error) {
@@ -128,11 +95,11 @@ const ProfileStudent = () => {
 
       fetchStudent();
     }
-  }, [form]);
+  }, [form, authData, api]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "oldPassword" || name === "newPassword") {
+    if (name === "currentPassword" || name === "newPassword") {
       setPasswords({ ...passwords, [name]: value });
     } else {
       setStudent({ ...student, [name]: value });
@@ -140,66 +107,60 @@ const ProfileStudent = () => {
   };
 
   // const handleFormSubmit = async () => {
-  //   const token = sessionStorage.getItem("jwt");
   //   try {
   //     const body = changePassword
   //       ? { ...student, ...passwords }
   //       : { ...student };
 
-  //     const response = await fetch(`${SERVER_URL}/student/${student.id}`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(body),
-  //     });
+  //     const response = await api.patch(`/student/${student.id}`, body);
 
-  //     if (response.ok) {
-  //       const updatedStudent = await response.json();
-  //       sessionStorage.setItem("student", JSON.stringify(updatedStudent));
-  //       openSuccessNotification();
+  //     if (response.status === 200) {
+  //       const contentType = response.headers["content-type"];
+  //       if (contentType && contentType.includes("application/json")) {
+  //         const updatedStudent = response.data;
+  //         setuser(updatedStudent);
+  //         openSuccessNotification();
+  //       } else {
+  //         openSuccessNotification();
+  //       }
   //     } else {
-  //       const errorData = await response.json();
   //       throw new Error(
-  //         errorData.message || "Erreur lors de la mise à jour des informations"
+  //         response.data?.message ||
+  //           "Erreur lors de la mise à jour des informations"
   //       );
   //     }
   //   } catch (error) {
   //     console.error("Erreur lors de la mise à jour des informations:", error);
-  //     openErrorNotification(error.message);
+  //     openErrorNotification();
   //   }
   // };
 
   const handleFormSubmit = async () => {
-    const token = sessionStorage.getItem("jwt");
     try {
       const body = changePassword
         ? { ...student, ...passwords }
         : { ...student };
 
-      const response = await fetch(`${SERVER_URL}/student/${student.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await api.patch(`/student/${student.id}`, body);
 
-      if (response.ok) {
-        const contentType = response.headers.get("content-type");
+      if (response.status === 200) {
+        const contentType = response.headers["content-type"];
         if (contentType && contentType.includes("application/json")) {
-          const updatedStudent = await response.json();
-          sessionStorage.setItem("student", JSON.stringify(updatedStudent));
+          const updatedStudent = response.data;
+          setuser(updatedStudent);
           openSuccessNotification();
+
+          // Déconnecter l'utilisateur si le mot de passe a été changé
+          if (changePassword) {
+            handleLogout();
+          }
         } else {
           openSuccessNotification();
         }
       } else {
-        const errorData = await response.json();
         throw new Error(
-          errorData.message || "Erreur lors de la mise à jour des informations"
+          response.data?.message ||
+            "Erreur lors de la mise à jour des informations"
         );
       }
     } catch (error) {
@@ -212,16 +173,37 @@ const ProfileStudent = () => {
     handleFormSubmit();
   };
 
-  const validateEmail = (_, value) => {
+  // const validateEmail = (_, value) => {
+  //   if (!value) {
+  //     setEmailStatus("error");
+  //     return Promise.reject(new Error("Veuillez entrer votre email!"));
+  //   }
+  //   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+  //     setEmailStatus("error");
+  //     return Promise.reject(new Error("Email invalide"));
+  //   }
+  //   setEmailStatus("success");
+  //   return Promise.resolve();
+  // };
+
+  const validatePassword = (_, value) => {
     if (!value) {
-      setEmailStatus("error");
-      return Promise.reject(new Error("Veuillez entrer votre email!"));
+      setPasswordStatus("error");
+      return Promise.reject(new Error("Veuillez entrer votre mot de passe!"));
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setEmailStatus("error");
-      return Promise.reject(new Error("Email invalide"));
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        value
+      )
+    ) {
+      setPasswordStatus("error");
+      return Promise.reject(
+        new Error(
+          "Le mot de passe doit comporter au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial !"
+        )
+      );
     }
-    setEmailStatus("success");
+    setPasswordStatus("success");
     return Promise.resolve();
   };
 
@@ -297,7 +279,7 @@ const ProfileStudent = () => {
             style={{ width: "70%" }}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           className="text-lg-center"
           name="email"
           onChange={handleInputChange}
@@ -316,43 +298,41 @@ const ProfileStudent = () => {
             value={student.email}
             style={{ width: "70%" }}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           className="text-lg-center"
           name="specialityStudent"
-          onChange={handleInputChange}
           rules={[
             { required: true, message: "Veuillez entrer votre spécialité !" },
           ]}
           style={{ marginBottom: 20 }}
         >
-          {/* <Input
-            placeholder="Spécialité"
-            name="specialityStudent"
-            value={student.specialityStudent}
-            style={{ width: "70%" }}
-          /> */}
           <Select
             name="specialityStudent"
             value={student.specialityStudent}
             style={{ width: "70%" }}
             options={choixOptions}
+            onChange={(value) =>
+              setStudent({ ...student, specialityStudent: value })
+            }
           />
         </Form.Item>
         <Form.Item
           className="text-lg-center"
-          name="classeroom_id"
-          onChange={handleInputChange}
+          name="classroom_id"
           rules={[
             { required: true, message: "Veuillez entrer votre classe !" },
           ]}
           style={{ marginBottom: 20 }}
         >
           <Select
-            name="classeroom_id"
-            value={student.classeroom_id}
+            name="classroom_id"
+            value={student.classroom_id}
             style={{ width: "70%" }}
             options={classroomOptions}
+            onChange={(value) =>
+              setStudent({ ...student, classroom_id: value })
+            }
           />
         </Form.Item>
         <Form.Item
@@ -377,48 +357,39 @@ const ProfileStudent = () => {
         >
           <Switch checked={changePassword} onChange={setChangePassword} />
         </Form.Item>
-        {/* <Form.Item
-          label="Voulez-vous changer votre mot de passe ?"
-          style={{ marginBottom: 20, textAlign: "center" }}
-          labelCol={{ span: 24 }} // Cela permet de centrer le label sur toute la largeur
-        >
-          <Switch
-            style={{ position: "center" }}
-            checked={changePassword}
-            onChange={setChangePassword}
-          />
-        </Form.Item> */}
-
         {changePassword && (
           <>
             <Form.Item
               className="text-lg-center"
-              name="oldPassword"
+              name="currentPassword"
               onChange={handleInputChange}
               rules={[
                 {
                   required: true,
-                  message: "Veuillez entrer votre ancien mot de passe !",
+                  message: "Veuillez entrer votre actuelle mot de passe !",
                 },
               ]}
               style={{ marginBottom: 20 }}
             >
               <Input.Password
-                placeholder="Ancien mot de passe"
-                name="oldPassword"
+                placeholder="Mot de passe actuel"
+                name="currentPassword" // Utilisez un nom différent
                 style={{ width: "70%" }}
+                autocomplete="new-password" // Indiquer qu'il s'agit d'un nouveau mot de passe
               />
             </Form.Item>
             <Form.Item
               className="text-lg-center"
               name="newPassword"
+              validateStatus={passwordStatus}
+              rules={[{ validator: validatePassword }]}
               onChange={handleInputChange}
-              rules={[
-                {
-                  required: changePassword,
-                  message: "Veuillez entrer votre nouveau mot de passe !",
-                },
-              ]}
+              // rules={[
+              //   {
+              //     required: changePassword,
+              //     message: "Veuillez entrer votre nouveau mot de passe !",
+              //   },
+              // ]}
               style={{ marginBottom: 20 }}
             >
               <Input.Password

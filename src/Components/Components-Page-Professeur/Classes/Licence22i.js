@@ -67,7 +67,8 @@ const Licence22i = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false); // Pour le Drawer de programmation de devoir
   const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
   const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
-  const token = sessionStorage.getItem("jwt");
+  const token = sessionStorage.getItem("access_token");
+
 
   const showDrawerDevoir = () => {
     setIsDrawerVisible(true);
@@ -106,7 +107,7 @@ const Licence22i = () => {
     fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE2`, {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: ` Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -140,7 +141,7 @@ const Licence22i = () => {
     fetch(SERVER_URL + "/annonceDevoir", {
       method: "POST",
       headers: {
-        Authorization: `${token}`,
+        Authorization: ` Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(donnee),
@@ -174,7 +175,7 @@ const Licence22i = () => {
     fetch(SERVER_URL + "/course", {
       method: "POST",
       headers: {
-        Authorization: `${token}`,
+        Authorization: ` Bearer ${token}`,
       },
       body: formatDonnee,
     })

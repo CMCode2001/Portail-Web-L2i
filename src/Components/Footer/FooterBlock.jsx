@@ -77,7 +77,7 @@ function FooterBlock() {
           <Link to="/maquette">Maquettes</Link>
           <Link to="/forum">Forum</Link>
           <Link to="/a-propos">A propos</Link>
-          <Link to="/gallerie">Gallerie</Link>
+          <Link to="/gallerie">Galerie</Link>
         </div>
         <div className="social-media">
           <Link to="https://uasz.sn/">

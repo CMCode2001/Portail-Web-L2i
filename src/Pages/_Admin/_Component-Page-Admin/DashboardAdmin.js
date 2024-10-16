@@ -4,9 +4,9 @@ import {
   FileTextOutlined,
   HomeOutlined,
   LogoutOutlined,
+  MailOutlined,
   MessageOutlined,
   PictureOutlined,
-  PieChartOutlined,
   PushpinOutlined,
   UserOutlined,
   WechatOutlined,
@@ -19,7 +19,7 @@ import CrudClasseL1 from "./Classes/CrudClasseL1.jsx";
 import CrudClasseL2 from "./Classes/CrudClasseL2.jsx";
 import CrudClasseL3 from "./Classes/CrudClasseL3.jsx";
 import OldStudent from "./Classes/OldStudent.tsx";
-import CrudTable from "./CrudTable.tsx";
+import CrudTable from "./SendEmail.tsx";
 import CrudForum from "./Forum/CrudForum.tsx";
 import CrudMessageForum from "./Forum/CrudMessageForum.tsx";
 import UploadPicture from "./Galleries/UploadPicture.js";
@@ -27,11 +27,17 @@ import CrudProfesseur from "./Professor/CrudProfesseur.tsx";
 import UpdateAdmin from "./Professor/UpdateAdmin.js";
 import ScreenText from "./text/ScreenText.tsx";
 import UserSite from "./user/UserSite.tsx";
+import { useApi } from "../../../Utils/Api.js";
+import { useAuth } from "../../../Utils/AuthContext.js";
+import SendEmail from "./SendEmail.tsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const DashboardAdmin = () => {
+  const api = useApi();
+  const { logout } = useAuth();
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -42,11 +48,66 @@ const DashboardAdmin = () => {
     setSelectedCrud(key);
   };
 
-  const handleLogout = () => {
-    window.sessionStorage.clear();
-    window.location.href = "/";
-  };
+  // const handleLogout = () => {
+  //   window.sessionStorage.clear();
+  //   window.location.href = "/";
+  // };
 
+  // const handleLogout = async () => {
+  //   try {
+  //     const jwt = sessionStorage.getItem("access_token");
+
+  //     if (!jwt) {
+  //       console.error("Aucun token trouvé pour déconnexion.");
+  //       return;
+  //     }
+
+  //     const response = await fetch(SERVER_URL + "/logout", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${jwt}`,
+  //       },
+  //     });
+
+  //     // Si la requête échoue
+  //     if (!response.ok) {
+  //       console.error("Erreur lors de la déconnexion.");
+  //       return;
+  //     }
+
+  //     // Si la requête réussit
+  //     console.log("Déconnexion réussie.");
+
+  //     // Nettoyer le stockage et rediriger l'utilisateur
+  //     sessionStorage.clear();
+  //     window.location.href = "/";
+  //   } catch (error) {
+  //     console.error("Erreur lors de la requête de déconnexion:", error);
+  //   }
+  // };
+
+  const handleLogout = async () => {
+    try {
+      // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
+      const response = await api.post("/logout", null, {
+        withCredentials: true,
+      });
+
+      if (response.status !== 200) {
+        console.error("Erreur lors de la déconnexion.");
+        return;
+      }
+
+      console.log("Déconnexion réussie.");
+      logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
+      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
+    } catch (error) {
+      logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
+      window.location.href = "/";
+      console.error("Erreur lors de la requête de déconnexion:", error);
+    }
+  };
   const renderContent = () => {
     switch (selectedCrud) {
       case "etudiants":
@@ -67,8 +128,8 @@ const DashboardAdmin = () => {
         return <UploadPicture />;
       case "crud-welcomeText":
         return <ScreenText />;
-      case "crud-module1":
-        return <CrudTable />;
+      case "Send-Email":
+        return <SendEmail />;
       case "forum":
         return <CrudForum />;
       case "messageForum":
@@ -132,8 +193,8 @@ const DashboardAdmin = () => {
           >
             <Menu.Item key="crud-welcomeText">Text</Menu.Item>
           </SubMenu>
-          <SubMenu key="module" icon={<PieChartOutlined />} title="Modules">
-            <Menu.Item key="crud-module1">Modules</Menu.Item>
+          <SubMenu key="module" icon={<MailOutlined />} title="Email">
+            <Menu.Item key="Send-Email">Send Email</Menu.Item>
           </SubMenu>
           <SubMenu key="forum" icon={<MessageOutlined />} title="Forum">
             <Menu.Item key="forum">Forum</Menu.Item>

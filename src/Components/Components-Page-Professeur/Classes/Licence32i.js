@@ -40,7 +40,7 @@ const Licence32i = () => {
   const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
   const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   const searchInput = useRef(null);
-  const token = sessionStorage.getItem("jwt");
+  const token = sessionStorage.getItem("access_token");
   const [notes, setNotes] = useState({});
   const [modalTitle, setModalTitle] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -58,10 +58,11 @@ const Licence32i = () => {
 
   // `/curentListStudent/${id}`
   const fetchEtudiant = () => {
+    console.log("Fetching....")
     fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE3`, {
       method: "GET",
       headers: {
-        Authorization: `${token}`,
+        Authorization: ` Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -97,7 +98,7 @@ const Licence32i = () => {
     fetch(SERVER_URL + "/annonceDevoir", {
       method: "POST",
       headers: {
-        Authorization: `${token}`,
+        Authorization: ` Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(donnee),
@@ -116,22 +117,56 @@ const Licence32i = () => {
       })
       .catch((error) => console.error("Error sending course:", error));
   };
+  // const onSendingCourse = () => {
+  //   const donnee = {
+  //     title,
+  //     classeroom_id: 3,
+  //     professor_id: getUserInfo().id,
+  //     createdBy: "Test",
+  //   };
+
+  //   const formatDonnee = new FormData();
+  //   formatDonnee.append("course", JSON.stringify(donnee));
+  //   formatDonnee.append("pdf", pdfContent);
+
+  //   fetch(SERVER_URL + "/course/documents", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //     },
+  //     body: formatDonnee,
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Cours envoyé avec succès");
+  //       setIsModalVisible(true);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
+
   const onSendingCourse = () => {
     const donnee = {
       title,
       classeroom_id: 3,
       professor_id: getUserInfo().id,
-      createdBy: "Test",
+      createdBy: `${getUserInfo().firstName} ${getUserInfo().lastName}`, // Mettre les données appropriées
     };
-
+  
     const formatDonnee = new FormData();
     formatDonnee.append("course", JSON.stringify(donnee));
-    formatDonnee.append("pdf", pdfContent);
-
-    fetch(SERVER_URL + "/course", {
+    formatDonnee.append("documents", pdfContent); // Utilisation de "documents" comme attendu par le backend
+  
+    fetch(SERVER_URL + "/course/documents", {
       method: "POST",
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
+        // Ne pas ajouter 'Content-Type': 'application/json' car FormData gère cela automatiquement
       },
       body: formatDonnee,
     })
@@ -148,7 +183,7 @@ const Licence32i = () => {
       })
       .catch((error) => console.error("Error sending course:", error));
   };
-
+  
   const getUserInfo = () => {
     const userJson = sessionStorage.getItem("user");
     if (userJson) {

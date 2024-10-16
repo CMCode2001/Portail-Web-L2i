@@ -1,31 +1,24 @@
 import { Button, Form, Input, notification } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // useNavigate pour la redirection
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SvgLogin from "../Assets/svg/sign-in-animate.svg";
 import FooterBlock from "../Components/Footer/FooterBlock";
 import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
-import { SERVER_URL } from "../Utils/constantURL";
+import { useAuth } from "../Utils/AuthContext";
+import { useApi } from "../Utils/Api";
 
 const Connexion = () => {
+  const api = useApi(); // Obtient l'instance configurée
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [messageReponse, setMessageReponse] = useState("");
-  const [isAuthenticated, setAuth] = useState(false);
-  // const [token, setToken] = useState()
-  // const [erreurMsg, setErreurMsg] = useState("");
-  const navigate = useNavigate(); // Hook pour rediriger après login réussi
-  // const jwt = sessionStorage.getItem("access_token");
-  // setToken(jwt);
-  // Redirection après login si l'utilisateur est authentifié
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/"); // Redirection vers la page d'accueil
-    }
-  }, [isAuthenticated, navigate]);
+  const { login } = useAuth(); // Utiliser la fonction login du contexte
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  // Notification d'erreur
   const openErreurNotification = (message) => {
     notification.error({
       message: "Echec de la connexion",
@@ -34,105 +27,41 @@ const Connexion = () => {
     });
   };
 
-  // // Fonction principale pour le login
-  // const login = async () => {
-  //   try {
-  //     const user = { username, password };
-
-  //     const response = await fetch(SERVER_URL + "/login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(user),
-  //     });
-
-  //     // Si la requête échoue
-  //     if (!response.ok) {
-  //       const errorData = await response.text();
-  //       setMessageReponse(errorData || "Erreur lors de la connexion");
-  //       openErreurNotification(messageReponse);
-  //       return;
-  //     }
-
-  //     // Si la requête réussit
-  //     const jwtToken = response.headers.get("Authorization");
-  //     const userData = await response.json(); // Récupération des données utilisateur
-
-  //     // Vérification si l'utilisateur est actif
-  //     if (userData.user.active) {
-  //       // Stockage du token et des informations utilisateur
-  //       sessionStorage.setItem("jwt", jwtToken);
-  //       sessionStorage.setItem("isLoggedIn", true);
-  //       sessionStorage.setItem("user", JSON.stringify(userData.user));
-
-  //       // Afficher la notification de succès et rediriger
-  //       notification.success({
-  //         message: "Connexion réussie",
-  //         description: `Bienvenue, ${userData.user.firstName} ${userData.user.lastName}!`,
-  //         placement: "top",
-  //       });
-
-  //       setAuth(true); // Marquer comme authentifié
-  //     } else {
-  //       setMessageReponse(
-  //         `Cher ${userData.user.firstName} ${userData.user.lastName}, veuillez vérifier votre email pour activer votre compte.`
-  //       );
-  //       openErreurNotification(messageReponse);
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur lors de la requête de connexion:", error);
-  //     openErreurNotification("Erreur lors de la requête de connexion.");
-  //   }
-  // };
-
-  // Fonction principale pour le login
-  const login = async () => {
+  const handleLogin = async () => {
     try {
-      const user = { username, password };
+      const response = await api.post(
+        "/login",
+        { username, password },
+        {
+          withCredentials: true,
+        }
+      );
 
-      const response = await fetch(SERVER_URL + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-        // Authorization:`Bearer ${token}`
-      });
+      if (response.status === 200) {
+        const { user, access_token } = response.data;
 
-      // Si la requête échoue
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.log(response)
-        setMessageReponse(errorData || "Erreur lors de la connexion");
-        openErreurNotification(messageReponse);
-        return;
-      }
-
-      // Si la requête réussit
-      const data = await response.json(); // Récupération des données utilisateur, access_token et refresh_token
-
-      // Vérification si l'utilisateur est actif
-      if (data.user.active) {
-        // Stockage des tokens et des informations utilisateur
-        sessionStorage.setItem("access_token", data.access_token);
-        sessionStorage.setItem("refresh_token", data.refresh_token);
-        sessionStorage.setItem("isLoggedIn", true);
-        sessionStorage.setItem("user", JSON.stringify(data.user));
-
-        // Afficher la notification de succès et rediriger
-        notification.success({
-          message: "Connexion réussie",
-          description: `Bienvenue, ${data.user.firstName} ${data.user.lastName}!`,
-          placement: "top",
-        });
-
-        setAuth(true); // Marquer comme authentifié
+        if (user.active) {
+          login(user, access_token); // Stocker les données dans le contexte
+          notification.success({
+            message: "Connexion réussie",
+            description: `Bienvenue, ${user.firstName} ${user.lastName}!`,
+            placement: "top",
+          });
+          // navigate("/"); // Redirection vers la page d'accueil
+          navigate(from, { replace: true });
+        } else {
+          setMessageReponse("Veuillez activer votre compte via votre email.");
+          openErreurNotification(messageReponse);
+        }
       } else {
-        setMessageReponse(
-          `Cher ${data.user.firstName} ${data.user.lastName}, veuillez vérifier votre email pour activer votre compte.`
-        );
+        setMessageReponse("Erreur lors de la connexion.");
         openErreurNotification(messageReponse);
       }
     } catch (error) {
-      console.error("Erreur lors de la requête de connexion:", error);
-      openErreurNotification("Erreur lors de la requête de connexion.");
+      // openErreurNotification("Erreur lors de la requête.");
+      const errorMessage =
+        error.response?.data?.message || "Erreur lors de la requête.";
+      openErreurNotification(errorMessage);
     }
   };
 
@@ -147,11 +76,6 @@ const Connexion = () => {
     return Promise.resolve();
   };
 
-  // Si l'utilisateur est déjà authentifié, redirection automatique
-  if (isAuthenticated) {
-    return null; // Empêcher le rendu du formulaire si déjà connecté
-  }
-
   return (
     <div className="connexion">
       <HeaderBlock />
@@ -163,7 +87,7 @@ const Connexion = () => {
           <Form
             name="login-form"
             initialValues={{ remember: true }}
-            onFinish={login} // Utiliser la fonction login directement sur submit
+            onFinish={handleLogin}
           >
             {messageReponse && (
               <h2 className="erreur-login">{messageReponse}</h2>
@@ -209,7 +133,7 @@ const Connexion = () => {
             </Form.Item>
 
             <Form.Item>
-              <Link to="/password/reset" id="MdpForget">
+              <Link to="/password/forget" id="MdpForget">
                 Mot de passe oublié ?
               </Link>
             </Form.Item>

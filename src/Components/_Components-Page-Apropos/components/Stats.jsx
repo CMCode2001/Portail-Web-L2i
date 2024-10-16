@@ -5,6 +5,8 @@ import { SERVER_URL } from "../../../Utils/constantURL";
 
 function Stats() {
   const [totalStudents, setTotalStudents] = useState(0);
+  const [totalOldStudents, setTotalOldStudents] = useState(0);
+  const [totalProfessors, setTotalProfessors] = useState(0);
 
   useEffect(() => {
     const fetchTotalStudents = async () => {
@@ -25,6 +27,41 @@ function Stats() {
     fetchTotalStudents();
   }, []);
 
+  useEffect(() => {
+    const fetchTotalOldStudents = async () => {
+      try {
+        const response = await fetch(
+          SERVER_URL + "/curentListStudent/totalOldStudent"
+        );
+        const data = await response.json();
+        setTotalOldStudents(data);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des anciens étudiants:",
+          error
+        );
+      }
+    };
+
+    fetchTotalOldStudents();
+  }, []);
+
+  useEffect(() => {
+    const fetchTotaProfessors = async () => {
+      try {
+        const response = await fetch(
+          SERVER_URL + "/curentListStudent/totalProfessor"
+        );
+        const data = await response.json();
+        setTotalProfessors(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des professeurs:", error);
+      }
+    };
+
+    fetchTotaProfessors();
+  }, []);
+
   return (
     <div className="stats">
       <div className="chiffres">
@@ -41,7 +78,7 @@ function Stats() {
           <i className="fa-solid fa-chalkboard-user"></i>
           <div className="chiffre-content">
             <h4>
-              <CountUp end={17} duration={5} />
+              <CountUp end={totalProfessors} duration={5} />
             </h4>
             <p>Professeurs Titulaires</p>
           </div>
@@ -50,7 +87,7 @@ function Stats() {
           <i className="fa-solid fa-graduation-cap"></i>
           <div className="chiffre-content">
             <h4>
-              <CountUp end={32} duration={5} />
+              <CountUp end={totalOldStudents} duration={5} />
             </h4>
             <p>Diplômés</p>
           </div>
