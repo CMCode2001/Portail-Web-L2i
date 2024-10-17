@@ -319,104 +319,6 @@ const CoursL2i = () => {
       ></Divider>
 
       {/* Courses Display */}
-      {/* {filteredCours.length === 0 ? (
-        <Box textAlign="center" mt={4}>
-          <Typography variant="h6" color="textSecondary">
-            Aucun cours trouvé
-          </Typography>
-          <InfoIcon fontSize="large" color="action" />
-        </Box>
-      ) : (
-        <Grid container spacing={4} mt={4}>
-          {currentCourses.map((course) => (
-            <Grid item xs={12} sm={6} md={4} key={course.id}>
-              <Card sx={{ 
-                  height: '100%', 
-                  width:"300px",
-                  display: 'flex', 
-                  flexDirection: 'column' ,
-                  borderBottom: "solid 5px rgb(19,121,140)",
-                  borderLeft: "solid 5px rgb(19,121,140)",
-                  borderRight:"solid 2px #6B2239",
-                  borderTop:"solid 2px #6B2239",
-                  borderBottomRightRadius:"25px",
-                  borderTopLeftRadius:"20px"
-                  
-                  
-                  }}>
-                <CardMedia
-                  component="div"
-                  sx={{
-                    height: 175,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#085867', // Choisissez une couleur de fond
-                    color: 'white',
-                    fontSize: '2rem',
-                  }}
-                >
-                  {course.classeroom.name}
-                </CardMedia>
-                <CardContent sx={{
-                  textAlign:"left"
-                }}>
-                  <Typography variant="h6" gutterBottom
-                  sx={{
-                    fontWeight:"bold"
-                  }}
-                  >
-                    {course.title}
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {course?.url.substring(course?.url.indexOf("_") + 1) ||
-                      course?.url}
-                  </Typography>
-                  <Divider component='div' sx={{
-                    border:"solid 1px rgb(19,121,140)",
-                    width:"100px",
-                    margin:"0 auto"
-                  }}/>
-                  <Typography sx={{
-                    fontWeight:"bold",
-                    textAlign:"left"
-                  }}>
-                    Professeur : Mr. {course.classeroom.professors[0].firstName} {course.classeroom.professors[0].lastName.toUpperCase()}
-                  </Typography>
-                  <Typography variant="body2" sx={{
-                  textAlign:"left"
-                  }}>
-                    Niveau : {course.classeroom.name}
-                    <br />
-                    Date d'upload : {new Date(course.classeroom.creatAt).toLocaleDateString()}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    target="blank"
-                    href={`${SERVER_URL}/cours/${course.url}`}
-                    startIcon={<PdfIcon />}
-                    fullWidth
-                  >
-                    Télécharger
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )} */}
-
-      {/* Courses Display */}
       {filteredCours.length === 0 ? (
         <Box textAlign="center" mt={4}>
           <Typography variant="h6" color="textSecondary">
@@ -454,7 +356,7 @@ const CoursL2i = () => {
                     fontSize: "2rem",
                   }}
                 >
-                  {course.classeroom.name}
+                  {course?.classroomName}
                 </CardMedia>
                 <CardContent sx={{ textAlign: "left" }}>
                   <Typography
@@ -464,7 +366,7 @@ const CoursL2i = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {course.title}
+                    {course?.title}
                   </Typography>
                   <Card
                     sx={{
@@ -492,9 +394,9 @@ const CoursL2i = () => {
                           textAlign: "left",
                         }}
                       >
-                        Professeur : Mr.{" "}
-                        {course.classeroom.professors[0].firstName}{" "}
-                        {course.classeroom.professors[0].lastName.toUpperCase()}
+                        Professeur : Mr. {course?.professorName}
+                        {/* {course?.classroom.professors[0].firstName}{" "}
+                        {course?.classroom.professors[0].lastName.toUpperCase()} */}
                       </Typography>
                       <Typography
                         variant="body2"
@@ -502,12 +404,10 @@ const CoursL2i = () => {
                           textAlign: "left",
                         }}
                       >
-                        Niveau : {course.classeroom.name}
+                        Niveau : {course.classroomName}
                         <br />
                         Date d'upload :{" "}
-                        {new Date(
-                          course.classeroom.creatAt
-                        ).toLocaleDateString()}
+                        {new Date(course?.creatAt).toLocaleDateString()}
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -515,7 +415,7 @@ const CoursL2i = () => {
                         variant="contained"
                         color="primary"
                         target="blank"
-                        href={`${SERVER_URL}/cours/${course.url}`}
+                        href={`${SERVER_URL}/cours/${course?.url}`}
                         startIcon={<PdfIcon />}
                         fullWidth
                       >
