@@ -12,8 +12,8 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import logoL2i from "../../Assets/img/Logo-L2i.png";
 import "../../Styles/SidebarProf2.css";
-import { useAuth } from "../../Utils/AuthContext";
 import { useApi } from "../../Utils/Api";
+import { useAuth } from "../../Utils/AuthContext";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;

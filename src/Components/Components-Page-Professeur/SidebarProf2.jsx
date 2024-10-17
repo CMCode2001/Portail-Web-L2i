@@ -11,6 +11,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logoL2i from "../../Assets/img/Logo-L2i.png";
 import "../../Styles/SidebarProf2.css";
+import { useApi } from "../../Utils/Api";
+import { useAuth } from "../../Utils/AuthContext";
 import { SERVER_URL } from "../../Utils/constantURL";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -21,6 +23,8 @@ const SidebarProf2 = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const api = useApi();
+  const { authData, logout } = useAuth();
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]); // Cours filtrés
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,7 +54,7 @@ const SidebarProf2 = () => {
     }
   };
 
-  const currentUser = getUserInfo();
+  const currentUser = authData.user;
 
   const fetchCourse = () => {
     fetch(`${SERVER_URL}/document/professor/${currentUser.id}`, {
