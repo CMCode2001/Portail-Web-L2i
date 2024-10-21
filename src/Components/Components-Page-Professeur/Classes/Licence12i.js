@@ -19,6 +19,8 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
+import { useApi } from "../../../Utils/Api";
+import { useAuth } from "../../../Utils/AuthContext";
 import { SERVER_URL } from "../../../Utils/constantURL";
 
 const { TextArea } = Input;
@@ -66,7 +68,10 @@ const Licence12i = () => {
   const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
   const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   // const token = sessionStorage.getItem("jwt");
-  const token = sessionStorage.getItem("access_token");
+  // const token = sessionStorage.getItem("access_token");
+  const { authData, logout } = useAuth();
+  const api = useApi();
+
 
   const showDrawerDevoir = () => {
     setIsDrawerVisible(true);
@@ -95,7 +100,7 @@ const Licence12i = () => {
   };
 
   useEffect(() => {
-    const user = getUserInfo();
+    const user = authData.user;
     //  setCurrentUser(user);
     console.log("user user user user :" + user);
 
@@ -161,39 +166,111 @@ const Licence12i = () => {
       })
       .catch((error) => console.error("Error sending course:", error));
   };
-  const onSendingCourse = () => {
+
+  // const onSendingCourse = () => {
+  //   const userInfo = authData?.user;
+  //   console.log("Informations de l'utilisateur :", userInfo);
+  //   const donnee = {
+  //     title,
+  //     classeroom_id: 1,
+  //     professor_id: userInfo.id,
+  //     createdBy: userInfo.firstName + " " + userInfo.lastName,
+  //   };
+
+  //   const formatDonnee = new FormData();
+  //   formatDonnee.append("course", JSON.stringify(donnee));
+  //   formatDonnee.append("pdf", pdfContent);
+
+  //   fetch(SERVER_URL + "/course", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //     },
+  //     body: formatDonnee,
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Cours envoyé avec succès");
+  //       setIsModalVisible(true);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
+
+  // const onSendingCourse = () => {
+  //   const donnee = {
+  //     title,
+  //     classeroom_id: 1,
+  //     professor_id: getUserInfo().id,
+  //     createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
+  //   };
+  
+  //   const formatDonnee = new FormData();
+  //   formatDonnee.append("course", JSON.stringify(donnee));
+  
+  //   // Ajouter chaque fichier PDF sélectionné
+  //   for (let i = 0; i < pdfContent.length; i++) {
+  //     formatDonnee.append("pdf", pdfContent[i]);
+  //   }
+  
+  //   fetch(SERVER_URL + "/course/documents", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //     },
+  //     body: formatDonnee,
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Cours envoyé avec succès");
+  //       setIsModalVisible(true);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
+
+  const onSendingCourse = async () => {
+    const userInfo = authData?.user;
+    console.log("Informations de l'utilisateur :", userInfo);
+  
     const donnee = {
       title,
       classeroom_id: 1,
-      professor_id: getUserInfo().id,
-      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
+      professor_id: userInfo.id,
+      createdBy: userInfo.firstName + " " + userInfo.lastName,
     };
-
+  
     const formatDonnee = new FormData();
     formatDonnee.append("course", JSON.stringify(donnee));
     formatDonnee.append("pdf", pdfContent);
-
-    fetch(SERVER_URL + "/course", {
-      method: "POST",
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-      body: formatDonnee,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        setModalTitle("Cours envoyé avec succès");
-        setIsModalVisible(true);
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Course sent successfully:", data);
-      })
-      .catch((error) => console.error("Error sending course:", error));
+  
+    try {
+      const response = await api.post("/course", formatDonnee);
+  
+      // Gérer la réponse
+      setModalTitle("Cours envoyé avec succès");
+      setIsModalVisible(true);
+      console.log("Course sent successfully:", response.data);
+    } catch (error) {
+      console.error("Error sending course:", error);
+      
+      // Affiche un message d'erreur si nécessaire
+      setModalTitle("Erreur lors de l'envoi du cours");
+      setIsModalVisible(true);
+    }
   };
-
+  
+  
   // Fonction pour récupérer et utiliser les informations de l'utilisateur
   const getUserInfo = () => {
     // Récupérer la chaîne JSON stockée dans sessionStorage
@@ -592,6 +669,14 @@ const Licence12i = () => {
                   onChange={(e) => setFichier(e.target.files[0])}
                   type="file"
                 />
+                {/* <input
+                  className="custom-file-input"
+                  id="imageCouverture"
+                  onChange={(e) => setFichier(e.target.files)}
+                  type="file"
+                  multiple // Autoriser la sélection multiple
+                /> */}
+
               </Form.Item>
             </Col>
           </Row>

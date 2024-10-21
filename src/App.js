@@ -2,12 +2,19 @@ import { Route, Routes } from "react-router-dom";
 import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
 import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
 import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
+import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
 import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
+import Home from "./Components/Components-Page-Professeur/Home";
 import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
+import ForgetMotDePasse from "./Components/ForgetMotDePasse";
+import ProfileStudent from "./Components/Profile/ProfileStudent";
+import ResetMotDePasse from "./Components/ResetMotDePasse";
+import ScrollToTop from "./Components/ScrollToTop";
 import MaquetteL1 from "./Components/_Components-Page-Maquette/MaquetteL1";
 import MaquetteL2 from "./Components/_Components-Page-Maquette/MaquetteL2";
 import MaquetteL3 from "./Components/_Components-Page-Maquette/MaquetteL3";
 import Accueil from "./Pages/Accueil";
+import ActivationMessage from "./Pages/ActivationMessage";
 import Apropos from "./Pages/Apropos";
 import Connexion from "./Pages/Connexion";
 import Cours from "./Pages/Cours";
@@ -18,15 +25,8 @@ import Maquette from "./Pages/Maquette";
 import Professeur from "./Pages/Professeur";
 import PageAdmin from "./Pages/_Admin/PageAdmin";
 import "./Styles/bootstrap.min.css";
-import ForgetMotDePasse from "./Components/ForgetMotDePasse";
-import ProfileStudent from "./Components/Profile/ProfileStudent";
-import ActivationMessage from "./Pages/ActivationMessage";
-import ResetMotDePasse from "./Components/ResetMotDePasse";
-import ScrollToTop from "./Components/ScrollToTop";
 import PersistLogin from "./Utils/PersistLogin";
 import RequireAuth from "./Utils/RequireAuth";
-import Logout from "./Pages/Logout";
-import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
 import EndSession from "./Utils/EndSession";
 
 const ROLES = {
@@ -70,6 +70,7 @@ function App() {
             }
           >
             <Route path="/professeur" element={<Professeur />}>
+            <Route path="" element={<Home />} />
               <Route path="classes/L1-2i" element={<Licence12i />} />
               <Route path="classes/L2-2i" element={<Licence22i />} />
               <Route path="classes/L3-2i" element={<Licence32i />} />
