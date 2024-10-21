@@ -83,10 +83,7 @@ const SidebarProf2 = () => {
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
           <Menu.Item icon={<HomeFilled />}>
-            <Link
-              to="/professeurlkmsdqkjdslk"
-              style={{ textDecoration: "none" }}
-            >
+            <Link to="/professeur" style={{ textDecoration: "none" }}>
               Accueil
             </Link>
           </Menu.Item>
@@ -118,7 +115,6 @@ const SidebarProf2 = () => {
               Envoyer Email
             </Link>
           </Menu.Item>
-          {/* <SubMenu key="sub2" icon={<UserOutlined />} title=`Pr ${currentUser?.firstName}${" "} ${currentUser?.name}` > */}
           <SubMenu
             key="sub2"
             icon={<UserOutlined />}

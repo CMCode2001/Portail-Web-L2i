@@ -16,12 +16,11 @@ import {
   Space,
   Table,
 } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
 import { useApi } from "../../../Utils/Api";
 import { useAuth } from "../../../Utils/AuthContext";
-import { SERVER_URL } from "../../../Utils/constantURL";
 
 const { TextArea } = Input;
 
@@ -54,7 +53,7 @@ const Licence12i = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [title, setTitre] = useState("");
   const [pdfContent, setFichier] = useState(null);
-  const [classeroom, setClasse] = useState("");
+  const [classroom, setClassroom] = useState("");
   const [etudant, setEtudiant] = useState([]);
   const [open, setOpen] = useState(false);
   const searchInput = useRef(null);
@@ -69,9 +68,10 @@ const Licence12i = () => {
   const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   // const token = sessionStorage.getItem("jwt");
   // const token = sessionStorage.getItem("access_token");
-  const { authData, logout } = useAuth();
+  const { authData } = useAuth();
   const api = useApi();
 
+  const currentUser = authData?.user;
 
   const showDrawerDevoir = () => {
     setIsDrawerVisible(true);
@@ -92,87 +92,89 @@ const Licence12i = () => {
     setIsNotesDrawerVisible(false);
   };
 
-
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
 
-  useEffect(() => {
-    const user = authData.user;
-    //  setCurrentUser(user);
-    console.log("user user user user :" + user);
+  // const fetchEtudiant = () => {
+  //   fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE1`, {
+  //     method: "GET",
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
+  //       setEtudiant(data);
+  //     })
+  //     .catch((error) => console.error("Error fetching forum:", error));
+  // };
 
-    //  setToken(jwt);
-    fetchEtudiant();
-  }, []);
-
-  const fetchEtudiant = () => {
-    fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE1`, {
-      method: "GET",
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    })
+  const fetchEtudiant = useCallback(async () => {
+    api
+      .get("/curentListStudent/niveau/LICENCE1")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+        const data = response.data;
+        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt)); // Trier les étudiants
+        setEtudiant(data); // Mettre à jour l'état avec les données reçues
       })
-      .then((data) => {
-        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
-        setEtudiant(data);
-      })
-      .catch((error) => console.error("Error fetching forum:", error));
-  };
+      .catch((error) => console.error("Error fetching student data:", error));
+  }, [api]);
+
+  useEffect(() => {
+    fetchEtudiant();
+  }, [fetchEtudiant]);
 
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
   };
 
-  const annocerUnDevoir = () => {
-    const donnee = {
-      titre: titreDev,
-      description: descriptionDev,
-      salle: salleDev,
-      dateDuDevoir: dateDuDevoirDev,
-      classroomId: 1,
-      // professor_id: getUserInfo().id,
-      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
-    };
+  // const annocerUnDevoir = () => {
+  //   const donnee = {
+  //     titre: titreDev,
+  //     description: descriptionDev,
+  //     salle: salleDev,
+  //     dateDuDevoir: dateDuDevoirDev,
+  //     classroomId: 1,
+  //     // professor_id: getUserInfo().id,
+  //     createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
+  //   };
 
-    fetch(SERVER_URL + "/annonceDevoir", {
-      method: "POST",
-      headers: {
-        Authorization: ` Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(donnee),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        setModalTitle("Devoir annoncé avec succès");
-        setIsModalVisible(true);
+  //   fetch(SERVER_URL + "/annonceDevoir", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(donnee),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Devoir annoncé avec succès");
+  //       setIsModalVisible(true);
 
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Course sent successfully:", data);
-      })
-      .catch((error) => console.error("Error sending course:", error));
-  };
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
 
   // const onSendingCourse = () => {
   //   const userInfo = authData?.user;
   //   console.log("Informations de l'utilisateur :", userInfo);
   //   const donnee = {
   //     title,
-  //     classeroom_id: 1,
+  //     classroom_id: 1,
   //     professor_id: userInfo.id,
   //     createdBy: userInfo.firstName + " " + userInfo.lastName,
   //   };
@@ -205,19 +207,19 @@ const Licence12i = () => {
   // const onSendingCourse = () => {
   //   const donnee = {
   //     title,
-  //     classeroom_id: 1,
+  //     classroom_id: 1,
   //     professor_id: getUserInfo().id,
   //     createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
   //   };
-  
+
   //   const formatDonnee = new FormData();
   //   formatDonnee.append("course", JSON.stringify(donnee));
-  
+
   //   // Ajouter chaque fichier PDF sélectionné
   //   for (let i = 0; i < pdfContent.length; i++) {
   //     formatDonnee.append("pdf", pdfContent[i]);
   //   }
-  
+
   //   fetch(SERVER_URL + "/course/documents", {
   //     method: "POST",
   //     headers: {
@@ -239,61 +241,80 @@ const Licence12i = () => {
   //     .catch((error) => console.error("Error sending course:", error));
   // };
 
+  const annocerUnDevoir = () => {
+    const donnee = {
+      titre: titreDev,
+      description: descriptionDev,
+      salle: salleDev,
+      dateDuDevoir: dateDuDevoirDev,
+      classroomId: 1,
+      // professor_id: currentUser?.id,
+      createdBy: currentUser?.firstName + " " + currentUser?.lastName,
+    };
+
+    api
+      .post("/annonceDevoir", donnee)
+      .then((response) => {
+        setModalTitle("Devoir annoncé avec succès");
+        setIsModalVisible(true);
+        console.log("Course sent successfully:", response.data); // Axios renvoie directement response.data
+      })
+      .catch((error) => {
+        console.error("Error sending course:", error);
+      });
+  };
+
   const onSendingCourse = async () => {
-    const userInfo = authData?.user;
-    console.log("Informations de l'utilisateur :", userInfo);
-  
     const donnee = {
       title,
-      classeroom_id: 1,
-      professor_id: userInfo.id,
-      createdBy: userInfo.firstName + " " + userInfo.lastName,
+      classroom_id: 1,
+      professor_id: currentUser?.id,
+      createdBy: currentUser?.firstName + " " + currentUser?.lastName,
     };
-  
+
     const formatDonnee = new FormData();
     formatDonnee.append("course", JSON.stringify(donnee));
     formatDonnee.append("pdf", pdfContent);
-  
+
     try {
       const response = await api.post("/course", formatDonnee);
-  
+
       // Gérer la réponse
       setModalTitle("Cours envoyé avec succès");
       setIsModalVisible(true);
       console.log("Course sent successfully:", response.data);
     } catch (error) {
       console.error("Error sending course:", error);
-      
+
       // Affiche un message d'erreur si nécessaire
       setModalTitle("Erreur lors de l'envoi du cours");
       setIsModalVisible(true);
     }
   };
-  
-  
-  // Fonction pour récupérer et utiliser les informations de l'utilisateur
-  const getUserInfo = () => {
-    // Récupérer la chaîne JSON stockée dans sessionStorage
-    const userJson = sessionStorage.getItem("user");
 
-    if (userJson) {
-      try {
-        // Convertir la chaîne JSON en un objet JavaScript
-        const user = JSON.parse(userJson);
-        // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-        // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-      // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
-    }
-  };
+  // Fonction pour récupérer et utiliser les informations de l'utilisateur
+  // const getUserInfo = () => {
+  //   // Récupérer la chaîne JSON stockée dans sessionStorage
+  //   const userJson = sessionStorage.getItem("user");
+
+  //   if (userJson) {
+  //     try {
+  //       // Convertir la chaîne JSON en un objet JavaScript
+  //       const user = JSON.parse(userJson);
+  //       // Vous pouvez également retourner ou utiliser ces valeurs dans votre application
+  //       return user;
+  //     } catch (error) {
+  //       console.error(
+  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //         error
+  //       );
+  //       // Vous pouvez gérer cette erreur, par exemple, en affichant un message d'erreur à l'utilisateur
+  //     }
+  //   } else {
+  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //     // Gérer le cas où il n'y a pas d'utilisateur dans le sessionStorage
+  //   }
+  // };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -358,7 +379,12 @@ const Licence12i = () => {
       <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : false,
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -373,7 +399,7 @@ const Licence12i = () => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : (
-        text || ''
+        text || ""
       ),
   });
 
@@ -676,7 +702,6 @@ const Licence12i = () => {
                   type="file"
                   multiple // Autoriser la sélection multiple
                 /> */}
-
               </Form.Item>
             </Col>
           </Row>

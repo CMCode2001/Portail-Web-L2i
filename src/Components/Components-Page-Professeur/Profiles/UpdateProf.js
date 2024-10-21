@@ -3,8 +3,13 @@ import { UploadOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 
 import { SERVER_URL } from "../../../Utils/constantURL";
+import { useAuth } from "../../../Utils/AuthContext";
+import { useApi } from "../../../Utils/Api";
 
 const UpdateProf = () => {
+  const api = useApi();
+  const { authData, setuser } = useAuth();
+  const currentUser = authData?.user;
   const [user, setUser] = useState({
     id: "",
     firstName: "",
@@ -32,65 +37,86 @@ const UpdateProf = () => {
     });
   };
 
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-    return null;
-  };
+  // const getUserInfo = () => {
+  //   const userJson = sessionStorage.getItem("user");
+  //   if (userJson) {
+  //     try {
+  //       const user = JSON.parse(userJson);
+  //       return user;
+  //     } catch (error) {
+  //       console.error(
+  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //         error
+  //       );
+  //     }
+  //   } else {
+  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //   }
+  //   return null;
+  // };
 
   useEffect(() => {
-    const currentUser = getUserInfo();
+    // const currentUser = currentUser;
     if (currentUser) {
       setUser({
-        id: currentUser.id,
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        email: currentUser.email,
-        photo: currentUser.photo,
+        id: currentUser?.id,
+        firstName: currentUser?.firstName,
+        lastName: currentUser?.lastName,
+        email: currentUser?.email,
+        photo: currentUser?.photo,
       });
       form.setFieldsValue({
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        email: currentUser.email,
+        firstName: currentUser?.firstName,
+        lastName: currentUser?.lastName,
+        email: currentUser?.email,
       });
     }
-  }, [form]);
+    // }, [form]);
+  }, [form, currentUser]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
+  // const handleFormSubmit = async () => {
+  //   try {
+  //     const response = await fetch(`${SERVER_URL}/users/${user.id}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(user),
+  //     });
+
+  //     if (response.ok) {
+  //       const updatedUser = await response.json();
+  //       setuser(updatedUser);
+  //       openSuccessNotification();
+  //     } else {
+  //       const errorData = await response.json();
+  //       throw new Error(
+  //         errorData.message || "Erreur lors de la mise à jour des informations"
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la mise à jour des informations:", error);
+  //     openErrorNotification(error.message);
+  //   }
+  // };
+
   const handleFormSubmit = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      const response = await api.put(`/users/${user.id}`, user);
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        sessionStorage.setItem("user", JSON.stringify(updatedUser));
+      if (response.status === 200) {
+        const updatedUser = response.data;
+        setuser(updatedUser);
         openSuccessNotification();
       } else {
-        const errorData = await response.json();
         throw new Error(
-          errorData.message || "Erreur lors de la mise à jour des informations"
+          response.data.message ||
+            "Erreur lors de la mise à jour des informations"
         );
       }
     } catch (error) {

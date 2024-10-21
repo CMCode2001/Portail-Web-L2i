@@ -5,7 +5,7 @@ import Highlighter from "react-highlight-words";
 import * as XLSX from "xlsx";
 import ImgExcel from "../../../../Assets/img/office365.png";
 import "../../../../Styles/Professeur/_News Add/AjouterNotes.css";
-import { SERVER_URL } from "../../../../Utils/constantURL";
+import { useApi } from "../../../../Utils/Api";
 
 export default function AjouterNotes() {
   const [selectedLicence, setSelectedLicence] = useState(null);
@@ -14,22 +14,36 @@ export default function AjouterNotes() {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [notes, setNotes] = useState({});
   const searchInput = useRef(null);
-  const token = sessionStorage.getItem("jwt");
+  const api = useApi();
 
-  const handleButtonClick = (licence, level) => {
-    setSelectedLicence(licence);
-    fetchEtudiant(level);
-  };
+  // const fetchEtudiant = (level) => {
+  //   fetch(`${SERVER_URL}/student/niveau/${level}`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const initialNotes = {};
+  //       data.forEach((student) => {
+  //         initialNotes[student.id] = {
+  //           cc1: "absent",
+  //           cc2: "absent",
+  //           exam: "absent",
+  //         };
+  //       });
+  //       setEtudiant(data);
+  //       setNotes(initialNotes);
+  //     })
+  //     .catch((error) => console.error("Error fetching students:", error));
+  // };
 
   const fetchEtudiant = (level) => {
-    fetch(`${SERVER_URL}/student/niveau/${level}`, {
-      method: "GET",
-      headers: {
-        Authorization: `${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    api
+      .get(`/student/niveau/${level}`)
+      .then((response) => {
+        const data = response.data;
         const initialNotes = {};
         data.forEach((student) => {
           initialNotes[student.id] = {
@@ -41,7 +55,14 @@ export default function AjouterNotes() {
         setEtudiant(data);
         setNotes(initialNotes);
       })
-      .catch((error) => console.error("Error fetching students:", error));
+      .catch((error) => {
+        console.error("Error fetching students:", error);
+      });
+  };
+
+  const handleButtonClick = (licence, level) => {
+    setSelectedLicence(licence);
+    fetchEtudiant(level);
   };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -254,7 +275,6 @@ export default function AjouterNotes() {
   //   }
   // };
 
-  
   const handleCSVUpload = (e) => {
     const fichier = e.target.files[0];
     if (fichier) {
@@ -265,33 +285,33 @@ export default function AjouterNotes() {
         const nomFeuille = classeur.SheetNames[0]; // On prend la première feuille
         const feuille = classeur.Sheets[nomFeuille];
         const donneesParsees = XLSX.utils.sheet_to_json(feuille);
-  
+
         // Initialiser les tableaux pour les étudiants et les notes
         const etudiantsMisesAJour = [];
         const notesInitiales = {};
-  
+
         donneesParsees.forEach((ligne) => {
-          console.log(ligne)
+          console.log(ligne);
           // Créer l'étudiant
           const etudiant = {
             id: ligne.ID, // Assurez-vous que votre CSV contient une colonne 'ID'
-            ine: ligne.INE  || ligne.ine, // Correspond à 'ine' dans le fichier CSV
-            firstName: ligne.Prenom || ligne.prenom || ligne.Péenom, // Correspond à 'prenom' dans le fichier CSV
+            ine: ligne.INE || ligne.ine, // Correspond à 'ine' dans le fichier CSV
+            firstName: ligne.Prenom || ligne.prenom || ligne.Prénom, // Correspond à 'prenom' dans le fichier CSV
             lastName: ligne.Nom || ligne.nom, // Correspond à 'nom' dans le fichier CSV
             email: ligne.Email || ligne.email, // Correspond à 'email' dans le fichier CSV
           };
-  
+
           // Ajouter l'étudiant à la liste
           etudiantsMisesAJour.push(etudiant);
-  
+
           // Ajouter les notes associées à l'étudiant
           notesInitiales[etudiant.id] = {
-            cc1: ligne.CC1 || ligne.cc1 || '00', // Assurez-vous que les colonnes cc1, cc2 et exam existent dans le fichier CSV
+            cc1: ligne.CC1 || ligne.cc1 || "00", // Assurez-vous que les colonnes cc1, cc2 et exam existent dans le fichier CSV
             cc2: ligne.CC2 || ligne.cc2 || "absent",
             exam: ligne.Exam || ligne.exam || "absent",
           };
         });
-  
+
         // Mise à jour de la liste des étudiants
         setEtudiant(etudiantsMisesAJour);
         // Mise à jour des notes

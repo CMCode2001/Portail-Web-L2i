@@ -16,11 +16,12 @@ import {
   Space,
   Table,
 } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import * as XLSX from "xlsx";
 import "../../../Styles/Professeur/Classes/Licence12i.css";
-import { SERVER_URL } from "../../../Utils/constantURL";
+import { useApi } from "../../../Utils/Api";
+import { useAuth } from "../../../Utils/AuthContext";
 
 const { TextArea } = Input;
 
@@ -34,16 +35,19 @@ const Licence32i = () => {
   const [dateDuDevoirDev, setDateDuDevoirDev] = useState("");
   const [AssignmentDueDate, setAssignmentDueDate] = useState("");
   const [pdfContent, setFichier] = useState(null);
-  const [classeroom, setClasse] = useState("");
+  const [classroom, setClasseroom] = useState("");
   const [etudant, setEtudiant] = useState([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false); // Pour le Drawer de programmation de devoir
   const [isCourseDrawerVisible, setIsCourseDrawerVisible] = useState(false); // Pour le Drawer d'ajout de cours
   const [isNotesDrawerVisible, setIsNotesDrawerVisible] = useState(false); // Pour le Drawer d'ajout de notes
   const searchInput = useRef(null);
-  const token = sessionStorage.getItem("access_token");
   const [notes, setNotes] = useState({});
   const [modalTitle, setModalTitle] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const api = useApi();
+  const { authData } = useAuth();
+
+  const currentUser = authData?.user;
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -51,77 +55,88 @@ const Licence32i = () => {
     setSearchedColumn(dataIndex);
   };
 
-  useEffect(() => {
-    const user = getUserInfo();
-    fetchEtudiant();
-  }, []);
+  // const fetchEtudiant = () => {
+  //   fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE3`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
+  //       console.log("liste des etudiants \n", data);
+  //       setEtudiant(data);
+  //     })
+  //     .catch((error) => console.error("Error fetching forum:", error));
+  // };
 
-  // `/curentListStudent/${id}`
-  const fetchEtudiant = () => {
-    console.log("Fetching....")
-    fetch(`${SERVER_URL}/curentListStudent/niveau/LICENCE3`, {
-      method: "GET",
-      headers: {
-        Authorization: ` Bearer ${token}`,
-      },
-    })
+  const fetchEtudiant = useCallback(async () => {
+    api
+      .get("/curentListStudent/niveau/LICENCE3")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+        const data = response.data;
+        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt)); // Trier les étudiants par date
+        setEtudiant(data); // Met à jour l'état avec les données
       })
-      .then((data) => {
-        data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
-        console.log("liste des etudiants \n", data);
-        setEtudiant(data);
-      })
-      .catch((error) => console.error("Error fetching forum:", error));
-  };
+      .catch((error) => {
+        console.error("Error fetching student data:", error);
+      });
+  }, [api]);
+
+  useEffect(() => {
+    fetchEtudiant();
+  }, [fetchEtudiant]);
 
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
   };
 
-  const annocerUnDevoir = () => {
-    const donnee = {
-      titre: titreDev,
-      description: descriptionDev,
-      salle: salleDev,
-      dateDuDevoir: dateDuDevoirDev,
-      classroomId: 3,
-      // professor_id: getUserInfo().id,
-      createdBy: getUserInfo().firstName + " " + getUserInfo().lastName,
-    };
+  // const annocerUnDevoir = () => {
+  //   const donnee = {
+  //     titre: titreDev,
+  //     description: descriptionDev,
+  //     salle: salleDev,
+  //     dateDuDevoir: dateDuDevoirDev,
+  //     classroomId: 3,
+  //     // professor_id: currentUser?.id,
+  //     createdBy: currentUser?.firstName + " " + currentUser?.lastName,
+  //   };
 
-    fetch(SERVER_URL + "/annonceDevoir", {
-      method: "POST",
-      headers: {
-        Authorization: ` Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(donnee),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        setModalTitle("Devoir annoncé avec succès");
-        setIsModalVisible(true);
+  //   fetch(SERVER_URL + "/annonceDevoir", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(donnee),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Devoir annoncé avec succès");
+  //       setIsModalVisible(true);
 
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Course sent successfully:", data);
-      })
-      .catch((error) => console.error("Error sending course:", error));
-  };
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
+
   // const onSendingCourse = () => {
   //   const donnee = {
   //     title,
-  //     classeroom_id: 3,
-  //     professor_id: getUserInfo().id,
+  //     classroom_id: 3,
+  //     professor_id: currentUser.id,
   //     createdBy: "Test",
   //   };
 
@@ -150,56 +165,107 @@ const Licence32i = () => {
   //     .catch((error) => console.error("Error sending course:", error));
   // };
 
+  const annocerUnDevoir = () => {
+    const donnee = {
+      titre: titreDev,
+      description: descriptionDev,
+      salle: salleDev,
+      dateDuDevoir: dateDuDevoirDev,
+      classroomId: 3,
+      // professor_id: currentUser?.id,
+      createdBy: currentUser?.firstName + " " + currentUser?.lastName,
+    };
+
+    api
+      .post("/annonceDevoir", donnee)
+      .then((response) => {
+        setModalTitle("Devoir annoncé avec succès");
+        setIsModalVisible(true);
+        console.log("Course sent successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error sending course:", error);
+      });
+  };
+
+  // const onSendingCourse = () => {
+  //   const donnee = {
+  //     title,
+  //     classroom_id: 3,
+  //     professor_id: currentUser?.id,
+  //     createdBy: `${currentUser?.firstName} ${currentUser?.lastName}`, // Mettre les données appropriées
+  //   };
+
+  //   const formatDonnee = new FormData();
+  //   formatDonnee.append("course", JSON.stringify(donnee));
+  //   formatDonnee.append("documents", pdfContent); // Utilisation de "documents" comme attendu par le backend
+
+  //   fetch(SERVER_URL + "/course/documents", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       // Ne pas ajouter 'Content-Type': 'application/json' car FormData gère cela automatiquement
+  //     },
+  //     body: formatDonnee,
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(response.status);
+  //       }
+  //       setModalTitle("Cours envoyé avec succès");
+  //       setIsModalVisible(true);
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Course sent successfully:", data);
+  //     })
+  //     .catch((error) => console.error("Error sending course:", error));
+  // };
+
   const onSendingCourse = () => {
     const donnee = {
       title,
-      classeroom_id: 3,
-      professor_id: getUserInfo().id,
-      createdBy: `${getUserInfo().firstName} ${getUserInfo().lastName}`, // Mettre les données appropriées
+      classroom_id: 3,
+      professor_id: currentUser?.id,
+      createdBy: `${currentUser?.firstName} ${currentUser?.lastName}`,
     };
-  
+
     const formatDonnee = new FormData();
     formatDonnee.append("course", JSON.stringify(donnee));
-    formatDonnee.append("documents", pdfContent); // Utilisation de "documents" comme attendu par le backend
-  
-    fetch(SERVER_URL + "/course/documents", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // Ne pas ajouter 'Content-Type': 'application/json' car FormData gère cela automatiquement
-      },
-      body: formatDonnee,
-    })
+    formatDonnee.append("documents", pdfContent); // Utilisation de "documents" pour correspondre à l'API
+
+    api
+      .post("/course/documents", formatDonnee, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Axios gère le bon en-tête pour les fichiers
+        },
+      })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
         setModalTitle("Cours envoyé avec succès");
         setIsModalVisible(true);
-        return response.json();
+        console.log("Course sent successfully:", response.data);
       })
-      .then((data) => {
-        console.log("Course sent successfully:", data);
-      })
-      .catch((error) => console.error("Error sending course:", error));
+      .catch((error) => {
+        console.error("Error sending course:", error);
+      });
   };
-  
-  const getUserInfo = () => {
-    const userJson = sessionStorage.getItem("user");
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        return user;
-      } catch (error) {
-        console.error(
-          "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-          error
-        );
-      }
-    } else {
-      console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-    }
-  };
+
+  // const getUserInfo = () => {
+  //   const userJson = sessionStorage.getItem("user");
+  //   if (userJson) {
+  //     try {
+  //       const user = JSON.parse(userJson);
+  //       return user;
+  //     } catch (error) {
+  //       console.error(
+  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
+  //         error
+  //       );
+  //     }
+  //   } else {
+  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
+  //   }
+  // };
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
