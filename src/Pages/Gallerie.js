@@ -11,6 +11,8 @@ import tofDefunt from '../Assets/img/folded.png';
 import axios from "axios";
 import { SERVER_URL } from "../Utils/constantURL";
 import { Button, Card, Image } from "antd";
+import Fade from "react-reveal/Fade";
+
 
 export default function Gallerie() {
   const [pictures, setPictures] = useState([]);
@@ -25,16 +27,18 @@ export default function Gallerie() {
   }, []);
 
   // Divisez les images en sections
-  const defunts = pictures.slice(0, 4); // Les 2 premières images
-  const chefsDeveloppeurs = pictures.slice(4, 8); // Les 3 suivantes
+  const defunts = pictures.slice(0, 4); // Les 4 premières images
+  const chefsDeveloppeurs = pictures.slice(4, 8); // Les 4 suivantes
   const developpeurs = pictures.slice(8, 16); // Les 5 suivantes
   const autresPhotos = pictures.slice(16); // Le reste des images
 
   return (
     <div>
       <HeaderBlock />
+      <Fade top>
       <div className="gallerie-container">
-        <h1 className="gallerie-text">Bienvenue sur L2i Gallerie</h1>
+          <h1 className="gallerie-text">Bienvenue sur L2i Gallerie</h1>
+        
       </div>
 
       {/* Centrage du bouton pour la section défunte */}
@@ -44,7 +48,7 @@ export default function Gallerie() {
           Hommages à nos défunts promotionnaires
         </Button>
       </div>
-
+      </Fade>
       {/* Section 1 : Hommages à nos défunts promotionnaires */}
       <div className="section">
         <div className="pictures-grid">
@@ -54,11 +58,13 @@ export default function Gallerie() {
               hoverable
               style={{ width: 350, marginBottom: "20px" }}
               cover={
+                <Fade bottom>
                 <Image
                   src={SERVER_URL + picture.url}
                   alt={picture.description}
                   style={{ height: "250px", objectFit: "cover" }}
                 />
+                </Fade>
               }
             >
               {picture.description && <Card.Meta description={picture.description} />}
@@ -69,11 +75,13 @@ export default function Gallerie() {
 
       {/* Centrage du bouton pour la section développeurs */}
       <div className="button-container">
+        <Fade top>
         <Button id='Deco2'>
           <img src={tofDev} alt="les tofs dev" id="tofDev" />
           Bravo ! à nos Développeurs
           <img src={tofDev1} alt="les tofs dev" id="tofDev" />
         </Button>
+        </Fade>
       </div>
 
       {/* Section 2 : Chefs Développeurs du projet */}
@@ -85,11 +93,13 @@ export default function Gallerie() {
               hoverable
               style={{ width: 350, marginBottom: "20px" }}
               cover={
+                <Fade right>
                 <Image
                   src={SERVER_URL + picture.url}
                   alt={picture.description}
                   style={{ height: "250px", objectFit: "cover" }}
                 />
+                </Fade>
               }
             >
               {picture.description && <Card.Meta description={picture.description} />}
@@ -107,11 +117,13 @@ export default function Gallerie() {
               hoverable
               style={{ width: 350, marginBottom: "20px" }}
               cover={
-                <Image
+                <Fade bottom>                <Image
                   src={SERVER_URL + picture.url}
                   alt={picture.description}
                   style={{ height: "250px", objectFit: "cover" }}
                 />
+                </Fade>
+
               }
             >
               {picture.description && <Card.Meta description={picture.description} />}
@@ -122,11 +134,14 @@ export default function Gallerie() {
 
       {/* Centrage du bouton pour la section Autres */}
       <div className="button-container">
+      <Fade top>
         <Button id='Deco3'> 
           <img src={tof} alt="les tofs" id="tofAutres" />
           Félicitation à la première Promotion L2i
           <img src={tof1} alt="les tofs" id="tofAutres" />
         </Button>
+      </Fade>
+
       </div>
 
       {/* Section 4 : Autres photos */}
@@ -138,11 +153,13 @@ export default function Gallerie() {
               hoverable
               style={{ width: 350, marginBottom: "20px" }}
               cover={
+                <Fade right>
                 <Image
                   src={SERVER_URL + picture.url}
                   alt={picture.description}
                   style={{ height: "250px", objectFit: "cover" }}
                 />
+                </Fade>
               }
             >
             </Card>

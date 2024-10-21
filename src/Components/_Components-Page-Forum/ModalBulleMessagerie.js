@@ -19,6 +19,8 @@ import { SERVER_URL } from "../../Utils/constantURL";
 import ChatIconComponent from "./ChatIconComponent";
 import { useAuth } from "../../Utils/AuthContext";
 import { useApi } from "../../Utils/Api";
+import Fade from "react-reveal/Fade";
+
 
 const { TextArea } = Input;
 const ModalBulleMessagerie = () => {
@@ -936,6 +938,7 @@ const ModalBulleMessagerie = () => {
 
       {/* Affichage des forums avec pagination */}
       {paginatedForums.map((forum, index) => (
+        <Fade top>
         <Card
           className={`${isChatIconOpen ? "blur-background" : ""}`}
           key={index}
@@ -983,6 +986,7 @@ const ModalBulleMessagerie = () => {
             </Button>
           )}
         </Card>
+        </Fade>
       ))}
 
       {/* Composant de pagination pour naviguer entre les pages */}

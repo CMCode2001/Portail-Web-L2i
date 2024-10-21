@@ -27,6 +27,7 @@ import PersistLogin from "./Utils/PersistLogin";
 import RequireAuth from "./Utils/RequireAuth";
 import Logout from "./Pages/Logout";
 import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
+import EndSession from "./Utils/EndSession";
 
 const ROLES = {
   Student: "student",
@@ -57,6 +58,7 @@ function App() {
           <Route path="/inscription" element={<Inscription />} />
           {/* <Route path="/confirmation/:idtoken" element={<Confirmation />} /> */}
           <Route path="/activation-message" element={<ActivationMessage />} />
+          <Route path="/end-session" element={<EndSession />} />
 
           {/* Protected routes */}
           <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>

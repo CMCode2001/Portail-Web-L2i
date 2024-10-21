@@ -1,0 +1,30 @@
+/* EndSession.css */
+body > div:nth-child(4) > div > div.ant-modal-wrap{
+    background-color: whitesmoke;
+}
+.chatBubbleWrapper {
+    position: relative;
+    padding: 10px;
+    background-color: transparent;
+  }
+  
+  .chatBubble {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chatBubble::after {
+    content: "";
+    position: absolute;
+    bottom: -15px; /* Positionner la queue sous la bulle */
+    left: 30px; /* Ajuster la position de la queue */
+    width: 0;
+    height: 0;
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: var(--bgColor2) transparent transparent transparent;
+  }
+  

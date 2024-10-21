@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Typography, Grid, Container, Button } from '@mui/material';
 import SeparatorBlock from '../../../_Layouts/SeparatorBlock';
 
@@ -9,6 +9,7 @@ import c from "../../../../Assets/img/Base de donnee.jpeg";
 import d from "../../../../Assets/img/Reseaux & Telecom.jpeg";
 import e from "../../../../Assets/img/Securite Informatique.jpeg";
 import f from "../../../../Assets/img/Systeme.png";
+import Fade from "react-reveal/Fade";
 
 const cardsData = [
   {
@@ -51,23 +52,22 @@ const cardsData = [
 
 const MyCards = () => {
   
-  const navigate = useNavigate();
 
-  const handleClick = ()=>{
-    navigate('/cours'); 
-  }
+  
 
     return (
     <Container>
       <SeparatorBlock title="Cours Populaires" />
       <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '100vh', marginTop: '20px' }}>
+
         <Grid container item xs={12} spacing={3} justifyContent="center">
           {cardsData.slice(0, 3).map((card, index) => (
             <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+            <Fade top>
               <Card sx={{ 
                 borderRadius: '33px', 
                 width: '341px', 
-                height: '473px',
+                height: '400px',
                 backgroundColor: '#13798C',
               }}>
                 <CardMedia
@@ -107,7 +107,7 @@ const MyCards = () => {
                   >
                     {card.description}
                   </Typography>
-                  <Button
+                  {/* <Button
                     onClick={handleClick}
                     variant="contained"
                     sx={{ 
@@ -129,19 +129,21 @@ const MyCards = () => {
                     }}
                   >
                     Voir plus
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
+            </Fade>
             </Grid>
           ))}
         </Grid>
         <Grid container item xs={12} spacing={3} justifyContent="center">
           {cardsData.slice(3, 6).map((card, index) => (
             <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
+            <Fade bottom>
               <Card sx={{ 
                 borderRadius: '33px', 
                 width: '341px', 
-                height: '473px',
+                height: '400px',
                 backgroundColor: '#13798C',
               }}>
                 <CardMedia
@@ -181,7 +183,7 @@ const MyCards = () => {
                   >
                     {card.description}
                   </Typography>
-                  <Button
+                  {/* <Button
                     onClick={handleClick}
                     variant="contained"
                     sx={{ 
@@ -203,13 +205,46 @@ const MyCards = () => {
                     }}
                   >
                     Voir plus
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
+              </Fade>
             </Grid>
           ))}
         </Grid>
       </Grid>
+              
+      <Link to='/cours' style={{textDecoration:'none'}}>      
+      <Button
+                    variant="contained"
+                    sx={{ 
+                      backgroundColor: 'white',
+                      color: 'black',
+                      fontWeight: 'bold',
+                      fontSize:'24px',
+                      textTransform:'Capitalize',
+                      border:'1px solid #6B2239',
+                      borderRadius: '33px',
+                      width: '13rem',
+                      height: '3.3rem',
+                      display: 'block', 
+                      margin: '20px  auto',
+                      textAlign:'center',
+                      transition: 'background-color 0.3s, color 0.3s',
+                      '&:hover': {
+                        backgroundColor: '#6B2239', // Couleur blanche foncée
+                        color: 'white',
+                      },
+                      '&:active': {
+                        backgroundColor: '#b3b3b3', // Couleur blanche foncée encore plus intense
+                        color: '#6B2239',
+                      }
+                    }}
+                  >
+                    Voir plus...
+                  </Button>
+      </Link>
+
     </Container>
   );
 }

@@ -8,6 +8,8 @@ import "../Styles/Connexion.css";
 import "../Styles/_RESPONSIVES/Connexion-Rsp.css";
 import { useAuth } from "../Utils/AuthContext";
 import { useApi } from "../Utils/Api";
+import Fade from "react-reveal/Fade";
+
 
 const Connexion = () => {
   const api = useApi(); // Obtient l'instance configurée
@@ -80,6 +82,7 @@ const Connexion = () => {
     <div className="connexion">
       <HeaderBlock />
       <div className="login-page-connexion">
+        <Fade right>
         <div className="login-box">
           <div className="illustration-wrapper">
             <img src={SvgLogin} alt="Login" id="SvgRsp" />
@@ -139,7 +142,11 @@ const Connexion = () => {
             </Form.Item>
           </Form>
         </div>
+        </Fade>
       </div>
+      
+      <br/>
+      <br/>
       <FooterBlock />
     </div>
   );

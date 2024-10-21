@@ -6,6 +6,8 @@ import HeaderBlock from "../Components/Header/HeaderBlock";
 import "../Styles/Inscription.css";
 import "../Styles/_RESPONSIVES/Inscription-Rsp.css";
 import { SERVER_URL } from "../Utils/constantURL";
+import Fade from "react-reveal/Fade";
+
 
 // const Inscription = () => {
 //   /* Déclaration des variables */
@@ -530,6 +532,7 @@ const Inscription = () => {
     <>
       <HeaderBlock />
       <div className="login-page-inscription">
+        <Fade left>
         <div className="login-box">
           <Form
             name="register-form"
@@ -623,6 +626,7 @@ const Inscription = () => {
             </Form.Item>
           </Form>
         </div>
+        </Fade>
       </div>
       <FooterBlock />
     </>

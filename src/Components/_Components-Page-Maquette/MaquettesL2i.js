@@ -9,6 +9,7 @@ import Excel from '../../Assets/img/office365.png'
 import MaquetteComplete from '../../Assets/Files/Maquette Proposée Licence Informatique UASZ_pleniere.xlsx'
 import { Link } from 'react-router-dom';
 // import { DownloadOutlined } from '@ant-design/icons';
+import Fade from "react-reveal/Fade";
 import { Button } from 'antd';
 
 
@@ -16,6 +17,7 @@ import { Button } from 'antd';
 export default function MaquettesL2i() {
   return (
     <div> 
+    <Fade bottom>
       <br/>
       <h1 style={{textAlign:'center'}}> 
           <b>Maquettes L2i</b> 
@@ -31,8 +33,9 @@ export default function MaquettesL2i() {
           </Button>
         </a>
       </h4>
-
+    </Fade>
       <div className="maquettes-container">
+    <Fade left>
         <Link to='/maquette-L1' style={{textDecoration:'none', color:'black'}}>  
           <BlogCard 
             image={MaquetteL1} 
@@ -40,7 +43,8 @@ export default function MaquettesL2i() {
             description="Programme détaillé des enseignements de la 1er année. Licence Ingénierie Informatique : L1-2i"
           />
         </Link>
-
+    </Fade>
+    <Fade top>
        <Link to='/maquette-L2' style={{textDecoration:'none', color:'black'}}>
         <BlogCard 
             image={MaquetteL2} 
@@ -48,7 +52,8 @@ export default function MaquettesL2i() {
             description="Programme détaillé des enseignements de la 2ème année. Licence Ingénierie Informatique : L2-2i"
           />
        </Link>
-
+    </Fade>
+    <Fade right>
        <Link to='/maquette-L3' style={{textDecoration:'none', color:'black'}}>
           <BlogCard 
             image={MaquetteL3} 
@@ -56,7 +61,7 @@ export default function MaquettesL2i() {
             description="Programme détaillé des enseignements de la 3ème année. Licence Ingénierie Informatique : L3-2i"
           />
         </Link>
-
+    </Fade>
       </div>
     </div>
   );
