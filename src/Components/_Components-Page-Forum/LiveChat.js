@@ -143,7 +143,7 @@ const LiveChat = () => {
 
   useEffect(() => {
     const socketUrl = SERVER_URL + "/ws";
-    const token = sessionStorage.getItem("access_token");
+    // const token = sessionStorage.getItem("access_token");
 
     client.current = new Client({
       webSocketFactory: () => new SockJS(socketUrl),
@@ -161,9 +161,9 @@ const LiveChat = () => {
           client.current.publish({
             destination: "/app/chat.sendMessage",
             body: JSON.stringify(joinMessage),
-            headers: {
-              Authorization: `Bearer ${token}`, // Inclure le token ici
-            },
+            // headers: {
+            //   Authorization: `Bearer ${token}`, // Inclure le token ici
+            // },
           });
         }
 
@@ -268,7 +268,7 @@ const LiveChat = () => {
     }
 
     if (message.trim()) {
-      const token = sessionStorage.getItem("access_token"); // Récupérer le token
+      // const token = sessionStorage.getItem("access_token"); // Récupérer le token
       const chatMessage = {
         type: "CHAT",
         message: message,
@@ -279,9 +279,9 @@ const LiveChat = () => {
       client.current.publish({
         destination: "/app/chat.sendMessage",
         body: JSON.stringify(chatMessage),
-        headers: {
-          Authorization: `Bearer ${token}`, // Inclure le token dans la requête
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`, // Inclure le token dans la requête
+        // },
       });
 
       setMessage("");
