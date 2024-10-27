@@ -48,45 +48,6 @@ const DashboardAdmin = () => {
     setSelectedCrud(key);
   };
 
-  // const handleLogout = () => {
-  //   window.sessionStorage.clear();
-  //   window.location.href = "/";
-  // };
-
-  // const handleLogout = async () => {
-  //   try {
-  //     const jwt = sessionStorage.getItem("access_token");
-
-  //     if (!jwt) {
-  //       console.error("Aucun token trouvé pour déconnexion.");
-  //       return;
-  //     }
-
-  //     const response = await fetch(SERVER_URL + "/logout", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${jwt}`,
-  //       },
-  //     });
-
-  //     // Si la requête échoue
-  //     if (!response.ok) {
-  //       console.error("Erreur lors de la déconnexion.");
-  //       return;
-  //     }
-
-  //     // Si la requête réussit
-  //     console.log("Déconnexion réussie.");
-
-  //     // Nettoyer le stockage et rediriger l'utilisateur
-  //     sessionStorage.clear();
-  //     window.location.href = "/";
-  //   } catch (error) {
-  //     console.error("Erreur lors de la requête de déconnexion:", error);
-  //   }
-  // };
-
   const handleLogout = async () => {
     try {
       // Envoyer la requête de déconnexion avec les cookies (incluant le refresh token)
@@ -162,11 +123,6 @@ const DashboardAdmin = () => {
               Go to Etudiants
             </Link>
           </Menu.Item>
-          {/* <Menu.Item key="professor" icon={<HomeOutlined />}>
-            <Link to="/professeur" style={{ textDecoration: "none" }}>
-              Go to Professors
-            </Link>
-          </Menu.Item> */}
           <SubMenu key="classe" icon={<AppstoreOutlined />} title="Classes">
             <Menu.Item key="student/niveau/1">Licence1-2I</Menu.Item>
             <Menu.Item key="student/niveau/2">Licence2-2I</Menu.Item>
