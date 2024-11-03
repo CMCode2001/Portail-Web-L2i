@@ -39,25 +39,6 @@ const UpdateAdmin = () => {
     });
   };
 
-  // const getUserInfo = () => {
-  //   // const userJson = sessionStorage.getItem("user");
-  //   const userJson = authData?.user;
-  //   if (userJson) {
-  //     try {
-  //       const user = JSON.parse(userJson);
-  //       return user;
-  //     } catch (error) {
-  //       console.error(
-  //         "Erreur lors de l'analyse de l'utilisateur depuis le sessionStorage:",
-  //         error
-  //       );
-  //     }
-  //   } else {
-  //     console.warn("Aucun utilisateur trouvé dans le sessionStorage");
-  //   }
-  //   return null;
-  // };
-
   const getUserInfo = () => {
     // const userJson = sessionStorage.getItem("user");
     const userJson = authData?.user;
@@ -110,32 +91,6 @@ const UpdateAdmin = () => {
       setUser({ ...user, [name]: value });
     }
   };
-
-  // const handleFormSubmit = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${SERVER_URL}/adminl2Ikfdsjlkjmsd/${user.id}`,
-  //       {
-  //         method: "PATCH",
-  //         body: JSON.stringify({ ...user, ...passwords }),
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const updatedUser = await response.json();
-  //       sessionStorage.setItem("user", JSON.stringify(updatedUser));
-  //       openSuccessNotification();
-  //     } else {
-  //       const errorData = await response.json();
-  //       throw new Error(
-  //         errorData.message || "Erreur lors de la mise à jour des informations"
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur lors de la mise à jour des informations:", error);
-  //     openErrorNotification(error.message);
-  //   }
-  // };
 
   const handleFormSubmit = async () => {
     try {
@@ -267,7 +222,7 @@ const UpdateAdmin = () => {
               style={{ width: "70%" }}
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             className="text-lg-center"
             name="oldPassword"
             onChange={handleInputChange}
@@ -275,19 +230,19 @@ const UpdateAdmin = () => {
               {
                 // required: true,
                 required: false,
-                message: "Veuillez entrer votre ancien mot de passe !",
+                message: "Veuillez entrer votre mot de passe actuel !",
               },
             ]}
             style={{ marginBottom: 20 }}
           >
             <Input.Password
-              placeholder="Ancien mot de passe"
+              placeholder="Mot de passe actuel"
               name="oldPassword"
               value={passwords.oldPassword}
               style={{ width: "70%" }}
             />
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             className="text-lg-center"
             name="newPassword"
             onChange={handleInputChange}
@@ -304,6 +259,42 @@ const UpdateAdmin = () => {
               placeholder="Nouveau mot de passe"
               name="newPassword"
               value={passwords.newPassword}
+              style={{ width: "70%" }}
+            />
+          </Form.Item> */}
+          <Form.Item
+            className="text-lg-center"
+            name="oldPassword"
+            onChange={handleInputChange}
+            rules={[
+              {
+                required: false,
+                message: "Veuillez entrer votre mot de passe actuel !",
+              },
+            ]}
+            style={{ marginBottom: 20 }}
+          >
+            <Input.Password
+              placeholder="Mot de passe actuel"
+              name="oldPassword"
+              style={{ width: "70%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            className="text-lg-center"
+            name="newPassword"
+            onChange={handleInputChange}
+            rules={[
+              {
+                required: false,
+                message: "Veuillez entrer votre nouveau mot de passe !",
+              },
+            ]}
+            style={{ marginBottom: 20 }}
+          >
+            <Input.Password
+              placeholder="Nouveau mot de passe"
+              name="newPassword"
               style={{ width: "70%" }}
             />
           </Form.Item>

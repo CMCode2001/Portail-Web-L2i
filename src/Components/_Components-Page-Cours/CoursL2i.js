@@ -97,6 +97,14 @@ const CoursL2i = () => {
     filterCours(searchTerm, level, professor, date);
   };
 
+  const handleFilterReset = (level, professor, date) => {
+    setSearchTerm("");
+    setSelectedLevel(level);
+    setSelectedProfessor(professor);
+    setSelectedDate(date);
+    filterCours(searchTerm, level, professor, date);
+  };
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -279,7 +287,7 @@ const CoursL2i = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => handleFilter("", "", "")}
+            onClick={() => handleFilterReset("", "", "")}
             startIcon={<FilterIcon />}
             sx={{
               borderBottom: "solid 3px rgb(19,121,140)",

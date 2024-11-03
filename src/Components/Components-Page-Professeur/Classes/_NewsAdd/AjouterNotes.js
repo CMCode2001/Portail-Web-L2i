@@ -1,49 +1,37 @@
 import { SearchOutlined, TeamOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Modal, Space, Table } from "antd";
 import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import * as XLSX from "xlsx";
 import ImgExcel from "../../../../Assets/img/office365.png";
 import "../../../../Styles/Professeur/_News Add/AjouterNotes.css";
 import { useApi } from "../../../../Utils/Api";
+import { useAuth } from "../../../../Utils/AuthContext";
 
 export default function AjouterNotes() {
   const [selectedLicence, setSelectedLicence] = useState(null);
-  const [etudant, setEtudiant] = useState([]);
+  const [students, setStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [notes, setNotes] = useState({});
   const searchInput = useRef(null);
+  const { authData } = useAuth();
+  const [loading, setLoading] = useState(false);
   const api = useApi();
 
-  // const fetchEtudiant = (level) => {
-  //   fetch(`${SERVER_URL}/student/niveau/${level}`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `${token}`,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const initialNotes = {};
-  //       data.forEach((student) => {
-  //         initialNotes[student.id] = {
-  //           cc1: "absent",
-  //           cc2: "absent",
-  //           exam: "absent",
-  //         };
-  //       });
-  //       setEtudiant(data);
-  //       setNotes(initialNotes);
-  //     })
-  //     .catch((error) => console.error("Error fetching students:", error));
-  // };
+  const currentUser = authData?.user;
 
   const fetchEtudiant = (level) => {
     api
-      .get(`/student/niveau/${level}`)
+      .get(`/curentListStudent/niveau/${level}`)
       .then((response) => {
         const data = response.data;
+        data.sort(
+          (a, b) =>
+            a.lastName.localeCompare(b.lastName) ||
+            a.firstName.localeCompare(b.firstName)
+        );
         const initialNotes = {};
         data.forEach((student) => {
           initialNotes[student.id] = {
@@ -52,17 +40,15 @@ export default function AjouterNotes() {
             exam: "absent",
           };
         });
-        setEtudiant(data);
+        setStudents(data);
         setNotes(initialNotes);
       })
-      .catch((error) => {
-        console.error("Error fetching students:", error);
-      });
+      .catch((error) => console.error("Error fetching students:", error));
   };
 
-  const handleButtonClick = (licence, level) => {
+  const handleButtonClick = (licence) => {
     setSelectedLicence(licence);
-    fetchEtudiant(level);
+    fetchEtudiant(licence);
   };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -119,11 +105,6 @@ export default function AjouterNotes() {
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
@@ -146,18 +127,18 @@ export default function AjouterNotes() {
       ...getColumnSearchProps("ine"),
     },
     {
+      title: "Nom",
+      dataIndex: "lastName",
+      key: "lastName",
+      width: "30%",
+      ...getColumnSearchProps("lastName"),
+    },
+    {
       title: "Prénom",
       dataIndex: "firstName",
       key: "firstName",
       width: "30%",
       ...getColumnSearchProps("firstName"),
-    },
-    {
-      title: "Nom",
-      dataIndex: "lastName",
-      key: "name",
-      width: "30%",
-      ...getColumnSearchProps("name"),
     },
     {
       title: "Email",
@@ -189,6 +170,7 @@ export default function AjouterNotes() {
           type="text"
           placeholder="CC2"
           value={notes[record.id]?.cc2 || "absent"}
+          // defaultValue={notes[record.id]?.cc2 || "absent"}
           onChange={(e) => handleNoteChange(e, record.id, "cc2")}
           style={{ width: 70 }}
         />
@@ -203,6 +185,7 @@ export default function AjouterNotes() {
           type="text"
           placeholder="Exam"
           value={notes[record.id]?.exam || "absent"}
+          // defaultValue={notes[record.id]?.exam || "absent"}
           onChange={(e) => handleNoteChange(e, record.id, "exam")}
           style={{ width: 70 }}
         />
@@ -221,11 +204,11 @@ export default function AjouterNotes() {
   };
 
   const downloadExcel = () => {
-    const studentData = etudant.map((student) => ({
-      INE: student.ine,
-      Prénom: student.firstName,
-      Nom: student.lastname,
-      Email: student.email,
+    const studentData = students.map((student) => ({
+      INE: student?.ine,
+      Prénom: student?.firstName,
+      Nom: student?.lastName,
+      // Email: student?.email,
       CC1: notes[student.id]?.cc1 || "absent",
       CC2: notes[student.id]?.cc2 || "absent",
       Exam: notes[student.id]?.exam || "absent",
@@ -238,86 +221,103 @@ export default function AjouterNotes() {
     XLSX.writeFile(wb, `${selectedLicence}_notes.xlsx`);
   };
 
-  // const handleCSVUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       const data = event.target.result;
-  //       const workbook = XLSX.read(data, { type: "binary" });
-  //       const sheetName = workbook.SheetNames[0];
-  //       const sheet = workbook.Sheets[sheetName];
-  //       const parsedData = XLSX.utils.sheet_to_json(sheet);
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target.result;
+        const workbook = XLSX.read(content, { type: "binary" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const parsedData = XLSX.utils.sheet_to_json(sheet);
 
-  //       // Mapping parsed data to the student structure
-  //       const updatedStudents = parsedData.map((row) => ({
-  //         id: row.ID, // Ensure this matches your CSV column header
-  //         ine: row.INE,
-  //         firstName: row.Prenom,
-  //         lastName: row.Nom,
-  //         email: row.Email,
-  //       }));
+        const updatedNotes = { ...notes };
 
-  //       setEtudiant(updatedStudents);
+        parsedData.forEach((row) => {
+          const studentINE = row.INE || row.ine;
+          // console.log("studentINE : " + studentINE);
 
-  //       // Initialize notes for the new students
-  //       const initialNotes = {};
-  //       updatedStudents.forEach((student) => {
-  //         initialNotes[student.id] = {
-  //           cc1: "absent",
-  //           cc2: "absent",
-  //           exam: "absent",
-  //         };
-  //       });
-  //       setNotes(initialNotes);
-  //     };
-  //     reader.readAsBinaryString(file);
+          const student = students.find((s) => s.ine === String(studentINE));
+          // console.log("students[0] : " + students[0].ine);
+
+          if (student) {
+            updatedNotes[student.id] = {
+              cc1:
+                row.CC1 || row.cc1 || updatedNotes[student.id]?.cc1 || "absent",
+              cc2:
+                row.CC2 || row.cc2 || updatedNotes[student.id]?.cc2 || "absent",
+              exam:
+                row.Exam ||
+                row.exam ||
+                updatedNotes[student.id]?.exam ||
+                "absent",
+            };
+          }
+        });
+
+        setNotes(updatedNotes);
+      };
+      reader.readAsBinaryString(file);
+    }
+  };
+
+  // const sendNotesStudent = () => {
+  //   if (window.confirm("Voulez-vous envoyer les notes ?")) {
+  //     setLoading(true);
+  //     const studentNotes = students.map((student) => ({
+  //       id: student?.id,
+  //       firstName: student?.firstName,
+  //       lastName: student?.lastName,
+  //       email: student?.email,
+  //       ine: student?.ine,
+  //       professorName: currentUser?.firstName + " " + currentUser?.lastName,
+  //       cc1: notes[student.id]?.cc1 || "absent",
+  //       cc2: notes[student.id]?.cc2 || "absent",
+  //       exam: notes[student.id]?.exam || "absent",
+  //     }));
+
+  //     api
+  //       .post("/course/sendNotesStudents", {
+  //         level: selectedLicence,
+  //         studentNotes,
+  //       })
+  //       .then(() => setIsModalVisible(true))
+  //       .catch((error) => console.error("Erreur d'envoi des notes:", error));
+  //     setLoading(false);
   //   }
   // };
 
-  const handleCSVUpload = (e) => {
-    const fichier = e.target.files[0];
-    if (fichier) {
-      const lecteur = new FileReader();
-      lecteur.onload = (event) => {
-        const contenu = event.target.result;
-        const classeur = XLSX.read(contenu, { type: "binary" });
-        const nomFeuille = classeur.SheetNames[0]; // On prend la première feuille
-        const feuille = classeur.Sheets[nomFeuille];
-        const donneesParsees = XLSX.utils.sheet_to_json(feuille);
+  const sendNotesStudent = () => {
+    if (window.confirm("Voulez-vous envoyer les notes ?")) {
+      setLoading(true);
+      const studentNotes = students.map((student) => ({
+        id: student?.id,
+        firstName: student?.firstName,
+        lastName: student?.lastName,
+        email: student?.email,
+        ine: student?.ine,
+        professorName: currentUser?.firstName + " " + currentUser?.lastName,
+        cc1: notes[student.id]?.cc1 || "absent",
+        cc2: notes[student.id]?.cc2 || "absent",
+        exam: notes[student.id]?.exam || "absent",
+      }));
 
-        // Initialiser les tableaux pour les étudiants et les notes
-        const etudiantsMisesAJour = [];
-        const notesInitiales = {};
-
-        donneesParsees.forEach((ligne) => {
-          console.log(ligne);
-          // Créer l'étudiant
-          const etudiant = {
-            id: ligne.ID, // Assurez-vous que votre CSV contient une colonne 'ID'
-            ine: ligne.INE || ligne.ine, // Correspond à 'ine' dans le fichier CSV
-            firstName: ligne.Prenom || ligne.prenom || ligne.Prénom, // Correspond à 'prenom' dans le fichier CSV
-            lastName: ligne.Nom || ligne.nom, // Correspond à 'nom' dans le fichier CSV
-            email: ligne.Email || ligne.email, // Correspond à 'email' dans le fichier CSV
-          };
-
-          // Ajouter l'étudiant à la liste
-          etudiantsMisesAJour.push(etudiant);
-
-          // Ajouter les notes associées à l'étudiant
-          notesInitiales[etudiant.id] = {
-            cc1: ligne.CC1 || ligne.cc1 || "00", // Assurez-vous que les colonnes cc1, cc2 et exam existent dans le fichier CSV
-            cc2: ligne.CC2 || ligne.cc2 || "absent",
-            exam: ligne.Exam || ligne.exam || "absent",
-          };
+      api
+        .post("/course/sendNotesStudents", {
+          level: selectedLicence,
+          studentNotes,
+        })
+        .then(() => {
+          setIsModalVisible(true);
+        })
+        .catch((error) => {
+          console.error("Erreur d'envoi des notes:", error);
+        })
+        .finally(() => {
+          // Arrête le chargement une fois la requête terminée
+          setLoading(false);
         });
-
-        // Mise à jour de la liste des étudiants
-        setEtudiant(etudiantsMisesAJour);
-        // Mise à jour des notes
-        setNotes(notesInitiales);
-      };
-      lecteur.readAsBinaryString(fichier);
     }
   };
 
@@ -341,27 +341,25 @@ export default function AjouterNotes() {
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick("Licence 1-2i", 1)}
+            onClick={() => handleButtonClick("LICENCE1")}
           >
             Licence 1-2i
           </Button>
-          <br />
           <Button
             id="btnProB"
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick("Licence 2-2i", 2)}
+            onClick={() => handleButtonClick("LICENCE2")}
           >
             Licence 2-2i
           </Button>
-          <br />
           <Button
             id="btnProC"
             type="primary"
             icon={<TeamOutlined />}
             size="large"
-            onClick={() => handleButtonClick("Licence 3-2i", 3)}
+            onClick={() => handleButtonClick("LICENCE3")}
           >
             Licence 3-2i
           </Button>
@@ -384,7 +382,6 @@ export default function AjouterNotes() {
               onChange={handleCSVUpload}
               id="downCSV"
             />
-
             <h2 style={{ marginRight: "6rem" }}>{selectedLicence}</h2>
 
             <Button
@@ -399,9 +396,35 @@ export default function AjouterNotes() {
           </>
         )}
       </div>
-      <div style={{ width: "100%", marginTop: "1rem" }}>
-        <Table columns={columns} dataSource={etudant} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={students}
+        rowKey="id"
+        pagination={false}
+        style={{ width: "100%", marginTop: "2rem" }}
+      />
+      <div>
+        <br />
+        <Button type="primary" onClick={sendNotesStudent} loading={loading}>
+          Envoyer les notes
+        </Button>
       </div>
+      <Modal
+        title="Notes envoyées avec succès"
+        // title={modalTitle}
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        width={800}
+        footer={[
+          <Button
+            key="ok"
+            onClick={() => setIsModalVisible(false)}
+            style={{ backgroundColor: "#008000", color: "white" }}
+          >
+            OK
+          </Button>,
+        ]}
+      ></Modal>
     </div>
   );
 }
