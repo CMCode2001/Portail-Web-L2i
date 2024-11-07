@@ -57,6 +57,7 @@ function FooterBlock() {
           </div>
         </div>
       </div>
+      
       <div className="footer1">
         <h4>Newsletter</h4>
         <div className="input-container">
@@ -70,6 +71,7 @@ function FooterBlock() {
           </button>
         </div>
       </div>
+
       <div className="footer2">
         <div className="links">
           <Link to="/">Accueil</Link>

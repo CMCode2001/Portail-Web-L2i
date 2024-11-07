@@ -136,10 +136,12 @@ const Connexion = () => {
             </Form.Item>
 
             <Form.Item>
-              <Link to="/password/forget" id="MdpForget">
-                Mot de passe oublié ?
-              </Link>
-            </Form.Item>
+             
+             <Link to="/password/forget" id="MdpForget">
+             Mot de passe oublié ?
+             </Link>
+           
+         </Form.Item>        
           </Form>
         </div>
         </Fade>

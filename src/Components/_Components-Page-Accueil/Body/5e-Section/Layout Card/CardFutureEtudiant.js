@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Styles/CardFutureEtudiant.css';
+import Fade from "react-reveal/Fade";
+
 
 const CardFutureEtudiant = ({ title, description, image }) => {
   return (
+    <>
+      <Fade top>
     <div className="card">
       <div className="card-content">
         <img className="card-image" src={image} alt={`${title} icon`} />
@@ -11,6 +15,10 @@ const CardFutureEtudiant = ({ title, description, image }) => {
         <p className="card-description">{description}</p>
       </div>
     </div>
+    </Fade>
+
+    </>
+
   );
 };
 
