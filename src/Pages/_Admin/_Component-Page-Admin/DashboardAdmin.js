@@ -8,6 +8,7 @@ import {
   MessageOutlined,
   PictureOutlined,
   PushpinOutlined,
+  SnippetsOutlined,
   UserOutlined,
   WechatOutlined,
 } from "@ant-design/icons";
@@ -30,6 +31,7 @@ import UserSite from "./user/UserSite.tsx";
 import { useApi } from "../../../Utils/Api.js";
 import { useAuth } from "../../../Utils/AuthContext.js";
 import SendEmail from "./SendEmail.tsx";
+import CrudDocument from "./documents/CrudDocument.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -95,12 +97,15 @@ const DashboardAdmin = () => {
         return <CrudForum />;
       case "messageForum":
         return <CrudMessageForum />;
-      case "crud-partenaires":
-        return <CrudTable />;
+      case "documents":
+        return <CrudDocument />;
+      // case "crud-partenaires":
+      // return <CrudTable />;
       case "mon-profile":
         return <UpdateAdmin />;
       default:
-        return "DashboardAdmin Content";
+        // return "DashboardAdmin Content";
+        return <UserSite />;
     }
   };
 
@@ -129,46 +134,71 @@ const DashboardAdmin = () => {
             <Menu.Item key="student/niveau/3">Licence3-2I</Menu.Item>
             <Menu.Item key="student/niveau/ancien">Anciens</Menu.Item>
           </SubMenu>
-          <SubMenu key="professeur" icon={<UserOutlined />} title="Professeurs">
-            <Menu.Item key="professor">Professeurs</Menu.Item>
-          </SubMenu>
-          <SubMenu
+          {/* <SubMenu key="professeur" icon={<UserOutlined />} title="Professeurs">
+          </SubMenu> */}
+          <Menu.Item key="professor" icon={<UserOutlined />}>
+            Professeurs
+          </Menu.Item>
+          {/* <SubMenu
             key="utilisateurs"
             icon={<UserOutlined />}
             title="Utilisateurs"
           >
-            <Menu.Item key="utilisateurs">Utilisateurs</Menu.Item>
-          </SubMenu>
-          <SubMenu key="gallerie" icon={<PictureOutlined />} title="Galleries">
-            <Menu.Item key="crud-gallerie">Gallerie</Menu.Item>
-          </SubMenu>
-          <SubMenu
+          </SubMenu> */}
+          <Menu.Item key="utilisateurs" icon={<UserOutlined />}>
+            Utilisateurs
+          </Menu.Item>
+          {/* <SubMenu key="gallerie" icon={<PictureOutlined />} title="Galleries">
+          </SubMenu> */}
+          <Menu.Item key="crud-gallerie" icon={<PictureOutlined />}>
+            Gallerie
+          </Menu.Item>
+          {/* <SubMenu
             key="welcomeText"
             icon={<FileTextOutlined />}
             title="Texte Ecran"
           >
-            <Menu.Item key="crud-welcomeText">Text</Menu.Item>
-          </SubMenu>
-          <SubMenu key="module" icon={<MailOutlined />} title="Email">
-            <Menu.Item key="Send-Email">Send Email</Menu.Item>
-          </SubMenu>
-          <SubMenu key="forum" icon={<MessageOutlined />} title="Forum">
-            <Menu.Item key="forum">Forum</Menu.Item>
-          </SubMenu>
-          <SubMenu
+          </SubMenu> */}
+          <Menu.Item key="crud-welcomeText" icon={<FileTextOutlined />}>
+            Text
+          </Menu.Item>
+          {/* <SubMenu key="module" icon={<MailOutlined />} title="Email">
+          </SubMenu> */}
+          <Menu.Item key="Send-Email" icon={<MailOutlined />}>
+            Send Email
+          </Menu.Item>
+          {/* <SubMenu key="forum" icon={<MessageOutlined />} title="Forum">
+          </SubMenu> */}
+          <Menu.Item key="forum" icon={<MessageOutlined />}>
+            Forum
+          </Menu.Item>
+          {/* <SubMenu
             key="messageForum"
             icon={<WechatOutlined />}
             title="Messages Forum"
           >
-            <Menu.Item key="messageForum">Messages Forum</Menu.Item>
-          </SubMenu>
-          <SubMenu
+          </SubMenu> */}
+          <Menu.Item key="messageForum" icon={<WechatOutlined />}>
+            Messages Forum
+          </Menu.Item>
+          {/* <SubMenu
+            key="documents"
+            icon={<SnippetsOutlined />}
+            title="Documents"
+          >
+          </SubMenu> */}
+          <Menu.Item key="documents" icon={<SnippetsOutlined />}>
+            Documents
+          </Menu.Item>
+          {/* <SubMenu
             key="partenaires"
             icon={<PushpinOutlined />}
             title="Partenaires"
           >
-            <Menu.Item key="crud-partenaires">Nos Partenaires</Menu.Item>
-          </SubMenu>
+          </SubMenu> */}
+          {/* <Menu.Item key="crud-partenaires" icon={<PushpinOutlined />}>
+            Nos Partenaires
+          </Menu.Item> */}
           <SubMenu
             key="authentification"
             icon={<UserOutlined />}

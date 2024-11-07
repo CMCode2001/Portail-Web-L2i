@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER_URL } from "./constantURL";
 import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
   baseURL: SERVER_URL,
@@ -48,11 +49,13 @@ const setupApiInterceptors = (authData, logout) => {
           return axios(originalRequest);
         } catch (err) {
           // En cas d'échec, afficher une alerte et déconnexion
-          alert("Votre session a expiré. Veuillez vous reconnecter.");
+          // navigate('/connexion');
           logout();
+          window.location.href = "/end-session";
+          // alert("Votre session a expiré. Veuillez vous reconnecter.");
           setTimeout(() => {
             window.location.href = "/connexion";
-          }, 1000); // Redirige après 1 seconde
+          }, 5000); // Redirige après 5 seconde
         }
       }
       return Promise.reject(error);
@@ -111,6 +114,7 @@ const setupApiInterceptors = (authData, logout) => {
 
 export const useApi = () => {
   const { authData, logout } = useAuth();
+  const navigate = useNavigate();
 
   // Appliquer les intercepteurs avec les données du contexte
   setupApiInterceptors(authData, logout);

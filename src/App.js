@@ -1,11 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import Licence12i from "./Components/Components-Page-Professeur/Classes/Licence12i";
-import Licence22i from "./Components/Components-Page-Professeur/Classes/Licence22i";
-import Licence32i from "./Components/Components-Page-Professeur/Classes/Licence32i";
-import SendEmailClasse from "./Components/Components-Page-Professeur/Classes/SendEmailClasse";
-import AjouterNotes from "./Components/Components-Page-Professeur/Classes/_NewsAdd/AjouterNotes";
-import Home from "./Components/Components-Page-Professeur/Home";
-import UpdateProf from "./Components/Components-Page-Professeur/Profiles/UpdateProf";
 import ForgetMotDePasse from "./Components/ForgetMotDePasse";
 import ProfileStudent from "./Components/Profile/ProfileStudent";
 import ResetMotDePasse from "./Components/ResetMotDePasse";
@@ -64,20 +57,8 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
             <Route path="studentProfile" element={<ProfileStudent />} />
           </Route>
-          <Route
-            element={
-              <RequireAuth allowedRoles={[ROLES.Professor, ROLES.Admin]} />
-            }
-          >
-            <Route path="/professeur" element={<Professeur />}>
-            <Route path="" element={<Home />} />
-              <Route path="classes/L1-2i" element={<Licence12i />} />
-              <Route path="classes/L2-2i" element={<Licence22i />} />
-              <Route path="classes/L3-2i" element={<Licence32i />} />
-              <Route path="ajouter-notes" element={<AjouterNotes />} />
-              <Route path="enoyerEmailClasse" element={<SendEmailClasse />} />
-              <Route path="update-prof" element={<UpdateProf />} />
-            </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
+            <Route path="/professeur" element={<Professeur />}></Route>
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route path="/adminflksosdjds" element={<PageAdmin />} />

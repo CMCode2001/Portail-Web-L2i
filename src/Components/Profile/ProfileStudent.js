@@ -58,7 +58,7 @@ const ProfileStudent = () => {
 
       console.log("Déconnexion réussie.");
       logout(); // Appeler la fonction de déconnexion du contexte pour effacer les informations locales
-      window.location.href = "/"; // Rediriger vers la page d'accueil après déconnexion
+      window.location.href = "/connexion";
     } catch (error) {
       logout(); // En cas d'erreur, déconnecter quand même l'utilisateur localement
       window.location.href = "/";
@@ -106,35 +106,6 @@ const ProfileStudent = () => {
     }
   };
 
-  // const handleFormSubmit = async () => {
-  //   try {
-  //     const body = changePassword
-  //       ? { ...student, ...passwords }
-  //       : { ...student };
-
-  //     const response = await api.patch(`/student/${student.id}`, body);
-
-  //     if (response.status === 200) {
-  //       const contentType = response.headers["content-type"];
-  //       if (contentType && contentType.includes("application/json")) {
-  //         const updatedStudent = response.data;
-  //         setuser(updatedStudent);
-  //         openSuccessNotification();
-  //       } else {
-  //         openSuccessNotification();
-  //       }
-  //     } else {
-  //       throw new Error(
-  //         response.data?.message ||
-  //           "Erreur lors de la mise à jour des informations"
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur lors de la mise à jour des informations:", error);
-  //     openErrorNotification();
-  //   }
-  // };
-
   const handleFormSubmit = async () => {
     try {
       const body = changePassword
@@ -172,19 +143,6 @@ const ProfileStudent = () => {
   const onFinish = () => {
     handleFormSubmit();
   };
-
-  // const validateEmail = (_, value) => {
-  //   if (!value) {
-  //     setEmailStatus("error");
-  //     return Promise.reject(new Error("Veuillez entrer votre email!"));
-  //   }
-  //   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-  //     setEmailStatus("error");
-  //     return Promise.reject(new Error("Email invalide"));
-  //   }
-  //   setEmailStatus("success");
-  //   return Promise.resolve();
-  // };
 
   const validatePassword = (_, value) => {
     if (!value) {
@@ -384,12 +342,6 @@ const ProfileStudent = () => {
               validateStatus={passwordStatus}
               rules={[{ validator: validatePassword }]}
               onChange={handleInputChange}
-              // rules={[
-              //   {
-              //     required: changePassword,
-              //     message: "Veuillez entrer votre nouveau mot de passe !",
-              //   },
-              // ]}
               style={{ marginBottom: 20 }}
             >
               <Input.Password

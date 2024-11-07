@@ -1,5 +1,4 @@
 import {
-  InboxOutlined,
   PictureOutlined,
   UploadOutlined,
   UserOutlined,
@@ -48,6 +47,8 @@ const ModalBulleMessagerie = () => {
   const [file, setFile] = useState(null); // Stocker l'image sélectionnée
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalImageVisible, setIsModalImageVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredForumList, setFilteredForumList] = useState([]); // Nouveau state pour les résultats filtrés
 
   const currentUser = authData.user;
 
@@ -72,7 +73,8 @@ const ModalBulleMessagerie = () => {
   const endIndex = startIndex + itemsPerPage;
 
   // Extraire les forums à afficher sur la page actuelle
-  const paginatedForums = listeForum.slice(startIndex, endIndex);
+  // const paginatedForums = listeForum.slice(startIndex, endIndex);
+  const paginatedForums = filteredForumList.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchForum();
@@ -219,10 +221,6 @@ const ModalBulleMessagerie = () => {
     }
   };
 
-  // const handleFileChange = ({ file }) => {
-  //   setFile(file); // Stocker le fichier sélectionné dans l'état
-  // };
-
   const handleDeleteOwnMessages = (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer votre message ?")) {
       api
@@ -352,6 +350,7 @@ const ModalBulleMessagerie = () => {
       .then((data) => {
         data.sort((a, b) => new Date(b.creatAt) - new Date(a.creatAt));
         setListeForum(data);
+        setFilteredForumList(data);
       })
       .catch((error) => console.error("Error fetching forum:", error));
   };
@@ -382,12 +381,55 @@ const ModalBulleMessagerie = () => {
   }, [isModalVisibleEditForum, forum_id, listeForum]);
   // }, [isModalVisibleEditForum]);
 
+  useEffect(() => {
+    const filtered = listeForum.filter(
+      (forum) =>
+        forum?.createdBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        forum?.probleme.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    // setListeForum(filtered);
+    setFilteredForumList(filtered); // Met à jour seulement les résultats filtrés
+  }, [searchTerm, listeForum]);
+
+  // Recherche de document
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    setCurrentPage(1); // Réinitialise la pagination lors de la recherche
+  };
+
   return (
     <div className="container">
       {/* Bouton pour poser une question et modale */}
-      <Button id="monbtnProMax" onClick={showModal}>
-        Posez une question ?
-      </Button>
+      {/* <div>
+        <Button id="monbtnProMax" onClick={showModal}>
+          Posez une question ?
+        </Button>
+        <Input
+          placeholder="Rechercher un Forum par Auteur || Probléme"
+          onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+      </div> */}
+      {/* <div style={{ display: "flex", alignItems: "center", gap: "10px" }}> */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Bouton pour poser une question et modale */}
+        <Button id="monbtnProMax" onClick={showModal}>
+          Posez une question ?
+        </Button>
+        <Input
+          style={{ width: "400px" }} // Ajuste la largeur de l'input
+          placeholder="Rechercher un Forum par Auteur || Probléme"
+          onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+      </div>
+
       <Modal
         title="Posez une question dans L2i-Forum ?"
         open={isModalVisible}
@@ -439,60 +481,6 @@ const ModalBulleMessagerie = () => {
           </Form.Item>
         </Form>
       </Modal>
-      {/* Affichage des forums avec pagination */}
-      {/* {paginatedForums.map((forum, index) => (
-        <Fade top>
-          <Card
-            className={`${isChatIconOpen ? "blur-background" : ""}`}
-            key={index}
-            style={cardStyle}
-          >
-            <Card.Meta
-              avatar={<Avatar size="large" icon={<UserOutlined />} />}
-              title={forum?.createdBy}
-              description={formatDate(forum?.creatAt)}
-            />
-            <br />
-            <Typography.Paragraph strong>
-              {forum?.probleme}
-            </Typography.Paragraph>
-            <Typography.Paragraph>{forum?.description}</Typography.Paragraph>
-            <Button
-              id="btnRepondre"
-              onClick={() => {
-                showMessages(forum);
-                setForumID(forum.id);
-              }}
-            >
-              <img src={Chat} alt="Chat" width={15} height={15} />
-              Réponses
-            </Button>
-
-            {currentUser && currentUser.id === forum.author_id && (
-              <Button
-                id="btnModifier"
-                onClick={() => {
-                  setIsModalVisibleEditForum(true);
-                  form.setFieldsValue({
-                    probleme: forum.probleme,
-                    description: forum.description,
-                  });
-                  setForumID(forum.id);
-                }}
-                style={{
-                  backgroundColor: "#6b2239",
-                  color: "white",
-                  float: "right", // Pour aligner à droite
-                  marginLeft: "auto", // Assure un alignement à droite
-                }}
-              >
-                Modifier
-              </Button>
-            )}
-          </Card>
-        </Fade>
-      ))} */}
-
       {paginatedForums.map((forum, index) => (
         <Fade top key={index}>
           <Card
@@ -736,61 +724,6 @@ const ModalBulleMessagerie = () => {
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* <Modal
-        title="Modifier le Forum"
-        open={isModalVisibleEditForum}
-        onOk={() => {
-          form.validateFields().then((values) => {
-            handleEditForum(forum_id, values);
-            setIsModalVisibleEditForum(false);
-            setFile(null); // Réinitialise l'image
-            setSelectedImage(null); // Réinitialise l'image existante
-          });
-        }}
-        onCancel={() => setIsModalVisibleEditForum(false)}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="probleme"
-            label="Problème"
-            rules={[{ required: true, message: "Veuillez entrer le problème" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[
-              { required: true, message: "Veuillez entrer une description" },
-            ]}
-          >
-            <Input.TextArea rows={5} />
-          </Form.Item>
-
-          <Form.Item label="Modifier l'image (optionnel)">
-            <Upload
-              listType="picture"
-              accept="image/*"
-              maxCount={1} // Limiter à une seule image
-              beforeUpload={(file) => {
-                setFile(file); // Stocke temporairement l'image
-                return false; // Annule l'upload automatique
-              }}
-              onRemove={() => {
-                setFile(null);
-                setSelectedImage([]); // Supprime l'image existante
-              }}
-              defaultFileList={selectedImage} // Charge l'image existante
-            >
-              <Button icon={<UploadOutlined />}>
-                Cliquez pour téléverser une image
-              </Button>
-            </Upload>
-          </Form.Item>
-        </Form>
-      </Modal> */}
-
       {/* Icône de chat en direct */}
       <ChatIconComponent
         isLiveChatVisible={isChatIconOpen}
