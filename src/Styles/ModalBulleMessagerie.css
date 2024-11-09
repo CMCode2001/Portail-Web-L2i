@@ -27,7 +27,8 @@ body
 #monbtnProMax {
   text-decoration: none;
   background: linear-gradient(to right, var(--bgColorButton), var(--bgColor1));
-  color: var(--textColor);
+  color: #fff;
+  font-weight: 600;
   border: 2px solid var(--bgColorButton); /* Bordure initiale */
   font-size: 1.1rem;
   padding: 10px 20px;

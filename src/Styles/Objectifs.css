@@ -5,7 +5,7 @@
 }
 
 .objectifs h2 {
-  color: var(--textColor);
+  color: #ffff;
   font-size: 2rem;
   margin-left: 30px;
   position: relative;
@@ -36,5 +36,5 @@
 }
 
 .objectifs .mission .card .card-body .card-title {
-  color: var(--textColor);
+  color: #fff;
 }

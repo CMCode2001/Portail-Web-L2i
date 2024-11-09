@@ -15,11 +15,15 @@ import MenuHamburger from "../../../Assets/img/hamburger-menu.png";
 import logoL2i from "../../../Assets/img/Logo-L2i.png";
 import { useApi } from "../../../Utils/Api";
 import { useAuth } from "../../../Utils/AuthContext";
-
+import {  MessageCircleQuestion } from 'lucide-react';
+import FeedbackModal from '../../_Boite-a-Idee/FeedbackModal.tsx';
+import '../../../Styles/FeedbackWidget.css'
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { authData, logout } = useAuth(); // Utiliser le contexte
   const api = useApi();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   // const handleLogout = async () => {
   //   try {
@@ -191,6 +195,7 @@ const Navbar = () => {
                   Galerie
                 </NavLink>
               </li>
+              
               {authData.isLoggedIn ? (
                 <>
                   <Dropdown
@@ -268,6 +273,32 @@ const Navbar = () => {
                       Inscription
                     </NavLink>
                   </li>
+                  &nbsp;
+                  {/* &nbsp;
+                  &nbsp; */}
+                  <li className="nav-item">
+                    <button
+                      id='feedback-button'
+                      onClick={() => setIsModalOpen(true)}
+                      className="
+                        btn  
+                        d-flex 
+                        align-items-center 
+                        gap-1
+                        "
+                    >
+                  
+                    {/* <span className="textAvis">Donner mon avis</span> */}
+                    
+                    <MessageCircleQuestion size={30}/>
+
+                  </button>
+                  <FeedbackModal 
+                  
+                      isOpen={isModalOpen} 
+                      onClose={() => setIsModalOpen(false)} 
+                    />
+              </li>
                 </>
               )}
             </ul>

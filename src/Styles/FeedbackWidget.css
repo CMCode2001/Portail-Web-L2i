@@ -1,0 +1,36 @@
+.blur-background {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+}
+
+#feedback-button {
+ background-color: #fff;
+ border-radius: 20px;
+ color: var(--bgColorFooter1);
+ font-size: 15px;
+ font-weight: 800;
+ padding: 5px 8px;
+}
+
+#textAvis{
+  font-size: 18px;
+  color: var(--bgColorFooter1);
+  font-weight: 700;
+}
+
+#LabelText, #CommentText{
+  color: var(--bgColor2);
+  font-weight: 500;
+  font-size: 17px;
+}
+
+#SeparT{
+    background-color: var(--bgColor1);
+    border-radius: 0px;
+    /* align-self: flex-start; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5px;
+}

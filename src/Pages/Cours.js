@@ -6,10 +6,10 @@ import FooterBlock from '../Components/Footer/FooterBlock'
 
 export default function Cours() {
   return (
-    <>
+    <div>
         <HeaderBlock/>
         <CoursL2i/>
         <FooterBlock/>
-    </>
+    </div>
   )
 }

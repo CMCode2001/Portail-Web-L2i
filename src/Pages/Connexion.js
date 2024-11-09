@@ -79,6 +79,7 @@ const Connexion = () => {
   };
 
   return (
+       
     <div className="connexion">
       <HeaderBlock />
       <div className="login-page-connexion">
@@ -151,6 +152,7 @@ const Connexion = () => {
       <br/>
       <FooterBlock />
     </div>
+   
   );
 };
 
