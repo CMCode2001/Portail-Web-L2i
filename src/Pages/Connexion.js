@@ -79,6 +79,7 @@ const Connexion = () => {
   };
 
   return (
+       
     <div className="connexion">
       <HeaderBlock />
       <div className="login-page-connexion">
@@ -136,10 +137,12 @@ const Connexion = () => {
             </Form.Item>
 
             <Form.Item>
-              <Link to="/password/forget" id="MdpForget">
-                Mot de passe oublié ?
-              </Link>
-            </Form.Item>
+             
+             <Link to="/password/forget" id="MdpForget">
+             Mot de passe oublié ?
+             </Link>
+           
+         </Form.Item>        
           </Form>
         </div>
         </Fade>
@@ -149,6 +152,7 @@ const Connexion = () => {
       <br/>
       <FooterBlock />
     </div>
+   
   );
 };
 

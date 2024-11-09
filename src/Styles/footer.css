@@ -51,6 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
   width: 150px;
   font-size: 0.875rem;
 }
@@ -58,7 +59,7 @@
 .Footer-class .footer1 h4 {
   color: white;
   font-size: 1.2rem;
-  margin: 0;
+  margin: auto;
 }
 
 .Footer-class .footer1 .rounded-input {
@@ -242,7 +243,7 @@
     font-size: 1.2rem;
   }
 
-  .Footer-class .footer1 {
+  /* .Footer-class .footer1 {
     flex-direction: row;
     padding-top: 110px;
     padding-bottom: 50px;
@@ -252,8 +253,30 @@
   .Footer-class .footer1 .input-container {
     font-size: 1.2rem;
     width: 300px;
+  } */
+  .Footer-class .footer1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center; /* Centrer le texte */
   }
-
+  
+  .Footer-class .footer1 .input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .Footer-class .footer1 .rounded-input {
+    width: 100%; /* Assurez-vous que l'input occupe toute la largeur disponible */
+    max-width: 300px;
+  }
+   
   .Footer-class .footer1 h4 {
     font-size: 1.5rem;
     margin-top: 30px;

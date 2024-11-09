@@ -33,21 +33,30 @@ function FooterBlock() {
   }, []);
 
   return (
+    
     <div className={`Footer-class ${isVisible ? "animate" : ""}`}>
       <div className="top-footer">
         <div className="tel">
           <img src={tell} alt="Phone icone" />
           <div className="info">
             <h3>Téléphone</h3>
-            <p>+221 77 495 20 24</p>
-          </div>
+            <p>
+              <a href="tel:+221774952024" style={{textDecoration:"none", color :"white"}}>
+                +221 77 495 20 24
+              </a>
+            </p>
+            </div>
         </div>
         <div className="tel">
           <img src={email} alt="email icone" />
           <div className="info">
             <h3>Email</h3>
-            <p>l2iuasz@gmail.com</p>
-          </div>
+            <p>
+              <a href="mailto:l2iuasz@gmail.com" style={{textDecoration:"none", color :"white"}}>
+                l2iuasz@gmail.com
+              </a>
+            </p>
+            </div>
         </div>
         <div className="tel">
           <img src={address} alt="Address icone" />
@@ -57,6 +66,7 @@ function FooterBlock() {
           </div>
         </div>
       </div>
+
       <div className="footer1">
         <h4>Newsletter</h4>
         <div className="input-container">
@@ -70,6 +80,7 @@ function FooterBlock() {
           </button>
         </div>
       </div>
+
       <div className="footer2">
         <div className="links">
           <Link to="/">Accueil</Link>
@@ -95,7 +106,7 @@ function FooterBlock() {
         </div>
         <div className="copyright">
           <i className="fa-solid fa-copyright"></i>
-          <h6>2024 - Licence Ingenierie informatique</h6>
+          <h6>2024 - Licence Ingénierie Informatique</h6>
         </div>
         <div className="decorative-circles">
           {Array.from({ length: 10 }).map((_, index) => (
@@ -104,6 +115,8 @@ function FooterBlock() {
         </div>
       </div>
     </div>
+
+
   );
 }
 

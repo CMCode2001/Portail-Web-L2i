@@ -23,4 +23,129 @@
   padding: 0 10px;
   color: #085867; /* Color of the text */
   font-weight: bold; /* Make text bold */
+  font-family: "Poppins";
+}
+
+#GridContainerX{
+  margin: auto;
+}
+#GridContainerY{
+  /* border: 2px 2px 0 0  solid #6B2239; */
+  border-radius: 12px ;
+
+}
+#classroomNameCSS{
+  
+  border: 4px solid #085867;
+  border-radius: 10px 10px 0  0;
+  background-color: #085867;
+}
+#downloadPDF {
+
+  border-radius: 8px;
+  color: white;
+  font-family: "Poppins";
+  text-transform: capitalize;
+  font-weight: 600;
+  background-color: #6B2239;
+}
+
+/* Effet au survol du bouton */
+#downloadPDF:hover {
+    background-color: #13798C;
+    color: white;
+}
+#NameCatalogue{
+  font-size: 3rem;
+  font-family: "Poppins"; 
+  color: #6B2239;
+}
+#bookCourses{
+  width: 75px;
+  
+}
+#backgroundBox{
+width: 100%;
+height: 8.5rem;
+overflow: hidden;
+background: #FFEEEE;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.blogCours {
+  /* padding: 4px 12px; */
+  background-color: var(--bgColor1);
+  border-radius: 40px;
+  align-self: flex-start;
+  display: flex;
+  width: 20px;
+  height: 7px;
+  margin-bottom: 4px;
+}
+
+
+
+/* ============ RESPONSIVE ==================== */
+@media only screen and (max-width: 800px) {
+  #GridContainerX{
+    margin: auto;
+  }
+  #GridContainerY{
+    /* border: 2px 2px 0 0  solid #6B2239; */
+    border-radius: 12px ;
+
+  }
+  #classroomNameCSS{
+    
+    border: 4px solid #085867;
+    border-radius: 10px 10px 0  0;
+    background-color: #085867;
+  }
+  #downloadPDF {
+   
+    border-radius: 8px;
+    color: white;
+    font-family: "Poppins";
+    text-transform: capitalize;
+    font-weight: 600;
+    background-color: #6B2239;
+}
+
+  /* Effet au survol du bouton */
+  #downloadPDF:hover {
+      background-color: #13798C;
+      color: rgb(255, 255, 255);
+  }
+  #NameCatalogue{
+    font-size: 25px;
+    font-family: "Poppins"; 
+    color: #6B2239;
+    margin-top: 1rem;
+  }
+  #bookCourses{
+    width: 40px;
+    
+  }
+  #backgroundBox{
+  width: 100%;
+  height: 7rem;
+  overflow: hidden;
+  background: #FFEEEE;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      
+  }
+  .blogCours {
+    /* padding: 4px 12px; */
+    background-color: var(--bgColor1);
+    border-radius: 40px;
+    align-self: flex-start;
+    display: flex;
+    width: 20px;
+    height: 7px;
+    margin-bottom: 4px;
+  }
+  
+
 }
