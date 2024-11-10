@@ -273,11 +273,11 @@ const Navbar = () => {
                       Inscription
                     </NavLink>
                   </li>
-                  &nbsp;
-                  {/* &nbsp;
-                  &nbsp; */}
-                  <li className="nav-item">
-                    <button
+                </>
+              )}
+            </ul>
+            <div className="d-flex align-items-center justify-content-center">
+              <button
                       id='feedback-button'
                       onClick={() => setIsModalOpen(true)}
                       className="
@@ -286,22 +286,16 @@ const Navbar = () => {
                         align-items-center 
                         gap-1
                         "
-                    >
-                  
-                    {/* <span className="textAvis">Donner mon avis</span> */}
-                    
+                    >                 
+                    {/* <span className="textAvis">Donner mon avis</span> */}          
                     <MessageCircleQuestion size={30}/>
-
-                  </button>
-                  <FeedbackModal 
+              </button>
+              <FeedbackModal 
                   
-                      isOpen={isModalOpen} 
-                      onClose={() => setIsModalOpen(false)} 
-                    />
-              </li>
-                </>
-              )}
-            </ul>
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+              />          
+            </div>
           </div>
         </nav>
       </div>
