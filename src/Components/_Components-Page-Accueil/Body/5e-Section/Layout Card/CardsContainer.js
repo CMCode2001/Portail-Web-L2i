@@ -2,9 +2,7 @@ import React from 'react';
 import Card from './CardFutureEtudiant';
 import './Styles/CardsContainer.css';
 import check1 from '../../../../../Assets/img/checkFTEtudiant.png';
-import check2 from '../../../../../Assets/img/checkFTEtudiant.png';
-import check3 from '../../../../../Assets/img/checkFTEtudiant.png';
-
+import PDFProspectus from '../../../../../Assets/Files/Prospectus LicenceIngénierieInformatique-L2I.pdf'
 const CardsContainer = () => {
   const cardsData = [
     {
@@ -15,17 +13,19 @@ const CardsContainer = () => {
     {
       title: 'Débouchés',
       description: `La Licence en Ingénierie Informatique offre une multitude de débouchés professionnels dans le domaine de l'informatique. Les diplômés peuvent se lancer dans diverses carrières.`,
-      image: check2,
+      image: check1,
     },
     {
       title: 'Formation Payante',
       description: `La Licence en Ingénierie Informatique propose une formation de qualité à travers un programme payant. Les frais de scolarité couvrent divers aspects essentiels de l’éducation, incluant l’accès aux ressources pédagogiques avancées.`,
-      image: check3,
+      image: check1,
     },
   ];
 
   return (
-    <div className="cards-container">
+    
+    <div className="cards-container ">
+     <a href={PDFProspectus}  target='_blank' id='nioudiouksi'>
       {cardsData.map((card, index) => (
         <Card
           key={index}
@@ -34,6 +34,7 @@ const CardsContainer = () => {
           image={card.image}
         />
       ))}
+      </a>
     </div>
   );
 };

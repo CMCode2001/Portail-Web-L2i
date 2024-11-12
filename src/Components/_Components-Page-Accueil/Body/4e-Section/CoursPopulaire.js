@@ -104,6 +104,7 @@ const MyCards = () => {
                   <Typography
                     variant="body2"
                     color="white"
+                    textAlign="left"
                   >
                     {card.description}
                   </Typography>
@@ -180,6 +181,8 @@ const MyCards = () => {
                   <Typography
                     variant="body2"
                     color="white"
+                    textAlign="left"
+
                   >
                     {card.description}
                   </Typography>

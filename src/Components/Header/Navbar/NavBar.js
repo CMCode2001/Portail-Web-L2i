@@ -155,7 +155,7 @@ const Navbar = () => {
                     Licence 1
                   </NavLink>
                   <NavLink
-                    to="/maquette-L2"
+                    to="/maquette-L2" 
                     className="dropdown-item text-decoration-none"
                   >
                     Licence 2

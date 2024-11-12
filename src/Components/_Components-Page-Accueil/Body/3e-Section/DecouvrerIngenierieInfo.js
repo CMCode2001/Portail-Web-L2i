@@ -10,7 +10,7 @@ export default function DecouvrerIngenierieInfo() {
       <div className='top-section'>
         <div className='left'>
           <div className='left-1 bordure'>
-            <h4> Développement  d’Application</h4>
+            <h4 className='monH4Css'> Développement  d’Application</h4>
             <p>
               Le développement d'application implique la 
               conception et la planification d'une solution 
@@ -22,7 +22,7 @@ export default function DecouvrerIngenierieInfo() {
             </p>
           </div>
           <div className='left-2 bordure'>
-            <h4>CyberSécurité</h4>
+            <h4 className='monH4Css'>CyberSécurité</h4>
             <p>
               La cybersécurité vise à protéger les systèmes 
               informatiques, réseaux et données contre les 
@@ -34,7 +34,7 @@ export default function DecouvrerIngenierieInfo() {
           </div>
         </div>
         <div className='right bordure'>
-          <h4>Reseau, Système et Telecom</h4>
+          <h4 className='monH4Css'>Reseau, Système et Telecom</h4>
           <p>
             L'administration réseau, système et 
             télécommunication implique la gestion 
@@ -57,7 +57,7 @@ export default function DecouvrerIngenierieInfo() {
         </div>
       </div>
       <div className='bottom-section bordure'>
-        <h4> Analyse de donnée, Base de donnée, Science des données...</h4>
+        <h4 className='monH4Css'> Base de donnée, Science des données...</h4>
         <p>
           L'analyse de données consiste à examiner, interpréter et tirer des conclusions à partir de jeux de données pour 
           prendre des décisions éclairées. Les bases de données sont des structures organisées qui stockent et gèrent les 

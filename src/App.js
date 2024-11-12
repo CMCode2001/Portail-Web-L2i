@@ -49,6 +49,7 @@ function App() {
           <Route path="/gallerie" element={<Gallerie />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+          
           {/* <Route path="/confirmation/:idtoken" element={<Confirmation />} /> */}
           <Route path="/activation-message" element={<ActivationMessage />} />
           <Route path="/end-session" element={<EndSession />} />
