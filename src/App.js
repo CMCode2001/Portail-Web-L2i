@@ -37,23 +37,21 @@ function App() {
         {/* <Route path="/logout" element={<Logout />} /> */}
         <Route path="/password/reset" element={<ResetMotDePasse />} />
         <Route path="/password/forget" element={<ForgetMotDePasse />} />
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/inscription" element={<Inscription />} />
+        <Route path="/cours" element={<Cours />} />
+        <Route path="/activation-message" element={<ActivationMessage />} />
+        <Route path="/end-session" element={<EndSession />} />
+
         <Route element={<PersistLogin />}>
           <Route path="/" element={<Accueil />} />
-          <Route path="/cours" element={<Cours />} />
-          <Route path="/forum" element={<Forum />} />
           <Route path="/maquette" element={<Maquette />} />
           <Route path="/maquette-L1" element={<MaquetteL1 />} />
           <Route path="/maquette-L2" element={<MaquetteL2 />} />
           <Route path="/maquette-L3" element={<MaquetteL3 />} />
           <Route path="/a-propos" element={<Apropos />} />
           <Route path="/gallerie" element={<Gallerie />} />
-          <Route path="/connexion" element={<Connexion />} />
-          <Route path="/inscription" element={<Inscription />} />
-          
-          {/* <Route path="/confirmation/:idtoken" element={<Confirmation />} /> */}
-          <Route path="/activation-message" element={<ActivationMessage />} />
-          <Route path="/end-session" element={<EndSession />} />
-
+          <Route path="/forum" element={<Forum />} />
           {/* Protected routes */}
           <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
             <Route path="studentProfile" element={<ProfileStudent />} />

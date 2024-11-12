@@ -6,6 +6,7 @@ import "../Styles/ActivationMessage.css";
 import { ArrowBack, PinOutlined, RefreshOutlined } from "@mui/icons-material";
 import { useAuth } from "../Utils/AuthContext";
 import { useApi } from "../Utils/Api";
+import { SERVER_URL } from "../Utils/constantURL";
 
 const ActivationMessage = () => {
   const navigate = useNavigate();
@@ -14,51 +15,122 @@ const ActivationMessage = () => {
   const [email, setEmail] = useState("");
   const [isActivated, setIsActivated] = useState(false);
   const { authData } = useAuth();
-  const api = useApi();
+  // const api = useApi();
 
   useEffect(() => {
-    const user = authData.user;
+    // const user = authData.user;
+    // console.log("Email de l'utilisateur récupéré :", user?.email);
 
-    if (user && user?.email) {
-      setEmail(user?.email);
+    if (sessionStorage.getItem("email")) {
+      setEmail(sessionStorage.getItem("email"));
+      // sessionStorage.getItem("email") && setEmail(sessionStorage.getItem("email"));
+      // if (user && user?.email) {
+      //   setEmail(user?.email);
     } else {
       notification.error({
         message: "Erreur",
         description: "L'email de l'utilisateur n'a pas pu être récupéré.",
       });
     }
-  }, []);
+  }, [authData.user]);
+  // }, []);
+
+  // const handleCodeSubmit = async () => {
+  //   if (!email) return;
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await api.post("/confirm", {
+  //       email,
+  //       verificationCode,
+  //     });
+
+  //     // Vérifier si la réponse est valide
+  //     if (response.status !== 200) {
+  //       throw new Error(response.data);
+  //     }
+
+  //     setLoading(false);
+  //     setIsActivated(true);
+  //     notification.success({
+  //       message: "Activation réussie",
+  //       description: response.data, // Message de succès venant de l'API
+  //     });
+
+  //     navigate("/connexion");
+  //   } catch (error) {
+  //     setLoading(false);
+  //     notification.error({
+  //       message: "Erreur d'activation",
+  //       description:
+  //         error.response?.data ||
+  //         "Une erreur s'est produite lors de l'activation.",
+  //     });
+  //   }
+  // };
+
+  // const handleResendEmail = async () => {
+  //   if (!email) return;
+
+  //   try {
+  //     const response = await api.post("/reSendConfirmation", email, {
+  //       headers: { "Content-Type": "text/plain" },
+  //     });
+
+  //     // Vérifier si la réponse est valide
+  //     if (response.status !== 200) {
+  //       throw new Error(response.data);
+  //     }
+
+  //     notification.success({
+  //       message: "Email envoyé",
+  //       description: response.data, // Message de succès venant de l'API
+  //     });
+  //   } catch (error) {
+  //     notification.error({
+  //       message: "Erreur",
+  //       description:
+  //         error.response?.data ||
+  //         "Une erreur s'est produite lors de l'envoi de l'email.",
+  //     });
+  //   }
+  // };
 
   const handleCodeSubmit = async () => {
     if (!email) return;
     setLoading(true);
 
     try {
-      const response = await api.post("/confirm", {
-        email,
-        verificationCode,
+      const response = await fetch(SERVER_URL + "/confirm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, verificationCode }),
       });
 
-      // Vérifier si la réponse est valide
-      if (response.status !== 200) {
-        throw new Error(response.data);
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'activation");
       }
 
+      // const data = await response.json();
+      const data = await response.text();
       setLoading(false);
       setIsActivated(true);
       notification.success({
         message: "Activation réussie",
-        description: response.data, // Message de succès venant de l'API
+        description: data.message, // Message de succès venant de l'API
       });
 
+      // Supprime l'email dans la sessionStorage
+      sessionStorage.removeItem("email");
       navigate("/connexion");
     } catch (error) {
       setLoading(false);
       notification.error({
         message: "Erreur d'activation",
         description:
-          error.response?.data ||
-          "Une erreur s'est produite lors de l'activation.",
+          error.message || "Une erreur s'est produite lors de l'activation.",
       });
     }
   };
@@ -67,24 +139,26 @@ const ActivationMessage = () => {
     if (!email) return;
 
     try {
-      const response = await api.post("/reSendConfirmation", email, {
+      const response = await fetch(SERVER_URL + "/reSendConfirmation", {
+        method: "POST",
         headers: { "Content-Type": "text/plain" },
+        body: email,
       });
 
-      // Vérifier si la réponse est valide
-      if (response.status !== 200) {
-        throw new Error(response.data);
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'envoi de l'email");
       }
 
+      const data = await response.json();
       notification.success({
         message: "Email envoyé",
-        description: response.data, // Message de succès venant de l'API
+        description: data.message, // Message de succès venant de l'API
       });
     } catch (error) {
       notification.error({
         message: "Erreur",
         description:
-          error.response?.data ||
+          error.message ||
           "Une erreur s'est produite lors de l'envoi de l'email.",
       });
     }
