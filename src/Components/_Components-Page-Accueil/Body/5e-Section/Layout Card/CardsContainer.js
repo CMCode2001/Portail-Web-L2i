@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from './CardFutureEtudiant';
 import './Styles/CardsContainer.css';
-import check1 from '../../../../../Assets/img/checkFTEtudiant.png';
+import check1 from '../../../../../Assets/img/check 1.png';
 import PDFProspectus from '../../../../../Assets/Files/Prospectus LicenceIngénierieInformatique-L2I.pdf'
 const CardsContainer = () => {
   const cardsData = [
@@ -25,7 +25,7 @@ const CardsContainer = () => {
   return (
     
     <div className="cards-container ">
-     <a href={PDFProspectus}  target='_blank' id='nioudiouksi'>
+     <a href={PDFProspectus}  target='_blank' id='nioudiouksi' rel="noreferrer">
       {cardsData.map((card, index) => (
         <Card
           key={index}

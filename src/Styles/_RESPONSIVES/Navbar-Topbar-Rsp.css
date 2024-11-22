@@ -1,7 +1,7 @@
 /* Partie Responsive */
 /* Exemple de styles pour le menu */
 
-@media (max-width: 991px) {
+@media (max-width: 800px) {
 #montitleL2i{
     font-size: 12px;
     font-weight: 700;
@@ -63,6 +63,7 @@
   .navbar-toggler:focus, .navbar-toggler:active {
     outline: none;
     box-shadow: none;
+    border: none;
   }
   .navbar-nav .nav-item {
     margin-bottom: 10px; /* Ajustez cette valeur selon vos besoins */

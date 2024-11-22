@@ -20,7 +20,7 @@
     }
   }
   @media (max-width: 1024px) {
-    .cards-container {
+    .cards-container a {
       flex-direction: column;
       text-align: center;
     }

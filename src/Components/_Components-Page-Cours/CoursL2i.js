@@ -24,8 +24,9 @@ import {
 import { SERVER_URL } from "../../Utils/constantURL";
 import '../../Styles/Cours.css'
 import bookCourses from "../../Assets/img/bookCourses1.png"
-import {  FilePdfOutlined } from "@ant-design/icons";
+import {  EyeFilled, FilePdfOutlined } from "@ant-design/icons";
 import Fade from "react-reveal/Fade";
+import { EyeClosed } from "lucide-react";
 
 
 const CoursL2i = () => {
@@ -408,10 +409,11 @@ const CoursL2i = () => {
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h6" gutterBottom>
-                        {course?.url.substring(course?.url.indexOf("_") + 1) ||
-                          course?.url}
-                      </Typography>
+                        <Typography variant="h6" gutterBottom>
+                          {course?.url.substring(course?.url.indexOf("_") + 1) ||
+                            course?.url}
+                        </Typography>
+                        
                       {/* <Divider
                         component="div"
                         sx={{

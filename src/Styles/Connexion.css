@@ -35,8 +35,8 @@
   position: relative;
   padding: 10px 4%;
 
-
 }
+
 .connexion #login-form {
   flex: 1 0 100%;
   max-width: 480px;
@@ -91,7 +91,7 @@
   min-height: 100%;
   background-color: #ffffff;
 }
-.connexion .illustration-wrapper img {
+.connexion .illustration-wrapper #SvgRspConnexion {
   display: block;
   width: 100%;
 }

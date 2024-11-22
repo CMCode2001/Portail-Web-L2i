@@ -1,0 +1,19 @@
+#IconColeur{
+  background-color: "#600622" !important;
+}
+#deletePDF{
+  background-color: red;
+  color: white;
+}
+#deletePDF:hover{
+  background-color: white;
+  color: red;
+}
+#modifPDF{
+  background-color: #727272;
+  color: rgb(255, 255, 255);
+}
+#modifPDF:hover{
+  background-color: #ffffff;
+  color: rgb(112, 112, 112);
+}

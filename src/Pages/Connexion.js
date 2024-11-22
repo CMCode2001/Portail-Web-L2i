@@ -86,7 +86,7 @@ const Connexion = () => {
         <Fade right>
         <div className="login-box">
           <div className="illustration-wrapper">
-            <img src={SvgLogin} alt="Login" id="SvgRsp" />
+            <img src={SvgLogin} alt="Login" id="SvgRspConnexion" />
           </div>
           <Form
             name="login-form"

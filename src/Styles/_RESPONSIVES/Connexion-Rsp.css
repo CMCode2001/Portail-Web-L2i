@@ -1,5 +1,4 @@
 @media only screen and (max-width: 800px) {
-
     
     .connexion .login-box{
         width: 100% !important;
@@ -10,7 +9,7 @@
         z-index: 9999;
 
     }
-    .connexion #SvgRsp{
+    .connexion #SvgRspConnexion{
         width: 11rem !important;
     }
     .connexion .form-title{

@@ -302,7 +302,6 @@ import {
   Button,
   Card,
   Col,
-  Divider,
   Input,
   message,
   Modal,
@@ -313,13 +312,17 @@ import {
   Upload,
 } from "antd";
 import {
-  DownloadOutlined,
-  EditOutlined,
+ 
+  FilePdfOutlined,
   InfoCircleOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import { SERVER_URL } from "../../Utils/constantURL";
 import { Option } from "antd/es/mentions";
+import { CardActions, CardContent, CardMedia } from "@mui/material";
+import {  Edit2Icon } from "lucide-react";
+import './CoursProfessor.css'
+import { DeleteOutline, PictureAsPdf, PictureAsPdfOutlined } from "@mui/icons-material";
 
 const { Search } = Input;
 
@@ -435,13 +438,12 @@ function CoursProfessor() {
   return (
     <div style={{ padding: 24, minHeight: "100vh" }} className="search_course">
       <Search
-        enterButton="Recherche"
         size="large"
         allowClear
         placeholder="Rechercher un cours"
         onSearch={handleSearch}
         onChange={(e) => handleSearch(e.target.value)}
-        style={{ width: "500px", marginBottom: "20px" }}
+        style={{ width: "428px", marginBottom: "20px"}}
       />
       {filteredCours.length === 0 ? (
         <div style={{ textAlign: "center", marginTop: 16 }}>
@@ -452,90 +454,111 @@ function CoursProfessor() {
         </div>
       ) : (
         <>
-          <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+          <Row gutter={[8, 8]} style={{ marginTop: 16 }}>
             {currentCours.map((course) => (
-              <Col xs={24} sm={12} md={8} key={course.id}>
+              <Col xs={24} sm={14} md={8} key={course.id}>
                 <Card
-                  hoverable
-                  bordered
-                  style={{
-                    width: 300,
-                    borderColor: "rgb(19,121,140)",
-                    borderRadius: "10px",
-                  }}
-                  cover={
-                    <div
-                      style={{
-                        height: 175,
+                    id="GridContainerY"
+                    sx={{
+                      height: "100%",
+                      width: "300px",
+                      display: "flex",
+                      flexDirection: "column",
+                      border: "solid 5px rgb(19,121,140)",
+                      borderRadius: "35px",
+                    }}
+                  >
+                    <CardMedia
+                      component="div"
+                      id="classroomNameCSS"
+                      sx={{
+                        height: 55,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        backgroundColor: "#085867",
                         color: "white",
-                        fontSize: "1.5rem",
-                        fontWeight: "bold",
+                        fontSize: "2rem",
+                        fontFamily: "Poppins",
                       }}
                     >
-                      {course.classroomName}
-                    </div>
-                  }
-                  actions={[
-                    <Button
-                      type="primary"
-                      icon={<DownloadOutlined />}
-                      href={`${SERVER_URL}/cours/${encodeURIComponent(
-                        course.url
-                      )}`}
-                      target="_blank"
-                      block
-                    >
-                      Télécharger
-                    </Button>,
-                    <Button
-                      type="default"
-                      icon={<EditOutlined />}
-                      onClick={() => showModal(course)}
-                      block
-                    >
-                      Edit
-                    </Button>,
-                    <Button
-                      type="primary"
-                      danger
-                      onClick={() => showModalDeleteDocument(course)}
-                      block
-                    >
-                      Supprimer
-                    </Button>,
-                  ]}
-                >
-                  <Card.Meta
-                    title={
-                      <Typography.Title level={5}>
-                        {course.title}
-                      </Typography.Title>
-                    }
-                    description={
-                      <>
-                        <Typography variant="h6" gutterBottom>
-                          {course?.url.substring(
-                            course?.url.indexOf("_") + 1
-                          ) || course?.url}
-                        </Typography>
-                        <Divider style={{ borderColor: "rgb(19,121,140)" }} />
-                        <p style={{ fontWeight: "bold", marginBottom: 8 }}>
-                          Professeur : {course.professorName}
-                        </p>
-                        <p>
-                          Niveau : {course.classroomName}
-                          <br />
-                          Date d'upload :{" "}
-                          {new Date(course.creatAt).toLocaleDateString()}
-                        </p>
-                      </>
-                    }
-                  />
-                </Card>
+                      {course?.classroomName}
+                    </CardMedia>
+
+                    <CardContent sx={{ textAlign: "left" }}>
+                      <Typography
+                        sx={{
+                          fontFamily: "Poppins",
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {course?.title}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          marginBottom: "8px",
+                          fontFamily: "Poppins",
+                          color: "rgba(0, 0, 0, 0.87)",
+                        }}
+                      >
+                        <b>{course?.url.substring(course?.url.indexOf("_") + 1) || course?.url} </b>
+                      </Typography>
+                      <div className="blogCours"></div>
+                      <Typography
+                        sx={{
+                          fontFamily: "Poppins",
+                          fontWeight: "bold",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        <b>Professeur : </b> {course?.professorName}
+                      </Typography>
+
+                      <Typography variant="body2" sx={{ marginBottom: "8px" }}>
+                        <b>Niveau :</b> {course.classroomName}
+                        <br />
+                        <b>Date d'upload :</b>{" "}
+                        {new Date(course?.creatAt).toLocaleDateString()}
+                      </Typography>
+                    </CardContent>
+
+                    <CardActions>
+                      <Button
+                        id="downloadPDF"
+                        variant="contained"
+                        color="primary"
+                        target="_blank"
+                        href={`${SERVER_URL}/cours/${encodeURIComponent(course?.url)}`}
+                        fullWidth
+                      >
+                        <PictureAsPdf/>
+                        {/* Télécharger */}
+                      </Button>
+                      <Button
+                        id="modifPDF"
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => showModal(course)}
+                        fullWidth
+                      >
+                        <Edit2Icon/>
+                        {/* Editer */}
+                      </Button>
+                      <Button
+                        id="deletePDF"
+                        variant="contained"
+                        color="error"
+                        onClick={() => showModalDeleteDocument(course)}
+                        fullWidth
+                      >
+                        <DeleteOutline/>
+                        {/* Supprimer */}
+                      </Button>
+                    </CardActions>
+                  </Card>
               </Col>
             ))}
           </Row>
