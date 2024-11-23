@@ -313,7 +313,6 @@ import {
 } from "antd";
 import {
  
-  FilePdfOutlined,
   InfoCircleOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
@@ -322,7 +321,7 @@ import { Option } from "antd/es/mentions";
 import { CardActions, CardContent, CardMedia } from "@mui/material";
 import {  Edit2Icon } from "lucide-react";
 import './CoursProfessor.css'
-import { DeleteOutline, PictureAsPdf, PictureAsPdfOutlined } from "@mui/icons-material";
+import { DeleteOutline, PictureAsPdf } from "@mui/icons-material";
 
 const { Search } = Input;
 
@@ -334,7 +333,7 @@ function CoursProfessor() {
   const [cours, setCours] = useState([]);
   const [filteredCours, setFilteredCours] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(3);
+  const [pageSize] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeleteDocument, setIsModalDeleteDocument] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -436,14 +435,14 @@ function CoursProfessor() {
   const currentCours = filteredCours.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div style={{ padding: 24, minHeight: "100vh" }} className="search_course">
+    <div style={{ padding: 24, minHeight: "100vh" }} className=" search_course">
       <Search
         size="large"
         allowClear
         placeholder="Rechercher un cours"
         onSearch={handleSearch}
         onChange={(e) => handleSearch(e.target.value)}
-        style={{ width: "428px", marginBottom: "20px"}}
+        style={{ width: "428px", marginBottom: "20px", textAlign: "center"}}
       />
       {filteredCours.length === 0 ? (
         <div style={{ textAlign: "center", marginTop: 16 }}>
@@ -454,9 +453,9 @@ function CoursProfessor() {
         </div>
       ) : (
         <>
-          <Row gutter={[8, 8]} style={{ marginTop: 16 }}>
+          <Row gutter={[8, 8]} style={{ marginTop: 14 }}>
             {currentCours.map((course) => (
-              <Col xs={24} sm={14} md={8} key={course.id}>
+              <Col xs={20} sm={12} md={8} key={course.id}>
                 <Card
                     id="GridContainerY"
                     sx={{
@@ -472,7 +471,7 @@ function CoursProfessor() {
                       component="div"
                       id="classroomNameCSS"
                       sx={{
-                        height: 55,
+                        height: 41,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -608,14 +607,15 @@ function CoursProfessor() {
               <strong>{selectedDocument?.title}</strong> ?
             </p>
           </Modal>
-
+          <div id = "CenterPagination">    
           <Pagination
             current={currentPage}
             total={filteredCours.length}
             pageSize={pageSize}
             onChange={handlePageChange}
-            style={{ marginTop: 20, textAlign: "center" }}
+            style={{ marginTop: 20 }}
           />
+          </div>
         </>
       )}
     </div>

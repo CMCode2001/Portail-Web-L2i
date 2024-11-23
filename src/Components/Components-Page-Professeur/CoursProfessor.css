@@ -17,3 +17,9 @@
   background-color: #ffffff;
   color: rgb(112, 112, 112);
 }
+#CenterPagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center !important; */
+}
