@@ -81,12 +81,12 @@ const ProfileStudent = () => {
           setStudent(data);
 
           form.setFieldsValue({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            specialityStudent: data.specialityStudent,
-            classroom_id: data.classroom_id,
-            ine: data.ine,
+            firstName: data?.firstName,
+            lastName: data?.lastName,
+            email: data?.email,
+            specialityStudent: data?.specialityStudent,
+            classroom_id: data?.classroom_id,
+            ine: data?.ine,
           });
         } catch (error) {
           console.error("Error fetching student data:", error);

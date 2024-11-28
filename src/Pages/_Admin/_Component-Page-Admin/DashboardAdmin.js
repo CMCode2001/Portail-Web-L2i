@@ -2,6 +2,7 @@ import {
   AppstoreOutlined,
   EditOutlined,
   FileTextOutlined,
+  HighlightOutlined,
   HomeOutlined,
   LogoutOutlined,
   MailOutlined,
@@ -32,6 +33,7 @@ import { useApi } from "../../../Utils/Api.js";
 import { useAuth } from "../../../Utils/AuthContext.js";
 import SendEmail from "./SendEmail.tsx";
 import CrudDocument from "./documents/CrudDocument.js";
+import CrudUserFeedBack from "./userFeedBack/CrudUserFeedBack.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -99,6 +101,9 @@ const DashboardAdmin = () => {
         return <CrudMessageForum />;
       case "documents":
         return <CrudDocument />;
+
+      case "feedBack":
+        return <CrudUserFeedBack />;
       // case "crud-partenaires":
       // return <CrudTable />;
       case "mon-profile":
@@ -189,6 +194,9 @@ const DashboardAdmin = () => {
           </SubMenu> */}
           <Menu.Item key="documents" icon={<SnippetsOutlined />}>
             Documents
+          </Menu.Item>
+          <Menu.Item key="feedBack" icon={<HighlightOutlined />}>
+            User FeedBack
           </Menu.Item>
           {/* <SubMenu
             key="partenaires"

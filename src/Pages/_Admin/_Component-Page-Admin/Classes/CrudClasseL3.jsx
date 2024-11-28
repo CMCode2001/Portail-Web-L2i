@@ -282,7 +282,12 @@ const CrudClasseL3 = () => {
 
   return (
     <>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        pagination={false}
+      />
       <div style={{ textAlign: "center", marginTop: 20 }}>
         <Button type="primary" onClick={showAddModal}>
           Add student

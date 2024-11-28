@@ -5,11 +5,13 @@ import { useApi } from "../../../../Utils/Api";
 const CrudProfesseur = () => {
   const api = useApi();
   const [data, setData] = useState([]);
+  // const [filteredData, setFilteredData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
+  // const [searchTerm, setSearchTerm] = useState("");
 
   const fetchProfessors = useCallback(async () => {
     try {
@@ -28,6 +30,11 @@ const CrudProfesseur = () => {
   useEffect(() => {
     fetchProfessors();
   }, [fetchProfessors]);
+
+  // useEffect(() => {
+  //   fetchProfessors();
+  //   setFilteredData(data);
+  // }, [fetchProfessors, data]);
 
   const handleDelete = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce professeur?")) {
@@ -66,22 +73,6 @@ const CrudProfesseur = () => {
       );
     }
   };
-
-  // const handleAdd = (newData) => {
-
-  //   fetch(SERVER_URL + "/register/professor", {
-  //     method: "POST",
-  //     body: JSON.stringify(newData),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setIsAddModalOpen(false);
-  //       addForm.resetFields();
-  //       // fetchProfessors();
-  //       setData((prevData) => [data, ...prevData]); // Ajouter le nouvel élément au début
-  //     })
-  //     .catch((error) => console.error("Error adding item:", error));
-  // };
 
   const handleAdd = async (newData) => {
     try {
@@ -165,6 +156,30 @@ const CrudProfesseur = () => {
     return password;
   };
 
+  // const handleSearch = (event) => {
+  //   const value = event.target.value.toLowerCase();
+  //   setSearchTerm(value);
+  //   const filtered = data.filter(
+  //     (item) =>
+  //       item.firstName.toLowerCase().includes(value) ||
+  //       item.lastName.toLowerCase().includes(value) ||
+  //       item.email.toLowerCase().includes(value)
+  //   );
+  //   setFilteredData(filtered);
+  // };
+
+  // const handleSearch = (event) => {
+  //   const value = event.target.value.toLowerCase();
+  //   setSearchTerm(value);
+  //   const filtered = data.filter(
+  //     (item) =>
+  //       item.firstName.toLowerCase().includes(value) ||
+  //       item.lastName.toLowerCase().includes(value) ||
+  //       item.email.toLowerCase().includes(value)
+  //   );
+  //   setFilteredData(filtered);
+  // };
+
   const classroomOptions = [
     { label: "Licence 1", value: 1 },
     { label: "Licence 2", value: 2 },
@@ -225,6 +240,12 @@ const CrudProfesseur = () => {
 
   return (
     <>
+      {/* <Input
+        placeholder="Search by first name, last name, or email"
+        value={searchTerm}
+        onChange={handleSearch}
+        style={{ marginBottom: 20 }}
+      /> */}
       <Table columns={columns} dataSource={data} rowKey="id" />
       <div style={{ textAlign: "center", marginTop: 20 }}>
         <Button type="primary" onClick={showAddModal}>

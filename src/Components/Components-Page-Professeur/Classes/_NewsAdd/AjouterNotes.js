@@ -221,6 +221,47 @@ export default function AjouterNotes() {
     XLSX.writeFile(wb, `${selectedLicence}_notes.xlsx`);
   };
 
+  // const handleCSVUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       const content = event.target.result;
+  //       const workbook = XLSX.read(content, { type: "binary" });
+  //       const sheetName = workbook.SheetNames[0];
+  //       const sheet = workbook.Sheets[sheetName];
+  //       const parsedData = XLSX.utils.sheet_to_json(sheet);
+
+  //       const updatedNotes = { ...notes };
+
+  //       parsedData.forEach((row) => {
+  //         const studentINE = row.INE || row.ine;
+  //         // console.log("studentINE : " + studentINE);
+
+  //         const student = students.find((s) => s.ine === String(studentINE));
+  //         // console.log("students[0] : " + students[0].ine);
+
+  //         if (student) {
+  //           updatedNotes[student.id] = {
+  //             cc1:
+  //               row.CC1 || row.cc1 || updatedNotes[student.id]?.cc1 || "absent",
+  //             cc2:
+  //               row.CC2 || row.cc2 || updatedNotes[student.id]?.cc2 || "absent",
+  //             exam:
+  //               row.Exam ||
+  //               row.exam ||
+  //               updatedNotes[student.id]?.exam ||
+  //               "absent",
+  //           };
+  //         }
+  //       });
+
+  //       setNotes(updatedNotes);
+  //     };
+  //     reader.readAsBinaryString(file);
+  //   }
+  // };
+
   const handleCSVUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -230,16 +271,20 @@ export default function AjouterNotes() {
         const workbook = XLSX.read(content, { type: "binary" });
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        const parsedData = XLSX.utils.sheet_to_json(sheet);
+        const parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
+        // Assigner "INE" au premier champ si nécessaire
+        const headers = parsedData[0];
+        if (headers[0].toLowerCase() !== "ine") {
+          headers[0] = "INE";
+        }
+
+        const data = XLSX.utils.sheet_to_json(sheet, { header: headers });
         const updatedNotes = { ...notes };
 
-        parsedData.forEach((row) => {
+        data.forEach((row) => {
           const studentINE = row.INE || row.ine;
-          // console.log("studentINE : " + studentINE);
-
           const student = students.find((s) => s.ine === String(studentINE));
-          // console.log("students[0] : " + students[0].ine);
 
           if (student) {
             updatedNotes[student.id] = {
@@ -261,32 +306,6 @@ export default function AjouterNotes() {
       reader.readAsBinaryString(file);
     }
   };
-
-  // const sendNotesStudent = () => {
-  //   if (window.confirm("Voulez-vous envoyer les notes ?")) {
-  //     setLoading(true);
-  //     const studentNotes = students.map((student) => ({
-  //       id: student?.id,
-  //       firstName: student?.firstName,
-  //       lastName: student?.lastName,
-  //       email: student?.email,
-  //       ine: student?.ine,
-  //       professorName: currentUser?.firstName + " " + currentUser?.lastName,
-  //       cc1: notes[student.id]?.cc1 || "absent",
-  //       cc2: notes[student.id]?.cc2 || "absent",
-  //       exam: notes[student.id]?.exam || "absent",
-  //     }));
-
-  //     api
-  //       .post("/course/sendNotesStudents", {
-  //         level: selectedLicence,
-  //         studentNotes,
-  //       })
-  //       .then(() => setIsModalVisible(true))
-  //       .catch((error) => console.error("Erreur d'envoi des notes:", error));
-  //     setLoading(false);
-  //   }
-  // };
 
   const sendNotesStudent = () => {
     if (window.confirm("Voulez-vous envoyer les notes ?")) {
