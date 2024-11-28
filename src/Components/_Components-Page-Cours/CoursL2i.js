@@ -22,12 +22,11 @@ import {
   Info as InfoIcon,
 } from "@mui/icons-material";
 import { SERVER_URL } from "../../Utils/constantURL";
-import '../../Styles/Cours.css'
-import bookCourses from "../../Assets/img/bookCourses1.png"
-import {  EyeFilled, FilePdfOutlined } from "@ant-design/icons";
+import "../../Styles/Cours.css";
+import bookCourses from "../../Assets/img/bookCourses1.png";
+import { EyeFilled, FilePdfOutlined } from "@ant-design/icons";
 import Fade from "react-reveal/Fade";
 import { EyeClosed } from "lucide-react";
-
 
 const CoursL2i = () => {
   const [cours, setCours] = useState([]);
@@ -72,9 +71,20 @@ const CoursL2i = () => {
           c?.url.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
+    // if (level) {
+    //   filtered = filtered.filter(
+    //     (c) =>
+    //       c.classroomName.toLowerCase().trim() === level.toLowerCase().trim()
+    //   );
+    // }
+
     if (level) {
-      filtered = filtered.filter((c) => c.classroomName === level);
+      filtered = filtered.filter((c) =>
+        c.classroomName.toLowerCase().includes(level.toLowerCase())
+      );
     }
+
     if (professor) {
       filtered = filtered.filter((c) =>
         c.professorName.toLowerCase().includes(professor.toLowerCase())
@@ -129,7 +139,6 @@ const CoursL2i = () => {
 
   return (
     <Container>
-  
       <Box
         textAlign="center"
         my={4}
@@ -139,40 +148,37 @@ const CoursL2i = () => {
       >
         {/* Title and Description */}
         <Fade top>
-        <Box
-        id="backgroundBox"
-          sx={{
-            // borderBottom: "solid 5px rgb(19,121,140)",
-            // borderLeft: "solid 5px rgb(19,121,140)",
-            // borderRight: "solid 2px #6B2239",
-            border: "solid 2px #6B2239",
-            paddingBottom: "20px",
-             borderRadius:'25px'
-            // backgroundColor: "rgb(19,121,140, 0.1)",
-            // borderBottomRightRadius: "25px",
-            // borderTopLeftRadius: "25px",
-             
-          }}
-        >
-          
-          <Typography
-            id="NameCatalogue"
-            gutterBottom
+          <Box
+            id="backgroundBox"
             sx={{
-              fontWeight: "bold",
+              // borderBottom: "solid 5px rgb(19,121,140)",
+              // borderLeft: "solid 5px rgb(19,121,140)",
+              // borderRight: "solid 2px #6B2239",
+              border: "solid 2px #6B2239",
+              paddingBottom: "20px",
+              borderRadius: "25px",
+              // backgroundColor: "rgb(19,121,140, 0.1)",
+              // borderBottomRightRadius: "25px",
+              // borderTopLeftRadius: "25px",
             }}
           >
-            Catalogue des Cours&nbsp; 
-            <img src={bookCourses}  alt= "bookCourses" id="bookCourses"/>
-          </Typography>
-          <marquee>
-          <Typography fontSize={20} color="#6B2239" fontWeight="bold" >
-            Explorez et téléchargez vos cours en toute simplicite !
-          </Typography>
-          </marquee>
-         
-        </Box> 
-        </Fade>       
+            <Typography
+              id="NameCatalogue"
+              gutterBottom
+              sx={{
+                fontWeight: "bold",
+              }}
+            >
+              Catalogue des Cours&nbsp;
+              <img src={bookCourses} alt="bookCourses" id="bookCourses" />
+            </Typography>
+            <marquee>
+              <Typography fontSize={20} color="#6B2239" fontWeight="bold">
+                Explorez et téléchargez vos cours en toute simplicite !
+              </Typography>
+            </marquee>
+          </Box>
+        </Fade>
       </Box>
 
       {/* Search Bar (Moved Outside Filters) */}
@@ -261,9 +267,9 @@ const CoursL2i = () => {
               }
             >
               <MenuItem value="">Tous les niveaux</MenuItem>
-              <MenuItem value="LICENCE1">L1</MenuItem>
-              <MenuItem value="LICENCE2">L2</MenuItem>
-              <MenuItem value="LICENCE3">L3</MenuItem>
+              <MenuItem value="Licence 1">L1</MenuItem>
+              <MenuItem value="Licence 2">L2</MenuItem>
+              <MenuItem value="Licence 3">L3</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} md={3}>
@@ -324,7 +330,7 @@ const CoursL2i = () => {
                 border: "solid 2px white",
                 color: "white",
                 backgroundColor: "#6B2239",
-                fontFamily: "Poppins"
+                fontFamily: "Poppins",
               },
             }}
           >
@@ -353,68 +359,67 @@ const CoursL2i = () => {
           <InfoIcon fontSize="large" color="action" />
         </Box>
       ) : (
-        <Grid container spacing={4} mt={4} id='GridContainerX'>
+        <Grid container spacing={4} mt={4} id="GridContainerX">
           {currentCourses.map((course) => (
-
-            <Grid item xs={12} sm={6} md={4} key={course.id} >
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
               <Fade right>
-              <Card
-              id='GridContainerY'
-                sx={{
-                  height: "100%",
-                  width: "300px",
-                  display: "flex",
-                  flexDirection: "column",
-                  // borderBottom: "solid 5px #13798C",
-                  // borderLeft: "solid 5px #13798C",
-                  // borderRight: "solid 2px #6B2239",
-                  // borderTop: "solid 2px #6B2239",
-                  // borderBottomRightRadius: "25px",
-                  // borderTopLeftRadius: "20px",
-                }}
-              >
-                <CardMedia
-                  component="div"
-                  id="classroomNameCSS"
+                <Card
+                  id="GridContainerY"
                   sx={{
-                    height: 55,
+                    height: "100%",
+                    width: "300px",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "white",
-                    fontSize: "2rem",
-                    fontFamily:"Poppins",
-                    
+                    flexDirection: "column",
+                    // borderBottom: "solid 5px #13798C",
+                    // borderLeft: "solid 5px #13798C",
+                    // borderRight: "solid 2px #6B2239",
+                    // borderTop: "solid 2px #6B2239",
+                    // borderBottomRightRadius: "25px",
+                    // borderTopLeftRadius: "20px",
                   }}
                 >
-                  {course?.classroomName}
-                </CardMedia>
-                <CardContent sx={{ textAlign: "left" }}>
-                  <Typography
-                    // variant="h6"
-                    gutterBottom
+                  <CardMedia
+                    component="div"
+                    id="classroomNameCSS"
                     sx={{
-                      fontFamily:"Poppins",
-                      fontWeight: "bold",
-                      fontSize:"10px",
-                    }}
-                  >
-                    {course?.title}
-                  </Typography>
-                  <Card
-                    sx={{
-                      height: "100%",
+                      height: 55,
                       display: "flex",
-                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                      fontSize: "2rem",
+                      fontFamily: "Poppins",
                     }}
                   >
-                    <CardContent>
+                    {course?.classroomName}
+                  </CardMedia>
+                  <CardContent sx={{ textAlign: "left" }}>
+                    <Typography
+                      // variant="h6"
+                      gutterBottom
+                      sx={{
+                        fontFamily: "Poppins",
+                        fontWeight: "bold",
+                        fontSize: "10px",
+                      }}
+                    >
+                      {course?.title}
+                    </Typography>
+                    <Card
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <CardContent>
                         <Typography variant="h6" gutterBottom>
-                          {course?.url.substring(course?.url.indexOf("_") + 1) ||
-                            course?.url}
+                          {course?.url.substring(
+                            course?.url.indexOf("_") + 1
+                          ) || course?.url}
                         </Typography>
-                        
-                      {/* <Divider
+
+                        {/* <Divider
                         component="div"
                         sx={{
                           border: "solid 1px rgb(19,121,140)",
@@ -422,48 +427,48 @@ const CoursL2i = () => {
                           margin: "0 auto",
                         }}
                       /> */}
-                      <div className="blogCours"></div>
-                      <Typography
-                        sx={{
-                          fontFamily:"Poppins",
-                          fontWeight: "bold",
-                          textAlign: "left",
-                        }}
-                      >
-                        Professeur : Mr {course?.professorName}
-                        {/* {course?.classroom.professors[0].firstName}{" "}
+                        <div className="blogCours"></div>
+                        <Typography
+                          sx={{
+                            fontFamily: "Poppins",
+                            fontWeight: "bold",
+                            textAlign: "left",
+                          }}
+                        >
+                          Professeur : Mr {course?.professorName}
+                          {/* {course?.classroom.professors[0].firstName}{" "}
                         {course?.classroom.professors[0].lastName.toUpperCase()} */}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          textAlign: "left",
-                        }}
-                      >
-                        <b>Niveau :</b> {course.classroomName}
-                        <br />
-                        <b>Date d'upload :</b>{" "}
-                        {new Date(course?.creatAt).toLocaleDateString()}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        id='downloadPDF'
-                        variant="contained"
-                        color="primary"
-                        target="blank"
-                        href={`${SERVER_URL}/cours/${course?.url}`}
-                        startIcon={<FilePdfOutlined/>}
-                        fullWidth
-                      >
-                        Télécharger
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </CardContent>
-              </Card>
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            textAlign: "left",
+                          }}
+                        >
+                          <b>Niveau :</b> {course.classroomName}
+                          <br />
+                          <b>Date d'upload :</b>{" "}
+                          {new Date(course?.creatAt).toLocaleDateString()}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button
+                          id="downloadPDF"
+                          variant="contained"
+                          color="primary"
+                          target="blank"
+                          href={`${SERVER_URL}/cours/${course?.url}`}
+                          startIcon={<FilePdfOutlined />}
+                          fullWidth
+                        >
+                          Télécharger
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </CardContent>
+                </Card>
               </Fade>
-            </Grid> 
+            </Grid>
           ))}
         </Grid>
       )}
@@ -479,8 +484,7 @@ const CoursL2i = () => {
           />
         </Box>
       )}
-          <br/>
-
+      <br />
     </Container>
   );
 };
