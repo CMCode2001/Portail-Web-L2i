@@ -33,7 +33,6 @@ function FooterBlock() {
   }, []);
 
   return (
-    
     <div className={`Footer-class ${isVisible ? "animate" : ""}`}>
       <div className="top-footer">
         <div className="tel">
@@ -41,22 +40,28 @@ function FooterBlock() {
           <div className="info">
             <h3>Téléphone</h3>
             <p>
-              <a href="tel:+221774952024" style={{textDecoration:"none", color :"white"}}>
+              <a
+                href="tel:+221774952024"
+                style={{ textDecoration: "none", color: "white" }}
+              >
                 +221 77 495 20 24
               </a>
             </p>
-            </div>
+          </div>
         </div>
         <div className="tel">
           <img src={email} alt="email icone" />
           <div className="info">
             <h3>Email</h3>
             <p>
-              <a href="mailto:l2iuasz@gmail.com" style={{textDecoration:"none", color :"white"}}>
+              <a
+                href="mailto:l2iuasz@gmail.com"
+                style={{ textDecoration: "none", color: "white" }}
+              >
                 l2iuasz@gmail.com
               </a>
             </p>
-            </div>
+          </div>
         </div>
         <div className="tel">
           <img src={address} alt="Address icone" />
@@ -91,16 +96,22 @@ function FooterBlock() {
           <Link to="/gallerie">Galerie</Link>
         </div>
         <div className="social-media">
-          <Link to="https://uasz.sn/">
+          <Link to="https://uasz.sn/" target="_blank">
             <img src={uasz} alt="Logo de l'universite Assane SECK" />
           </Link>
-          <Link to="https://www.facebook.com/profile.php?id=61565542792170">
+          <Link
+            to="https://www.facebook.com/profile.php?id=61565542792170"
+            target="_blank"
+          >
             <i className="fa-brands fa-square-facebook"></i>
           </Link>
-          <Link to="https://www.linkedin.com/company/licence-ing%C3%A9nierie-informatique/">
+          <Link
+            to="https://www.linkedin.com/company/licence-ing%C3%A9nierie-informatique/"
+            target="_blank"
+          >
             <i className="fa-brands fa-linkedin"></i>
           </Link>
-          <Link to="https://github.com/L2IUASZ/">
+          <Link to="https://github.com/L2IUASZ/" target="_blank">
             <i className="fa-brands fa-github"></i>
           </Link>
         </div>
@@ -115,8 +126,6 @@ function FooterBlock() {
         </div>
       </div>
     </div>
-
-
   );
 }
 

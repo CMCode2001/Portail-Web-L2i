@@ -1621,6 +1621,22 @@ const Licence32i = () => {
   });
 
   const columns = [
+    // {
+    //   title: "N°",
+    //   key: "index",
+    //   width: "10%",
+    //   render: (_, __, index) => (
+    //     <div
+    //       style={{
+    //         // backgroundColor: "#f0f0f0", // Couleur de fond gris clair
+    //         textAlign: "center",
+    //         fontWeight: "bold",
+    //       }}
+    //     >
+    //       {index + 1}
+    //     </div>
+    //   ),
+    // },
     {
       title: "INE",
       dataIndex: "ine",
